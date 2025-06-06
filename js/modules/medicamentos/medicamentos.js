@@ -999,8 +999,8 @@ const MEDICAMENTOS = {
     },
 
     // Paracetamol
-    paracetamol: {
-        nome: "Paracetamol",
+    paracetamolGotas: {
+        nome: "Paracetamol (Gotas)",
         formas: {
             oral: {
                 descricao: "Solução oral 200mg/mL",
@@ -1041,8 +1041,8 @@ const MEDICAMENTOS = {
     },
 
     // Dipirona
-    dipirona: {
-        nome: "Dipirona",
+    dipironaGotas: {
+        nome: "Dipirona (Gotas)",
         formas: {
             oral: {
                 descricao: "Solução oral 500mg/mL",
@@ -1084,8 +1084,8 @@ const MEDICAMENTOS = {
     },
 
     // Cefalexina
-    cefalexina: {
-        nome: "Cefalexina",
+    cefalexinaSuspensao: {
+        nome: "Cefalexina (Suspensão)",
         formas: {
             oral: {
                 descricao: "Suspensão oral 250mg/5mL",
@@ -1128,8 +1128,8 @@ const MEDICAMENTOS = {
     },
 
     // Dexametasona
-    dexametasona: {
-        nome: "Dexametasona",
+    dexametasonaTopico: {
+        nome: "Dexametasona (Tópico)",
         formas: {
             oral: {
                 descricao: "Elixir 0,1mg/mL",
@@ -1176,8 +1176,8 @@ const MEDICAMENTOS = {
     },
 
     // Loratadina
-    loratadina: {
-        nome: "Loratadina",
+    loratadinaXarope: {
+        nome: "Loratadina (Xarope)",
         formas: {
             oral: {
                 descricao: "Xarope 1mg/mL",
@@ -1235,8 +1235,8 @@ const MEDICAMENTOS = {
     },
 
     // Nistatina
-    nistatina: {
-        nome: "Nistatina",
+    nistatinaPomada: {
+        nome: "Nistatina (Pomada)",
         formas: {
             oral: {
                 descricao: "Suspensão oral 100.000 UI/mL",
@@ -1524,8 +1524,8 @@ const MEDICAMENTOS = {
         }
     },
 
-    omeprazol: {
-        nome: "Omeprazol",
+    omeprazolCapsulas: {
+        nome: "Omeprazol (Cápsulas)",
         formas: {
             oral: {
                 descricao: "Cápsulas 10mg, 20mg",
@@ -1576,7 +1576,7 @@ const MEDICAMENTOS = {
         }
     },
 
-    adrenalina: {
+    adrenalinaInjetavel: {
         nome: "Adrenalina (Epinefrina)",
         formas: {
             im: {
@@ -1991,8 +1991,8 @@ const MEDICAMENTOS = {
             }
         }
     },
-    furosemida: {
-        nome: "Furosemida",
+    furosemidaInjetavel: {
+        nome: "Furosemida (Injetável)",
         formas: {
             oral: {
                 descricao: "Solução oral 10mg/mL",
@@ -2385,8 +2385,8 @@ const MEDICAMENTOS = {
             }
         }
     },
-    azitromicina: {
-        nome: "Azitromicina",
+    azitromicinaInfantil: {
+        nome: "Azitromicina (Infantil)",
         formas: {
             oral: {
                 descricao: "Comprimidos 250mg, suspensão 200mg/5mL",
@@ -2469,8 +2469,8 @@ const MEDICAMENTOS = {
             }
         }
     },
-    metronidazol: {
-        nome: "Metronidazol",
+    metronidazolTopico: {
+        nome: "Metronidazol (Tópico)",
         formas: {
             oral: {
                 descricao: "Comprimidos 250mg, suspensão 200mg/5mL",
@@ -2671,8 +2671,8 @@ const MEDICAMENTOS = {
             }
         }
     },
-    amoxicilina: {
-        nome: "Amoxicilina",
+    amoxicilinaSuspensao: {
+        nome: "Amoxicilina (Suspensão)",
         formas: {
             oral: {
                 descricao: "Suspensão oral 250mg/5mL",
@@ -2732,8 +2732,8 @@ const MEDICAMENTOS = {
             }
         }
     },
-    paracetamol: {
-        nome: "Paracetamol",
+    paracetamolInfantil: {
+        nome: "Paracetamol (Infantil)",
         formas: {
             oral: {
                 descricao: "Suspensão oral 100mg/mL",
@@ -3196,8 +3196,8 @@ const MEDICAMENTOS = {
         }
     },
 
-    nistatina: {
-        nome: "Nistatina",
+    nistatinaPomada: {
+        nome: "Nistatina (Pomada)",
         formas: {
             oral: {
                 descricao: "Suspensão oral 100.000 UI/mL",
@@ -3330,8 +3330,8 @@ const MEDICAMENTOS = {
         }
     },
 
-    praziquantel: {
-        nome: "Praziquantel",
+    praziquantelPediatrico: {
+        nome: "Praziquantel (Pediátrico)",
         formas: {
             oral: {
                 descricao: "Comprimidos 600mg",
@@ -3397,8 +3397,8 @@ const MEDICAMENTOS = {
         }
     },
 
-    salbutamol: {
-        nome: "Salbutamol",
+    salbutamolNebulizacao: {
+        nome: "Salbutamol (Nebulização)",
         formas: {
             nebulizacao: {
                 descricao: "Solução para nebulização 5mg/mL",
@@ -3577,8 +3577,8 @@ const MEDICAMENTOS = {
         }
     },
 
-    ceftriaxona: {
-        nome: "Ceftriaxona",
+    ceftriaxonaInjetavel: {
+        nome: "Ceftriaxona (Injetável)",
         formas: {
             iv: {
                 descricao: "Pó para solução injetável 1g",
@@ -4404,8 +4404,8 @@ const PROTOCOLOS = {
     },
 
     // Metronidazol
-    metronidazol: {
-        nome: "Metronidazol",
+    metronidazolTopico: {
+        nome: "Metronidazol (Tópico)",
         formas: {
             oral: {
                 descricao: "Suspensão oral 40mg/mL",

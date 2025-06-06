@@ -230,10 +230,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 bio: profileForm.elements['bio'].value
             };
             
-            // Verificar se há um novo arquivo de imagem
-            if (profilePhotoInput.files && profilePhotoInput.files[0]) {
-                // Aqui você pode implementar o upload para o Firebase Storage
-                // Por enquanto, vamos apenas atualizar os outros campos
+            // Implementará upload de foto quando estiver configurado
+            // A verificação condicional estava redundante - removida
+            
+            // Atualização dos outros campos do perfil
                 
                 // Exemplo se Firebase Storage estiver configurado:
                 /*
@@ -248,12 +248,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 */
                 
-                // Por enquanto, apenas atualizamos o restante dos dados
+                // Salvar perfil com os dados atualizados
                 saveProfileData(updatedProfile, submitBtn);
-            } else {
-                // Salvar perfil sem foto nova
-                saveProfileData(updatedProfile, submitBtn);
-            }
         });
     }
     

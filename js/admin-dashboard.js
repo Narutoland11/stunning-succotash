@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Charts
     let userActivityChart;
-    let registrationsChart;
+    // registrationsChart foi removido por não estar sendo usado
     let deviceDistributionChart;
     let pageViewsChart;
     
@@ -206,7 +206,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
         
-        const registrationsChart = new Chart(ctx, {
+        // Usando const para evitar vazamento de variável global
+        const newRegistrationsChart = new Chart(ctx, {
             type: 'bar',
             data: data,
             options: {
