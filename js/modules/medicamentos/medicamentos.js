@@ -3196,10 +3196,10 @@ const MEDICAMENTOS = {
         }
     },
 
-    nistatinaPomada: {
-        nome: "Nistatina (Pomada)",
+    nistatinaPomadaDermatologica: {
+        nome: "Nistatina (Pomada Dermatológica)",
         formas: {
-            oral: {
+            topica: {
                 descricao: "Suspensão oral 100.000 UI/mL",
                 tipo: "suspensao",
                 passos: [

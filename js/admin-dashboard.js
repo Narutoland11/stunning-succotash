@@ -13,12 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const adminTabs = document.querySelectorAll('.admin-tab');
     const adminContents = document.querySelectorAll('.admin-content');
     
-    // Charts
-    let userActivityChart;
-    // registrationsChart foi removido por não estar sendo usado
-    let deviceDistributionChart;
-    let pageViewsChart;
-    
     // Verificar se o usuário é administrador e mostrar seção de admin
     auth.onAuthStateChanged(function(user) {
         if (user) {
@@ -142,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar gráficos
     function initCharts() {
         initUserActivityChart();
-        initRegistrationsChart();
         initDeviceDistributionChart();
         initPageViewsChart();
     }
@@ -177,42 +170,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         display: false
                     }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
-            }
-        });
-    }
-    
-    // Gráfico de registros
-    function initRegistrationsChart() {
-        const ctx = document.getElementById('registrations-chart');
-        if (!ctx) return;
-        
-        // Dados simulados - substituir por dados reais do Firebase
-        const data = {
-            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-            datasets: [{
-                label: 'Novos Registros',
-                data: [12, 19, 8, 15, 20, 25],
-                backgroundColor: 'rgba(46, 204, 113, 0.5)',
-                borderColor: '#2ecc71',
-                borderWidth: 1
-            }]
-        };
-        
-        // Usando const para evitar vazamento de variável global
-        const newRegistrationsChart = new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
