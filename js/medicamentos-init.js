@@ -4,13 +4,28 @@
  * antes que outros scripts tentem acessá-lo
  */
 
-// Criar o objeto MEDICAMENTOS global se ele ainda não existir
-if (typeof window.MEDICAMENTOS === 'undefined') {
-    console.log('Inicializando objeto MEDICAMENTOS global');
-    window.MEDICAMENTOS = {};
-} else {
-    console.log('Objeto MEDICAMENTOS já inicializado');
-}
+// Criar o objeto MEDICAMENTOS global para garantir que esteja disponível em todos os scripts
+(function() {
+    // Certifique-se de que MEDICAMENTOS seja definido no escopo global (window)
+    if (typeof window.MEDICAMENTOS === 'undefined') {
+        console.log('Definindo objeto MEDICAMENTOS global');
+        window.MEDICAMENTOS = {};
+        
+        // Também criar em escopo global como variável
+        MEDICAMENTOS = window.MEDICAMENTOS;
+    } else {
+        console.log('Objeto MEDICAMENTOS já inicializado');
+    }
+    
+    // Verificar após a definição
+    setTimeout(function() {
+        if (typeof window.MEDICAMENTOS !== 'undefined') {
+            console.log('MEDICAMENTOS está definido corretamente no escopo global');
+        } else {
+            console.error('MEDICAMENTOS não foi definido corretamente');
+        }
+    }, 50);
+})();
 
 // Função auxiliar para carregar scripts de medicamentos dinamicamente
 function carregarScriptMedicamentos(caminho) {
