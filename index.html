@@ -26,6 +26,10 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- CSS do Login Melhorado -->
+    <link rel="preload" href="css/login-enhanced.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/login-enhanced.css"></noscript>
+    
     <!-- Firebase (carregamento adiado) -->
     <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
@@ -1665,62 +1669,64 @@
     <script src="js/login-system.js"></script>
     <script src="js/admin-dashboard.js"></script>
     
-    <!-- Modal de Login -->
+    <!-- Modal de Login (versão melhorada) -->
     <div id="login-container" class="login-container">
         <div class="login-panel">
-            <button id="login-close" class="login-close"><i class="fas fa-times"></i></button>
+            <button id="login-close" class="login-close" aria-label="Fechar">
+                <i class="fas fa-times"></i>
+            </button>
             
             <div class="login-tabs">
-                <button id="login-tab" class="login-tab active">Entrar</button>
-                <button id="register-tab" class="login-tab">Registrar</button>
+                <button id="login-tab" class="login-tab active" aria-selected="true">Entrar</button>
+                <button id="register-tab" class="login-tab" aria-selected="false">Registrar</button>
             </div>
             
             <!-- Formulário de Login -->
-            <div id="login-form-container" class="login-form-container active">
+            <div id="login-form-container" class="login-form-container active" role="tabpanel">
                 <form id="login-form" class="login-form">
                     <div class="form-group">
                         <label for="login-email">Email</label>
-                        <input type="email" id="login-email" name="email" required>
+                        <input type="email" id="login-email" name="email" autocomplete="email" required>
                     </div>
                     <div class="form-group">
                         <label for="login-password">Senha</label>
-                        <input type="password" id="login-password" name="password" required>
+                        <input type="password" id="login-password" name="password" autocomplete="current-password" required>
                     </div>
-                    <div class="form-error" id="login-error"></div>
+                    <div class="form-error" id="login-error" aria-live="polite"></div>
                     <div class="reset-password">
-                        <a href="#">Esqueceu a senha?</a>
+                        <a href="#reset-password">Esqueceu a senha?</a>
                     </div>
                     <button type="submit" class="login-btn">
-                        <span class="loading-spinner"></span>
+                        <span class="loading-spinner" aria-hidden="true"></span>
                         <span class="btn-text">Entrar</span>
                     </button>
                 </form>
                 
                 <div class="social-login">
-                    <button class="social-btn google-btn">
-                        <i class="fab fa-google"></i> Entrar com Google
+                    <button class="social-btn google-btn" type="button">
+                        <i class="fab fa-google" aria-hidden="true"></i> Entrar com Google
                     </button>
                 </div>
             </div>
             
             <!-- Formulário de Registro -->
-            <div id="register-form-container" class="login-form-container">
+            <div id="register-form-container" class="login-form-container" role="tabpanel">
                 <form id="register-form" class="login-form">
                     <div class="form-group">
                         <label for="register-email">Email</label>
-                        <input type="email" id="register-email" name="email" required>
+                        <input type="email" id="register-email" name="email" autocomplete="email" required>
                     </div>
                     <div class="form-group">
                         <label for="register-password">Senha</label>
-                        <input type="password" id="register-password" name="password" required>
+                        <input type="password" id="register-password" name="password" autocomplete="new-password" required>
                     </div>
                     <div class="form-group">
                         <label for="register-confirm-password">Confirmar Senha</label>
-                        <input type="password" id="register-confirm-password" name="confirmPassword" required>
+                        <input type="password" id="register-confirm-password" name="confirmPassword" autocomplete="new-password" required>
                     </div>
-                    <div class="form-error" id="register-error"></div>
+                    <div class="form-error" id="register-error" aria-live="polite"></div>
                     <button type="submit" class="login-btn">
-                        <span class="loading-spinner"></span>
+                        <span class="loading-spinner" aria-hidden="true"></span>
                         <span class="btn-text">Registrar</span>
                     </button>
                 </form>

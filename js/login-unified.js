@@ -2,6 +2,8 @@
  * Sistema unificado de login para Moz Doctor Dose
  * Este script centraliza todas as funções de login para evitar duplicação
  * de elementos e garantir comportamento consistente entre ambientes
+ * 
+ * Versão 2.0 - Melhorias de responsividade e UX
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const existingLoginContainer = document.getElementById('login-container');
     if (existingLoginContainer && existingLoginContainer.querySelector('#login-form')) {
         console.log('Login container já existe, evitando duplicação.');
+        setupLoginEventListeners();
         return;
     }
 
@@ -22,6 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
+    setupLoginEventListeners();
+});
+
+/**
+ * Configura todos os eventos relacionados ao sistema de login
+ * Separado para poder ser chamado mesmo quando o container já existe
+ */
+function setupLoginEventListeners() {
     // Elementos DOM
     const loginButton = document.getElementById('login-button');
     const userMenuButton = document.getElementById('user-menu-button');
@@ -39,6 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Erro e carregamento
     const loginError = document.getElementById('login-error');
     const registerError = document.getElementById('register-error');
+    
+    // Elemento do menu toggle para responsividade
+    const navToggle = document.getElementById('nav-toggle');
+    const mainNav = document.getElementById('main-nav');
     
     // Função para mostrar o modal de login
     function showLoginModal() {
@@ -185,7 +200,48 @@ document.addEventListener('DOMContentLoaded', function() {
             !userDropdown.contains(event.target)) {
             userDropdown.classList.remove('active');
         }
+        
+        // Fechar o modal de login ao clicar fora dele
+        if (loginContainer && 
+            event.target === loginContainer && 
+            !event.target.closest('.login-panel')) {
+            closeLoginModal();
+        }
     });
+    
+    // Configurar o menu toggle para dispositivos móveis
+    if (navToggle && mainNav) {
+        navToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+            navToggle.classList.toggle('active');
+            
+            // Se o usuário abrir o menu, feche o login se estiver aberto
+            if (loginContainer && loginContainer.classList.contains('active')) {
+                closeLoginModal();
+            }
+        });
+        
+        // Ajustar posição do botão de login quando em dispositivo móvel
+        function adjustLoginButtonPosition() {
+            if (window.innerWidth <= 768) {
+                if (loginButton) {
+                    // Em dispositivos móveis, posicionar o botão de login adequadamente
+                    loginButton.style.padding = '0.5rem 1rem';
+                    loginButton.style.fontSize = '0.85rem';
+                }
+            } else {
+                if (loginButton) {
+                    // Restaurar o estilo padrão em dispositivos maiores
+                    loginButton.style.padding = '0.6rem 1.2rem';
+                    loginButton.style.fontSize = '0.9rem';
+                }
+            }
+        }
+        
+        // Ajustar no carregamento e quando a janela for redimensionada
+        adjustLoginButtonPosition();
+        window.addEventListener('resize', adjustLoginButtonPosition);
+    }
     
     // Login form submission
     if (loginForm) {
