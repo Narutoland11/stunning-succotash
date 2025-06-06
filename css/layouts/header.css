@@ -1,0 +1,167 @@
+/* 
+ * Moz Doctor Dose - Layout do Cabeçalho
+ * Estilos para o cabeçalho do site
+ */
+
+header {
+  background-color: var(--white);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  width: 100%;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+}
+
+header .container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  z-index: var(--z-normal);
+}
+
+.logo img {
+  height: 56px;
+  width: auto;
+  border-radius: var(--border-radius);
+}
+
+.logo h1 {
+  font-size: 1.5rem;
+  color: var(--primary);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.logo p {
+  font-size: 0.875rem;
+  color: var(--grey);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Botões de autenticação no cabeçalho */
+.auth-buttons {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  z-index: var(--z-dropdown);
+}
+
+/* Estilo para área de usuário logado */
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* Ícones de notificação e configurações */
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--border-radius-full);
+  color: var(--grey);
+  transition: var(--transition);
+  position: relative;
+}
+
+.header-icon:hover {
+  color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+/* Badge de notificação */
+.notification-badge {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: var(--danger);
+  border-radius: var(--border-radius-full);
+  border: 2px solid var(--white);
+}
+
+/* Responsividade do cabeçalho */
+@media (max-width: 992px) {
+  .logo {
+    gap: var(--space-sm);
+  }
+  
+  .logo img {
+    height: 48px;
+  }
+  
+  .auth-buttons {
+    right: 4rem; /* Espaço para o botão de menu */
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    height: 60px; /* Menor altura em mobile */
+    padding: 0 var(--space-sm);
+  }
+  
+  .logo {
+    gap: var(--space-xs);
+  }
+  
+  .logo img {
+    height: 42px;
+  }
+  
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+  
+  .logo p {
+    display: none; /* Oculta descrição em telas pequenas */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo img {
+    height: 36px;
+  }
+  
+  .logo h1 {
+    font-size: 1rem;
+  }
+  
+  .auth-buttons {
+    right: 3.5rem;
+    top: 0.75rem;
+  }
+  
+  /* Reajusta botão de login em telas muito pequenas */
+  .login-button, #login-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}

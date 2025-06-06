@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Contar Medicamentos</title>
+</head>
+<body>
+    <h1>Contagem de Medicamentos</h1>
+    <div id="resultado">Carregando...</div>
+
+    <script src="js/modules/medicamentos/medicamentos.js"></script>
+    <script>
+        window.onload = function() {
+            try {
+                // Contar o número de chaves no objeto MEDICAMENTOS
+                const totalMedicamentos = Object.keys(MEDICAMENTOS).length;
+                document.getElementById('resultado').innerHTML = 
+                    `<p>Total de medicamentos: <strong>${totalMedicamentos}</strong></p>`;
+            } catch (erro) {
+                document.getElementById('resultado').innerHTML = 
+                    `<p>Erro ao contar medicamentos: ${erro.message}</p>`;
+            }
+        };
+    </script>
+</body>
+</html>

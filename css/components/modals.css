@@ -1,0 +1,213 @@
+/* 
+ * Moz Doctor Dose - Modais
+ * Estilos para janelas modais e overlays
+ */
+
+/* Container de modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: var(--z-modal);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.modal-overlay.active {
+  display: flex;
+  opacity: 1;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--space-lg);
+  position: relative;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: all var(--transition);
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0);
+  opacity: 1;
+  animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: var(--border);
+}
+
+.modal-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--grey);
+  cursor: pointer;
+  transition: var(--transition);
+  padding: var(--space-xs);
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.modal-close:hover {
+  color: var(--danger);
+  background-color: var(--danger-light);
+}
+
+.modal-body {
+  margin-bottom: var(--space-md);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: var(--border);
+}
+
+/* Tamanhos de modal */
+.modal-sm {
+  max-width: 400px;
+}
+
+.modal-lg {
+  max-width: 700px;
+}
+
+.modal-xl {
+  max-width: 900px;
+}
+
+.modal-fullscreen {
+  width: 95%;
+  max-width: 95%;
+  height: 95%;
+  max-height: 95%;
+}
+
+/* Modal com conteúdo em scroll */
+.modal-scrollable .modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Estilos para modais de confirmação */
+.modal-confirm {
+  text-align: center;
+  color: var(--dark);
+}
+
+.modal-confirm-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+}
+
+.modal-confirm-icon.success {
+  color: var(--success);
+}
+
+.modal-confirm-icon.warning {
+  color: var(--warning);
+}
+
+.modal-confirm-icon.danger {
+  color: var(--danger);
+}
+
+.modal-confirm-icon.info {
+  color: var(--info);
+}
+
+.modal-confirm .modal-footer {
+  justify-content: center;
+}
+
+/* Responsividade para modais */
+@media (max-width: 768px) {
+  .modal-content {
+    padding: var(--space-md);
+    width: 95%;
+  }
+  
+  .modal-footer {
+    flex-wrap: wrap;
+  }
+  
+  .modal-footer .btn {
+    flex: 1 0 calc(50% - var(--space-sm));
+  }
+  
+  .modal-lg, .modal-xl {
+    max-width: 95%;
+  }
+  
+  .modal-scrollable .modal-body {
+    max-height: 50vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: var(--space-sm);
+    width: 98%;
+  }
+  
+  .modal-header {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+    margin-bottom: var(--space-xs);
+    flex: auto;
+  }
+  
+  .modal-confirm-icon {
+    font-size: 2.5rem;
+  }
+}

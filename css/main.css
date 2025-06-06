@@ -1,0 +1,45 @@
+/* 
+ * Moz Doctor Dose - Arquivo CSS Principal
+ * Importa todos os arquivos CSS modularizados
+ */
+
+/* Base - Configurações fundamentais */
+@import 'base/variables.css';
+@import 'base/reset.css';
+@import 'base/typography.css';
+
+/* Componentes - Elementos reutilizáveis */
+@import 'components/buttons.css';
+@import 'components/forms.css';
+@import 'components/cards.css';
+@import 'components/tables.css';
+@import 'components/navigation.css';
+@import 'components/modals.css';
+@import 'components/alerts.css';
+@import 'components/ui-elements.css';
+
+/* Layouts - Estruturas de página */
+@import 'layouts/header.css';
+@import 'layouts/sections.css';
+
+/* Tema - Modos claro/escuro */
+@import 'theme/theme-modes.css';
+
+/* Utils - Classes utilitárias */
+@import 'utils/utility-classes.css';
+
+/* Responsive - Adaptações para diferentes dispositivos */
+@import 'responsive/responsive-base.css';
+@import 'responsive/responsive-components.css';
+
+/* 
+ * Nota: Os arquivos CSS legados abaixo são temporariamente preservados para compatibilidade
+ * durante a migração, mas serão removidos quando a refatoração estiver completa.
+ * 
+ * Estão sendo importados por último para que nossos novos estilos tenham prioridade
+ * quando houver conflitos com os estilos antigos.
+ */
+@import 'style.css';
+@import 'mobile-content.css';
+@import 'responsive.css';
+@import 'responsive-enhancements.css';

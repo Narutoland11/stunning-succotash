@@ -1,0 +1,76 @@
+{
+    "rules": {
+        "users": {
+            "$uid": {
+                ".read": "$uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin'",
+                ".write": "$uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin'",
+                
+                ".validate": "newData.hasChildren(['displayName', 'email'])",
+                
+                "displayName": {
+                    ".validate": "newData.isString() && newData.val().length > 0"
+                },
+                
+                "email": {
+                    ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/)"
+                },
+                
+                "photoURL": {
+                    ".validate": "newData.isString() || newData.val() === null"
+                },
+                
+                "role": {
+                    ".validate": "newData.isString() && (newData.val() === 'admin' || newData.val() === 'user')",
+                    ".write": "root.child('users').child(auth.uid).child('role').val() === 'admin'"
+                },
+                
+                "preferences": {
+                    ".validate": "newData.hasChild('darkMode')",
+                    "darkMode": { ".validate": "newData.isBoolean()" },
+                    "notifications": { ".validate": "newData.isBoolean()" },
+                    "newsletter": { ".validate": "newData.isBoolean()" },
+                    "autoSave": { ".validate": "newData.isBoolean()" },
+                    "language": { 
+                        ".validate": "newData.isString() && (newData.val() === 'pt-BR' || newData.val() === 'pt-MZ' || newData.val() === 'en')" 
+                    },
+                    "$other": { ".validate": false }
+                },
+                
+                "activities": {
+                    "$activityId": {
+                        ".validate": "newData.hasChildren(['type', 'timestamp', 'description'])",
+                        "type": { ".validate": "newData.isString()" },
+                        "timestamp": { ".validate": "newData.isNumber()" },
+                        "description": { ".validate": "newData.isString()" }
+                    }
+                },
+                
+                "$other": { ".validate": true }
+            }
+        },
+        
+        "notifications": {
+            "$uid": {
+                ".read": "$uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin'",
+                
+                ".write": "$uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin'",
+                
+                "$notificationId": {
+                    ".validate": "newData.hasChildren(['title', 'message', 'timestamp'])",
+                    "title": { ".validate": "newData.isString() && newData.val().length > 0" },
+                    "message": { ".validate": "newData.isString()" },
+                    "timestamp": { ".validate": "newData.isNumber()" },
+                    "read": { ".validate": "newData.isBoolean()" },
+                    "type": { 
+                        ".validate": "newData.isString() && (newData.val() === 'info' || newData.val() === 'success' || newData.val() === 'alert' || newData.val() === 'login' || newData.val() === 'update')" 
+                    },
+                    "link": { ".validate": "newData.isString() || newData.val() === null" }
+                }
+            }
+        }
+    },
+    
+    "storage": {
+        "rules": "service firebase.storage {\n  match /b/{bucket}/o {\n    // Permissões de leitura pública para imagens de perfil\n    match /profile_images/{userId}/{fileName} {\n      allow read: if true;\n      allow write: if request.auth.uid == userId && \n                   request.resource.size < 5 * 1024 * 1024 && \n                   request.resource.contentType.matches('image/.*');\n      allow delete: if request.auth.uid == userId;\n    }\n  }\n}"
+    }
+}

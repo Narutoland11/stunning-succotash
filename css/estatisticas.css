@@ -1,0 +1,232 @@
+/* Moz Doctor Dose - Estilos para Estatísticas em Tempo Real */
+
+/* Contêiner principal de estatísticas */
+.estatisticas-container {
+    margin-top: var(--space-md);
+}
+
+/* Seção de estatísticas básicas */
+.stat-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 180px;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-sm);
+    border: var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: var(--space-sm);
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--gray);
+    font-weight: 500;
+}
+
+/* Botão de admin para mostrar o painel detalhado */
+.admin-panel-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--light);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    color: var(--gray);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: var(--space-md) 0;
+    text-decoration: none;
+}
+
+.admin-panel-btn:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.admin-panel-btn i {
+    margin-right: var(--space-sm);
+}
+
+/* Painel de estatísticas detalhado */
+.stats-dashboard {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    border: var(--border);
+    margin-top: var(--space-md);
+}
+
+.stats-dashboard.active {
+    max-height: 2000px;
+    transition: max-height 1s ease-in-out;
+    box-shadow: var(--shadow);
+}
+
+.dashboard-header {
+    padding: var(--space-md);
+    border-bottom: var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-header h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-header h4 i {
+    margin-right: var(--space-sm);
+}
+
+.dashboard-header .update-time {
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-md);
+    padding: var(--space-md);
+}
+
+.stats-card {
+    background-color: var(--light);
+    border-radius: var(--border-radius);
+    padding: var(--space-md);
+    height: 100%;
+}
+
+.stats-card h5 {
+    font-size: 0.9rem;
+    color: var(--gray);
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.stats-card h5 i {
+    margin-right: var(--space-sm);
+    font-size: 1rem;
+}
+
+.chart-container {
+    height: 200px;
+    margin-bottom: var(--space-md);
+}
+
+/* Estatísticas de dispositivos */
+.device-stats {
+    padding: var(--space-md) 0;
+}
+
+.device-stat {
+    margin-bottom: var(--space-sm);
+}
+
+.device-stat span {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    margin-bottom: 2px;
+}
+
+.device-value {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.progress-bar {
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 3px;
+}
+
+/* Modo escuro */
+body.dark-mode .stat-card {
+    background-color: var(--white);
+}
+
+body.dark-mode .stat-value {
+    color: var(--dark);
+}
+
+body.dark-mode .stats-dashboard {
+    background-color: #1e293b;
+}
+
+body.dark-mode .stats-card {
+    background-color: #0f172a;
+}
+
+body.dark-mode .progress-bar {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .stat-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-box {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card {
+        width: 100%;
+    }
+}

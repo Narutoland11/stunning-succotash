@@ -1,0 +1,222 @@
+/* 
+ * Moz Doctor Dose - Responsividade para Componentes
+ * Regras responsivas específicas para componentes
+ */
+
+/* Tablets e dispositivos médios */
+@media (max-width: 992px) {
+  /* Ajustes para formulários */
+  .form-row {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  
+  .form-row > * {
+    flex: 0 0 calc(50% - var(--space-sm));
+  }
+  
+  /* Ajustes para botões */
+  .btn-group {
+    flex-wrap: wrap;
+  }
+  
+  /* Navegação mobile */
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  nav ul {
+    display: none;
+  }
+  
+  nav.mobile-open ul {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    padding: var(--space-md) 0;
+    z-index: var(--z-dropdown);
+  }
+  
+  nav.mobile-open ul li {
+    width: 100%;
+  }
+  
+  nav.mobile-open ul li a {
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: 0;
+  }
+  
+  /* Cards */
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile e tablets pequenos */
+@media (max-width: 768px) {
+  /* Formulários em mobile */
+  label {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  input, select, textarea {
+    padding: 0.75rem 0.625rem;
+    font-size: 16px; /* Evita zoom em iOS */
+  }
+  
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .form-row > * {
+    flex: 0 0 100%;
+  }
+  
+  .form-group {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .calculator-form {
+    padding: var(--space-md);
+  }
+  
+  /* Botões em mobile */
+  .btn {
+    width: 100%;
+    margin-bottom: var(--space-sm);
+    padding: 0.75rem 1rem;
+    white-space: normal;
+  }
+  
+  .btn-group, 
+  .action-buttons {
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: stretch;
+  }
+  
+  .btn-group.inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .btn-group.inline .btn {
+    width: auto;
+    flex: 1 0 auto;
+    white-space: nowrap;
+  }
+  
+  /* Cards em mobile */
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .card-actions {
+    margin-top: var(--space-sm);
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  /* Tabelas em mobile */
+  .table-responsive {
+    margin: 0 -1rem;
+    padding: 0 1rem;
+    width: calc(100% + 2rem);
+  }
+  
+  /* Navegação em cards para mobile */
+  .mobile-nav-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+  }
+  
+  /* Tabs em mobile */
+  .tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-xs);
+  }
+  
+  .tab-button {
+    font-size: var(--font-size-sm);
+    padding: var(--space-sm);
+  }
+  
+  /* Alertas */
+  .alert {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+  }
+}
+
+/* Dispositivos móveis pequenos */
+@media (max-width: 480px) {
+  /* Formulários em telas pequenas */
+  .form-group {
+    margin-bottom: var(--space-xs);
+  }
+  
+  input, select, textarea {
+    padding: 0.625rem 0.5rem;
+  }
+  
+  /* Cards de navegação mobile */
+  .mobile-nav-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .mobile-nav-card {
+    padding: 8px;
+  }
+  
+  .mobile-nav-card i {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  
+  .mobile-nav-card span {
+    font-size: 11px;
+  }
+  
+  /* Botões em telas muito pequenas */
+  .btn {
+    padding: 0.625rem 0.75rem;
+  }
+  
+  /* Modais em telas pequenas */
+  .modal-content {
+    width: 95%;
+    max-width: 100%;
+    padding: var(--space-sm);
+  }
+}
+
+/* Orientação paisagem em dispositivos móveis */
+@media (max-height: 480px) and (orientation: landscape) {
+  .mobile-nav-cards {
+    display: none;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .btn-group {
+    flex-direction: row;
+  }
+}

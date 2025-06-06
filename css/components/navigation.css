@@ -1,0 +1,265 @@
+/* 
+ * Moz Doctor Dose - Navegação
+ * Estilos para menus de navegação desktop e mobile
+ */
+
+/* Navegação principal */
+nav {
+  display: flex;
+  align-items: center;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: var(--space-sm);
+}
+
+nav a {
+  color: var(--grey);
+  text-decoration: none;
+  font-weight: 500;
+  padding: var(--space-md) var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  font-size: 0.9375rem;
+  position: relative;
+}
+
+nav a:hover, 
+nav a.active {
+  color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+nav a i {
+  font-size: 1rem;
+}
+
+/* Botão toggle para menu mobile */
+.nav-toggle {
+  display: none;
+  font-size: 1.5rem;
+  color: var(--primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-sm);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.nav-toggle:hover {
+  color: var(--primary-dark);
+  background-color: var(--primary-light);
+}
+
+/* Layout da navegação */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Navegação em cards para mobile */
+.mobile-nav-cards {
+  display: none;
+}
+
+/* Botões de autenticação */
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* Dropdown de usuário na navegação */
+.user-dropdown {
+  position: relative;
+}
+
+.user-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.user-dropdown-toggle:hover {
+  background-color: var(--primary-light);
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  z-index: var(--z-dropdown);
+  margin-top: var(--space-xs);
+  padding: var(--space-sm) 0;
+  display: none;
+}
+
+.user-dropdown.active .user-dropdown-menu {
+  display: block;
+  animation: fadeInDown 0.3s ease forwards;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--dark);
+  transition: var(--transition);
+}
+
+.user-dropdown-item:hover {
+  background-color: var(--light-grey);
+}
+
+.user-dropdown-divider {
+  height: 1px;
+  margin: var(--space-sm) 0;
+  background-color: var(--light-grey);
+}
+
+/* Responsividade para navegação */
+@media (max-width: 992px) {
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  nav ul {
+    display: none;
+  }
+  
+  nav.mobile-open ul {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    padding: var(--space-md) 0;
+    z-index: var(--z-dropdown);
+    max-height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+  }
+  
+  nav.mobile-open ul li {
+    width: 100%;
+  }
+  
+  nav.mobile-open ul li a {
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: 0;
+  }
+}
+
+/* Mobile nav cards */
+@media (max-width: 768px) {
+  .mobile-nav-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+  }
+
+  .mobile-nav-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    text-decoration: none;
+    color: var(--dark);
+  }
+
+  .mobile-nav-card:hover,
+  .mobile-nav-card:focus,
+  .mobile-nav-card.active {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    background-color: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .mobile-nav-card i {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: var(--primary);
+  }
+
+  .mobile-nav-card span {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+/* Ajustes para dispositivos muito pequenos */
+@media (max-width: 480px) {
+  .mobile-nav-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .mobile-nav-card {
+    padding: 10px 8px;
+  }
+  
+  .mobile-nav-card i {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+  
+  .mobile-nav-card span {
+    font-size: 12px;
+  }
+  
+  .auth-buttons {
+    position: absolute;
+    top: 1rem;
+    right: 3.5rem;
+  }
+}
+
+/* Orientação paisagem em dispositivos móveis */
+@media (max-height: 480px) and (orientation: landscape) {
+  .mobile-nav-cards {
+    display: none;
+  }
+}

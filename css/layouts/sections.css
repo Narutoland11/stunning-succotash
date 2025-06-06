@@ -1,0 +1,236 @@
+/* 
+ * Moz Doctor Dose - Layout das Seções
+ * Estilos para as seções principais e containers
+ */
+
+/* Container principal */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* Seções de ferramentas */
+.tool-section {
+  background-color: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  display: none;
+  border: var(--border);
+}
+
+.tool-section.active {
+  display: block;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tool-section h2 {
+  color: var(--primary);
+  margin-bottom: var(--space-lg);
+  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.tool-section h2 i {
+  color: var(--primary);
+}
+
+/* Layout de grade para resultados */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+/* Cards de resultado */
+.result-card {
+  background-color: var(--light);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: var(--border);
+}
+
+.result-card h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+  color: var(--dark);
+  font-size: var(--font-size-lg);
+}
+
+.result-card p {
+  color: var(--grey);
+  margin-bottom: var(--space-sm);
+}
+
+/* Container de resultados */
+.result-container {
+  background-color: var(--light-grey);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.result-container.hidden {
+  display: none;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.result-header h3 {
+  margin: 0;
+  color: var(--primary);
+}
+
+/* Cards de informação */
+.info-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-md);
+}
+
+.info-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: var(--border);
+}
+
+.info-card h3 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--primary);
+}
+
+/* Estatísticas */
+.estatisticas-container {
+  margin-top: var(--space-md);
+}
+
+.stat-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-md);
+}
+
+.stat-card {
+  background-color: var(--light);
+  padding: var(--space-md);
+  border-radius: var(--border-radius);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: var(--space-sm);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--grey);
+  margin-top: var(--space-xs);
+}
+
+/* Grid de estatísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.stats-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-container {
+  position: relative;
+  height: 0;
+  padding-bottom: 60%;
+  margin-top: var(--space-sm);
+}
+
+/* Responsividade para seções */
+@media (max-width: 992px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .tool-section {
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    border-radius: var(--border-radius);
+  }
+  
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .result-card {
+    padding: var(--space-md);
+  }
+  
+  .info-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-box {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .tool-section h2 {
+    font-size: 1.25rem;
+  }
+  
+  .result-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+  
+  .result-container {
+    padding: var(--space-md);
+  }
+  
+  .chart-container {
+    padding-bottom: 75%; /* Maior altura em telas pequenas */
+  }
+}

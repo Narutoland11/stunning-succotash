@@ -1,0 +1,223 @@
+/* 
+ * Moz Doctor Dose - Tabelas
+ * Estilos para tabelas e dados tabulares
+ */
+
+/* Estilo base para tabelas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-lg);
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+thead {
+  background-color: var(--primary-light);
+}
+
+th {
+  padding: var(--space-md);
+  text-align: left;
+  font-weight: 600;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+  white-space: nowrap;
+}
+
+td {
+  padding: var(--space-md);
+  border-bottom: var(--border);
+  color: var(--dark);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background-color: var(--light-grey);
+}
+
+/* Tabelas com variantes de cor */
+.table-striped tbody tr:nth-child(odd) {
+  background-color: var(--light-grey);
+}
+
+.table-striped tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Tabela compacta */
+.table-compact th,
+.table-compact td {
+  padding: var(--space-sm);
+}
+
+/* Tabela com bordas */
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid var(--light-grey);
+}
+
+/* Tabela responsiva com scroll horizontal */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  margin-bottom: var(--space-lg);
+}
+
+.table-responsive table {
+  margin-bottom: 0;
+}
+
+/* Alinhamento de células */
+.cell-center {
+  text-align: center;
+}
+
+.cell-right {
+  text-align: right;
+}
+
+/* Cores para linhas da tabela */
+tr.row-active {
+  background-color: rgba(14, 165, 233, 0.1) !important;
+}
+
+tr.row-success {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+tr.row-warning {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+tr.row-danger {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Ações em tabela */
+.table-actions {
+  display: flex;
+  gap: var(--space-xs);
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn-table-action {
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  color: var(--grey);
+  transition: var(--transition);
+}
+
+.btn-table-action:hover {
+  color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+/* Tabela para painel de admin */
+.admin-table th {
+  font-size: var(--font-size-sm);
+  padding: var(--space-sm);
+  color: var(--dark-grey);
+  background-color: var(--light-grey);
+  border-bottom: 1px solid var(--grey);
+  text-transform: uppercase;
+}
+
+.admin-table td {
+  padding: var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+/* Status em tabela */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.status-active {
+  background-color: var(--secondary-light);
+  color: var(--secondary-dark);
+}
+
+.status-pending {
+  background-color: var(--warning-light);
+  color: var(--warning-dark);
+}
+
+.status-inactive {
+  background-color: var(--light-grey);
+  color: var(--grey);
+}
+
+.status-error {
+  background-color: var(--danger-light);
+  color: var(--danger-dark);
+}
+
+/* Responsividade para tabelas */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  th, td {
+    padding: var(--space-sm);
+  }
+  
+  .table-mobile-stack {
+    display: block;
+    width: 100%;
+  }
+  
+  .table-mobile-stack thead {
+    display: none;
+  }
+  
+  .table-mobile-stack tbody, 
+  .table-mobile-stack tr {
+    display: block;
+    width: 100%;
+  }
+  
+  .table-mobile-stack tr {
+    margin-bottom: var(--space-md);
+    border: 1px solid var(--light-grey);
+    border-radius: var(--border-radius);
+  }
+  
+  .table-mobile-stack td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    border-bottom: 1px solid var(--light-grey);
+  }
+  
+  .table-mobile-stack td:last-child {
+    border-bottom: none;
+  }
+  
+  .table-mobile-stack td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    margin-right: auto;
+    text-align: left;
+  }
+}

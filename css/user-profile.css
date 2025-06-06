@@ -1,0 +1,363 @@
+/**
+ * Moz Doctor Dose - Estilos para Perfil do Usuário
+ */
+
+/* Container do perfil */
+.profile-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.dark-mode .profile-container {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Cabeçalho do perfil */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.profile-avatar-container {
+    position: relative;
+    margin-right: 20px;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-avatar-edit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #f39c12;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.profile-avatar-edit:hover {
+    background-color: #e67e22;
+    transform: scale(1.1);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.dark-mode .profile-name {
+    color: #eee;
+}
+
+.profile-email {
+    color: #777;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+}
+
+.dark-mode .profile-email {
+    color: #aaa;
+}
+
+.profile-role {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.profile-role.admin {
+    background-color: #e74c3c;
+}
+
+/* Seção de conteúdo */
+.profile-content {
+    margin-top: 20px;
+}
+
+.profile-section {
+    margin-bottom: 30px;
+}
+
+.profile-section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.dark-mode .profile-section-title {
+    color: #eee;
+    border-bottom: 1px solid #444;
+}
+
+/* Formulários do perfil */
+.profile-form-group {
+    margin-bottom: 20px;
+}
+
+.profile-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+.dark-mode .profile-form-group label {
+    color: #bbb;
+}
+
+.profile-form-group input,
+.profile-form-group select,
+.profile-form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    transition: border 0.3s;
+}
+
+.dark-mode .profile-form-group input,
+.dark-mode .profile-form-group select,
+.dark-mode .profile-form-group textarea {
+    background-color: #333;
+    border-color: #555;
+    color: #eee;
+}
+
+.profile-form-group input:focus,
+.profile-form-group select:focus,
+.profile-form-group textarea:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.profile-form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.profile-form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.profile-form-row .profile-form-group {
+    flex: 1;
+}
+
+/* Botões */
+.profile-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.profile-btn:hover {
+    background-color: #2980b9;
+}
+
+.profile-btn.secondary {
+    background-color: #95a5a6;
+}
+
+.profile-btn.secondary:hover {
+    background-color: #7f8c8d;
+}
+
+.profile-btn.danger {
+    background-color: #e74c3c;
+}
+
+.profile-btn.danger:hover {
+    background-color: #c0392b;
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Status de foto de perfil */
+.profile-photo-status {
+    font-size: 12px;
+    margin-top: 5px;
+    color: #666;
+}
+
+.dark-mode .profile-photo-status {
+    color: #bbb;
+}
+
+/* Abas do perfil */
+.profile-tabs {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.dark-mode .profile-tabs {
+    border-bottom: 1px solid #444;
+}
+
+.profile-tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #777;
+    border-bottom: 3px solid transparent;
+    font-weight: 500;
+}
+
+.profile-tab:hover {
+    color: #333;
+}
+
+.dark-mode .profile-tab:hover {
+    color: #ddd;
+}
+
+.profile-tab.active {
+    color: #3498db;
+    border-bottom: 3px solid #3498db;
+}
+
+.profile-tab-content {
+    display: none;
+}
+
+.profile-tab-content.active {
+    display: block;
+}
+
+/* Histórico de atividades */
+.activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.activity-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.dark-mode .activity-item {
+    border-bottom: 1px solid #444;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: #555;
+}
+
+.dark-mode .activity-icon {
+    background-color: #444;
+    color: #ccc;
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-message {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.dark-mode .activity-message {
+    color: #ddd;
+}
+
+.activity-time {
+    font-size: 12px;
+    color: #777;
+}
+
+.dark-mode .activity-time {
+    color: #999;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-avatar-container {
+        margin: 0 0 20px 0;
+    }
+    
+    .profile-form-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .profile-container {
+        padding: 20px;
+        margin: 10px;
+        width: auto;
+    }
+}

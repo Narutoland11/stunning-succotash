@@ -1,0 +1,464 @@
+/* Moz Doctor Dose - Estilos de Responsividade */
+
+/* Impedir rolagem quando o menu está aberto */
+body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* Estilos para tablets e dispositivos médios */
+@media (max-width: 992px) {
+    /* Ajustes gerais para container */
+    .container {
+        padding: 0 var(--space-md);
+        max-width: 100%;
+    }
+    
+    /* Melhoria na navegação - configurar menu hamburguer */
+    .nav-toggle {
+        display: flex;
+        cursor: pointer;
+        position: absolute;
+        top: var(--space-md);
+        right: var(--space-md);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 4px;
+        background-color: var(--primary-light);
+        color: var(--primary);
+        transition: all 0.3s ease;
+    }
+    
+    .nav-toggle:hover {
+        background-color: var(--primary);
+        color: var(--white);
+    }
+    
+    /* Esconder menu principal por padrão em tablets */
+    nav ul {
+        display: none;
+    }
+    
+    /* Estilo quando menu mobile está aberto */
+    nav.mobile-open ul {
+        display: flex;
+        flex-direction: column;
+        position: fixed; /* Alterado de absolute para fixed para evitar problemas de rolagem */
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        padding: var(--space-md) 0;
+        z-index: 90;
+        max-height: calc(100vh - 70px); /* Limitar altura a viewport menos o cabeçalho */
+        overflow-y: auto; /* Permitir rolagem se houver muitos itens */
+    }
+    
+    /* Ajustes para a barra de navegação lateral em tablet */
+    main.container {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Melhoria na visualização do sidebar de navegação */
+    .sidebar-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: var(--space-md);
+    }
+    
+    .sidebar-nav a {
+        flex: 0 0 auto;
+        min-width: 120px;
+        text-align: center;
+        margin-bottom: 8px;
+        padding: 10px;
+    }
+    
+    .sidebar-nav a i {
+        margin-right: 6px;
+    }
+}
+
+/* Tablets e dispositivos menores */
+@media (max-width: 768px) {
+    /* Ajustes gerais para container */
+    .container {
+        padding: 0 var(--space-sm);
+    }
+    
+    /* Ajustes para formulários */
+    .form-row {
+        flex-direction: column;
+        margin-bottom: 0;
+        gap: 10px; /* Adicionar espaço entre os elementos */
+    }
+    
+    .calculator-form {
+        padding: var(--space-md);
+        overflow-x: hidden;
+    }
+    
+    /* Ajustes para cabeçalho */
+    header {
+        position: sticky; /* Manter cabeçalho visível ao rolar */
+        top: 0;
+        z-index: 1000;
+        background-color: var(--white); /* Garantir que o fundo seja opaco */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    header .container {
+        display: grid;
+        grid-template-areas: 
+            'logo actions'
+            'nav nav';
+        align-items: center;
+    }
+    
+    .logo {
+        grid-area: logo;
+        display: flex;
+        align-items: center;
+        margin-right: auto;
+    }
+    
+    .logo img {
+        height: 42px;
+    }
+    
+    .header-actions {
+        grid-area: actions;
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+    
+    .nav-toggle {
+        margin-left: 10px; /* Espaço entre os botões */
+    }
+    
+    /* Navegação responsiva */
+    nav ul {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    /* Melhores ajustes para formulários em mobile */
+    label {
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    input, select {
+        padding: 0.75rem 0.625rem;
+        font-size: 16px; /* Evita zoom em iOS */
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Grades de resultado */
+    .result-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+    }
+    
+    /* Adiciona espaçamento aos botões em dispositivos móveis */
+    .btn {
+        width: 100%;
+        margin-bottom: var(--space-sm);
+        padding: 0.75rem 1rem;
+    }
+    
+    .btn-group, .action-buttons {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+    
+    /* Melhora layout das seções de ferramentas */
+    .tool-section {
+        padding: var(--space-md);
+        margin-bottom: var(--space-md);
+        border-radius: var(--border-radius);
+    }
+    
+    /* Ajustes para seção de doses */
+    #doses .calculator-form {
+        padding: var(--space-sm);
+    }
+    
+    #doses .form-group {
+        margin-bottom: 0.5rem;
+    }
+    
+    #medicamento-info {
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+    }
+    
+    /* Ajustes para nav menu mobile */
+    .nav-menu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        width: 100%;
+    }
+    
+    .nav-menu.active {
+        max-height: 450px;
+    }
+    
+    .nav-menu a {
+        padding: var(--space-md);
+        width: 100%;
+        text-align: left;
+    }
+    
+    nav a:hover::after, nav a.active::after {
+        width: 100%;
+        left: 0;
+    }
+    
+    /* Ajustes para tabelas responsivas */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    /* Correção para cabeçalho fixo */
+    header {
+        position: sticky;
+        top: 0;
+    }
+    
+    /* Melhora na apresentação dos resultados */
+    .result-card {
+        padding: var(--space-md);
+    }
+    
+    .result-section {
+        margin-top: var(--space-md);
+    }
+    
+    /* Melhorar posicionamento do menu toggle */
+    .nav-container {
+        width: 100%;
+        grid-area: nav;
+    }
+    
+    /* Garantir que a seção ativa seja visível */
+    .tool-section.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0.7; }
+        to { opacity: 1; }
+    }
+    
+    /* Garantir que botões têm tamanho suficiente para toque */
+    .btn {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Smartphones */
+@media (max-width: 480px) {
+    /* Ajustes gerais para container em mobile */
+    .container {
+        padding: 0 var(--space-xs);
+    }
+    
+    /* Melhorar altura do cabeçalho em mobile */
+    header .container {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    
+    /* Logo mais compacta */
+    .logo {
+        gap: 8px;
+    }
+    
+    .logo img {
+        height: 36px;
+    }
+    
+    .logo h1 {
+        font-size: 1rem;
+    }
+    
+    .logo p {
+        font-size: 0.7rem;
+    }
+    
+    /* Ajustes específicos para formulários */
+    .form-group {
+        margin-bottom: var(--space-sm);
+    }
+    
+    label {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+    }
+    
+    /* Melhorar inputs para toque em mobile */
+    input, select, textarea {
+        font-size: 16px !important; /* Prevenir zoom em iOS */
+        padding: 12px 10px;
+        margin-bottom: 4px;
+        height: auto;
+        min-height: 42px; /* Altura suficiente para toque */
+    }
+    
+    /* Ajustes para grupos de botões */
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+        gap: var(--space-xs);
+    }
+    
+    .button-group .btn {
+        width: 100%;
+        margin-bottom: var(--space-xs);
+        padding: 0.625rem 1rem;
+        min-height: 44px; /* Altura mínima para toque */
+    }
+    
+    /* Cards de resultado mais compactos */
+    .result-content {
+        padding: var(--space-sm);
+    }
+    
+    .result-card, .preparo-card, .alert-card {
+        padding: var(--space-sm);
+    }
+    
+    /* Espaçamentos reduzidos em títulos */
+    .tool-section h2 {
+        font-size: 1.2rem;
+        margin-bottom: var(--space-sm);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    
+    .tool-section h2 i {
+        font-size: 1rem;
+    }
+    
+    /* Ajustes para o rodapé */
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+    
+    footer {
+        padding: var(--space-md);
+    }
+    
+    /* Melhorias de acessibilidade em campos pequenos */
+    input[type="radio"], 
+    input[type="checkbox"] {
+        min-width: 22px;
+        min-height: 22px;
+    }
+    
+    /* Reduções específicas para seção de doses */
+    #doses .calculator-form {
+        padding: var(--space-xs);
+    }
+    
+    /* Melhorias para a leitura de informações de medicamentos */
+    #medicamento-info {
+        font-size: 0.875rem;
+    }
+    
+    #medicamento-info h3 {
+        font-size: 1.1rem;
+    }
+    
+    #medicamento-info .info-title {
+        font-size: 0.875rem;
+    }
+    
+    /* Ajustes para a visualização de resultados */
+    #resultado-dose h3, 
+    #resultado-dose h4 {
+        font-size: 1rem;
+    }
+    
+    #resultado-dose p {
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Otimização para layouts de grade nas estatísticas */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Menu de navegação melhorado para toque */
+    nav a {
+        padding: var(--space-md) var(--space-sm);
+        margin-bottom: 2px;
+        border-radius: var(--border-radius);
+    }
+    
+    /* Melhora na usabilidade das tabs */
+    .tabs {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .tab-button {
+        flex: 1;
+        min-width: 30%;
+        padding: 8px 4px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Dispositivos muito pequenos */
+@media (max-width: 360px) {
+    .container {
+        padding: 0 var(--space-xs);
+    }
+    
+    .tool-section {
+        padding: var(--space-xs);
+    }
+    
+    .form-group label {
+        font-size: 0.8rem;
+    }
+    
+    input, select {
+        padding: 0.625rem 0.5rem;
+    }
+    
+    .btn {
+        padding: 0.625rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    /* Ajuste extra para o tamanho dos inputs para facilitar o toque */
+    input[type="radio"],
+    input[type="checkbox"] {
+        min-width: 24px;
+        min-height: 24px;
+    }
+}

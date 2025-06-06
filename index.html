@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plataforma para cálculo seguro de dosagens de medicamentos antiepilépticos para profissionais de saúde em Moçambique">
+    <title>Moz Doctor Dose - Dosagem de Medicamentos Antiepilépticos</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    
+    <!-- CSS Crítico inline para carregamento rápido -->
+    <style>
+        /* Incluindo CSS crítico inline */
+        @import url('css/critical.css');
+    </style>
+    
+    <!-- CSS Principal com carregamento otimizado -->
+    <link rel="preload" href="css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/main.css"></noscript>
+    
+    <!-- Font Awesome para ícones (carregamento otimizado) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase (carregamento adiado) -->
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    
+    <!-- Script auxiliar para carregamento otimizado de CSS -->
+    <script>
+      // Script inline para carregar CSS de forma não bloqueante
+      var loadDeferredStyles = function() {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement);
+        addStylesNode.parentElement.removeChild(addStylesNode);
+      };
+      var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+          window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+      else window.addEventListener('load', loadDeferredStyles);
+    </script>
+    
+    <!-- Estilos inline foram migrados para os arquivos CSS modulares -->
+    <style>
+        /* Estilos temporários para referências médicas - serão migrados em breve */
+        .referencias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .referencia-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 12px;
+            background-color: #f9f9f9;
+        }
+        
+        .referencia-item h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .ref-pediatrica {
+            font-weight: 600;
+            color: #3498db;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+        
+        .ref-desc {
+            font-size: 0.85em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .ref-link {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85em;
+            transition: background-color 0.2s;
+        }
+        
+        .ref-link:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Estilos para a pesquisa de medicamentos */
+        .search-container {
+            margin-bottom: 8px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .search-input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="./images/Flag_of_Mozambique.svg.png" alt="MISAU">
+                <div>
+                    <h1>Calculadora Médica</h1>
+                    <p>- Moçambique</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <!-- Botão de troca de tema -->
+                <button id="theme-toggle" class="theme-toggle" title="Alternar tema">
+                    <i class="fas fa-sun"></i>
+                </button>
+
+                <div class="auth-buttons">
+                    <!-- Botão de Login (mostrado quando não logado) -->
+                    <button id="login-button" class="btn btn-primary btn-rounded login-button">
+                        <i class="fas fa-user"></i> Entrar
+                    </button>
+                    
+                    <!-- Menu de usuário (mostrado quando logado) -->
+                    <div id="user-menu-button" class="user-dropdown" style="display: none;">
+                        <button class="user-dropdown-toggle">
+                            <span id="user-avatar" class="user-avatar">U</span>
+                            <span id="user-name">Usuário</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="user-dropdown" class="user-dropdown-menu">
+                            <a href="#perfil" class="user-dropdown-item" id="menu-perfil">
+                                <i class="fas fa-user-circle"></i> Meu Perfil
+                            </a>
+                            <a href="#configuracoes" class="user-dropdown-item" id="menu-configuracoes">
+                                <i class="fas fa-cog"></i> Configurações
+                            </a>
+                            <div class="user-dropdown-divider"></div>
+                            <button id="logout-button" class="user-dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i> Sair
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav id="main-nav" class="nav-container">
+                <ul>
+                    <li><a href="#doses" class="active"><i class="fas fa-syringe"></i> Doses</a></li>
+                    <li><a href="#laboratorio"><i class="fas fa-microscope"></i> Laboratório</a></li>
+                    <li><a href="#eletrolitos"><i class="fas fa-flask"></i> Eletrólitos</a></li>
+                    <li><a href="#gasometria"><i class="fas fa-lungs"></i> Gasometria</a></li>
+                    <li><a href="#interamed"><i class="fas fa-pills"></i> InteraMed</a></li>
+                    <li><a href="#protocolos"><i class="fas fa-book-medical"></i> Protocolos</a></li>
+                    <li><a href="#ferramentas"><i class="fas fa-tools"></i> Ferramentas</a></li>
+                    <li><a href="#informacoes"><i class="fas fa-info-circle"></i> Informações</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Seção de Cálculo de Doses -->
+        <section id="doses" class="tool-section active">
+            <h2><i class="fas fa-syringe"></i> Cálculo de Doses Pediátricas</h2>
+            
+            <!-- Navegação rápida para mobile -->
+            <div class="mobile-nav-cards">
+                <a href="#doses" class="mobile-nav-card active">
+                    <i class="fas fa-syringe"></i>
+                    <span>Doses</span>
+                </a>
+                <a href="#laboratorio" class="mobile-nav-card">
+                    <i class="fas fa-microscope"></i>
+                    <span>Laboratório</span>
+                </a>
+                <a href="#eletrolitos" class="mobile-nav-card">
+                    <i class="fas fa-flask"></i>
+                    <span>Eletrólitos</span>
+                </a>
+                <a href="#gasometria" class="mobile-nav-card">
+                    <i class="fas fa-lungs"></i>
+                    <span>Gasometria</span>
+                </a>
+            </div>
+            
+            <div class="calculator-form mobile-content-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="peso">Peso (kg):</label>
+                        <input type="number" id="peso" step="0.1" min="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="idade-input">Idade:</label>
+                        <div class="age-input">
+                            <input type="number" id="idade-input" min="0">
+                            <select id="idade-unidade">
+                                <option value="horas">Horas</option>
+                                <option value="dias">Dias</option>
+                                <option value="meses">Meses</option>
+                                <option value="anos" selected>Anos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="medicamento">Medicamento:</label>
+                    <div class="search-container">
+                        <input type="text" id="pesquisa-medicamento" placeholder="Pesquisar medicamento..." class="search-input">
+                    </div>
+                    <select id="medicamento" required>
+                        <option value="">Selecione...</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="indicacao">Indicação:</label>
+                        <select id="indicacao" required disabled>
+                            <option value="">Selecione o medicamento primeiro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="via">Via:</label>
+                        <select id="via" required disabled>
+                            <option value="">Selecione o medicamento primeiro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button id="calcular-dose" class="btn primary"><i class="fas fa-calculator"></i> Calcular</button>
+                    <button id="limpar-dose" class="btn secondary"><i class="fas fa-broom"></i> Limpar</button>
+                </div>
+            </div>
+
+            <div id="resultado-dose" class="result-container hidden">
+                <div class="result-header">
+                    <h3>Resultado do Cálculo</h3>
+                    <button id="imprimir-dose" class="btn small"><i class="fas fa-print"></i> Imprimir</button>
+                </div>
+                
+                <div class="result-content">
+                    <div class="result-card mobile-content-container">
+                        <h3>Dose Calculada:</h3>
+                        <p id="resultado-texto" class="dose-value"></p>
+                        <div class="dose-details">
+                            <div class="dose-detail-item">
+                                <span class="detail-label">Medicamento:</span>
+                                <span id="med-nome" class="detail-value"></span>
+                            </div>
+                            <div class="dose-detail-item">
+                                <span class="detail-label">Concentração:</span>
+                                <span id="med-concentracao" class="detail-value"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-card mobile-content-container">
+                        <h4 id="nome-medicamento" class="mobile-header">Medicamento</h4>
+                        <div class="result-grid mobile-grid">
+                            <div class="result-item">
+                                <span class="result-label">Dose Mínima:</span>
+                                <span id="dose-minima" class="mobile-value"></span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Dose Máxima:</span>
+                                <span id="dose-maxima-mobile" class="mobile-value"></span>
+                            </div>
+                        </div>
+                        <div id="info-adicional" class="mobile-info"></div>
+                    </div>
+
+                    <div class="result-card mobile-content-container">
+                        <div class="result-grid mobile-grid">
+                            <div class="result-item">
+                                <span class="result-label">Forma farmacêutica:</span>
+                                <span id="forma-farmaceutica" class="mobile-value"></span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Posologia:</span>
+                                <span id="posologia" class="mobile-value"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-grid">
+                            <div>
+                                <span class="label">Frequência:</span>
+                                <span id="frequencia" class="value"></span>
+                            </div>
+                            <div>
+                                <span class="label">Duração:</span>
+                                <span id="duracao" class="value"></span>
+                            </div>
+                            <div>
+                                <span class="label">Dose máxima:</span>
+                                <span id="dose-maxima" class="value warning"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preparo-card">
+                        <h4><i class="fas fa-vial"></i> Preparo e Administração</h4>
+                        <ol id="passos-preparo"></ol>
+                    </div>
+
+                    <div class="alert-card warning">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Precauções</h4>
+                        <ul id="precaucoes"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Eletrólitos -->
+        <section id="eletrolitos" class="tool-section">
+            <h2><i class="fas fa-flask"></i> Correção de Eletrólitos</h2>
+            <div class="calculator-form">
+                <div class="form-group">
+                    <label for="electrolyte-type">Eletrólito:</label>
+                    <select id="electrolyte-type" class="form-control">
+                        <option value="">Selecione</option>
+                        <option value="sodio">Sódio (Na+)</option>
+                        <option value="potassio">Potássio (K+)</option>
+                        <option value="calcio">Cálcio (Ca++)</option>
+                    </select>
+                </div>
+
+                <div id="sodio-form" class="electrolyte-form" style="display:none">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sodio-peso">Peso (kg):</label>
+                            <input type="number" id="sodio-peso" step="0.1" min="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sodio-atual">Sódio atual (mEq/L):</label>
+                            <input type="number" id="sodio-atual" step="0.1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sodio-desejado">Sódio desejado (mEq/L):</label>
+                        <input type="number" id="sodio-desejado" step="0.1" required>
+                    </div>
+                    <button id="calcular-sodio" class="btn primary">Calcular</button>
+                    <div id="resultado-sodio" class="result-container hidden">
+                        <div class="result-header">
+                            <h3>Resultado da Correção de Sódio</h3>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-card">
+                                <div class="result-grid">
+                                    <div>
+                                        <span class="label">Déficit de sódio:</span>
+                                        <span id="deficit-sodio" class="value highlight"></span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Velocidade de correção:</span>
+                                        <span id="velocidade-sodio" class="value"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="potassio-form" class="electrolyte-form" style="display:none">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="potassio-peso">Peso (kg):</label>
+                            <input type="number" id="potassio-peso" step="0.1" min="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="potassio-atual">Potássio atual (mEq/L):</label>
+                            <input type="number" id="potassio-atual" step="0.1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="potassio-desejado">Potássio desejado (mEq/L):</label>
+                        <input type="number" id="potassio-desejado" step="0.1" required>
+                    </div>
+                    <button id="calcular-potassio" class="btn primary">Calcular</button>
+                    <div id="resultado-potassio" class="result-container hidden">
+                        <div class="result-header">
+                            <h3>Resultado da Correção de Potássio</h3>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-card">
+                                <div class="result-grid">
+                                    <div>
+                                        <span class="label">Déficit de potássio:</span>
+                                        <span id="deficit-potassio" class="value highlight"></span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Velocidade de correção:</span>
+                                        <span id="velocidade-potassio" class="value"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="calcio-form" class="electrolyte-form" style="display:none">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="calcio-peso">Peso (kg):</label>
+                            <input type="number" id="calcio-peso" step="0.1" min="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="calcio-atual">Cálcio total (mg/dL):</label>
+                            <input type="number" id="calcio-atual" step="0.1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="calcio-desejado">Cálcio desejado (mg/dL):</label>
+                        <input type="number" id="calcio-desejado" step="0.1" required>
+                    </div>
+                    <button id="calcular-calcio" class="btn primary">Calcular</button>
+                    <div id="resultado-calcio" class="result-container hidden">
+                        <div class="result-header">
+                            <h3>Resultado da Correção de Cálcio</h3>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-card">
+                                <div class="result-grid">
+                                    <div>
+                                        <span class="label">Déficit de cálcio:</span>
+                                        <span id="deficit-calcio" class="value highlight"></span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Velocidade de correção:</span>
+                                        <span id="velocidade-calcio" class="value"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Gasometria -->
+        <section id="gasometria" class="tool-section">
+            <h2><i class="fas fa-lungs"></i> Interpretação de Gasometria</h2>
+            <div class="calculator-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ph">pH:</label>
+                        <input type="number" id="ph" step="0.01" min="6.8" max="7.8" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="pco2">pCO2 (mmHg):</label>
+                        <input type="number" id="pco2" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hco3">HCO3- (mEq/L):</label>
+                        <input type="number" id="hco3" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="na">Na+ (mEq/L):</label>
+                        <input type="number" id="na" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cl">Cl- (mEq/L):</label>
+                        <input type="number" id="cl" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="lactato">Lactato (mmol/L):</label>
+                        <input type="number" id="lactato" class="form-control">
+                    </div>
+                </div>
+                <button id="analyze-gasometry" class="btn primary">Analisar</button>
+                <div id="gasometry-result" class="result-container hidden">
+                    <div class="result-header">
+                        <h3>Resultado da Gasometria</h3>
+                    </div>
+                    <div class="result-content">
+                        <div id="gasometry-analysis"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de InteraMed (Interações Medicamentosas) -->
+        <section id="interamed" class="tool-section">
+            <h2><i class="fas fa-pills"></i> InteraMed - Verificador de Interações</h2>
+            <div class="calculator-form">
+                <p class="section-desc">Verifique possíveis interações entre medicamentos com base em dados farmacológicos atualizados.</p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="interacao-medicamento1">Medicamento 1:</label>
+                        <select id="interacao-medicamento1" required>
+                            <option value="">Selecione o medicamento...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="interacao-medicamento2">Medicamento 2:</label>
+                        <select id="interacao-medicamento2" required>
+                            <option value="">Selecione o medicamento...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button id="verificar-interacao" class="btn primary">
+                        <i class="fas fa-search"></i> Verificar Interação
+                    </button>
+                    <button id="limpar-interacao" class="btn secondary">
+                        <i class="fas fa-broom"></i> Limpar
+                    </button>
+                </div>
+                
+                <div id="resultado-interacao" class="result-container hidden">
+                    <div class="result-header">
+                        <h3>Resultado da Verificação</h3>
+                    </div>
+                    <div class="result-content">
+                        <div id="analise-interacao"></div>
+                    </div>
+                </div>
+                
+                <div class="reference-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Base de dados farmacológica atualizada com informações específicas para o contexto moçambicano.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Protocolos -->
+        <section id="protocolos" class="tool-section">
+            <h2><i class="fas fa-book-medical"></i> Protocolos Clínicos</h2>
+            <div class="calculator-form">
+                <div class="form-group">
+                    <label for="protocolo">Selecione um Protocolo:</label>
+                    <select id="protocolo" class="form-control">
+                        <option value="">Selecione...</option>
+                        <option value="pneumonia">Pneumonia</option>
+                        <option value="meningite">Meningite</option>
+                        <option value="malaria">Malária</option>
+                        <option value="desidratacao">Desidratação</option>
+                       
+                        <option value="desidratacao">Desidratação</option>
+                        <option value="diarreia">Diarreia Aguda</option>
+                        <option value="sepseNeonatal">Sepse Neonatal</option>
+                        <option value="asma">Asma Aguda</option>
+                        <option value="desnutricao">Desnutrição Grave</option>
+                        <option value="itu">Infecção Urinária</option>
+                        <option value="convulsoesFebris">Convulsões Febris</option>
+                        <option value="anemia">Anemia Ferropriva</option>
+                        <option value="queimaduras">Queimaduras</option>
+                        <option value="hiv">HIV Pediátrico</option>
+                        <option value="tuberculose">Tuberculose Pediátrica</option>
+                    </select>
+                </div>
+                <div id="protocolo-content" class="result-container hidden">
+                    <div class="result-header">
+                        <h3 id="protocolo-title">Protocolo Clínico</h3>
+                    </div>
+                    <div class="result-content" id="protocolo-text"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Ferramentas -->
+        <section id="ferramentas" class="tool-section">
+            <h2><i class="fas fa-tools"></i> Ferramentas Úteis</h2>
+            <div class="calculator-form">
+                <div class="form-group">
+                    <label for="child-gender">Sexo:</label>
+                    <select id="child-gender" class="form-control">
+                        <option value="male">Menino</option>
+                        <option value="female">Menina</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="child-age">Idade (meses):</label>
+                        <input type="number" id="child-age" min="0" max="60">
+                    </div>
+                    <div class="form-group">
+                        <label for="child-weight">Peso (kg):</label>
+                        <input type="number" id="child-weight" step="0.1" min="0.1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="child-height">Altura (cm):</label>
+                    <input type="number" id="child-height" min="0">
+                </div>
+                
+                <button id="calculate-percentile" class="btn primary">
+                    <i class="fas fa-calculator"></i> Calcular Percentil
+                </button>
+                
+                <div id="percentile-result" class="result-container hidden">
+                    <div class="result-header">
+                        <h3>Resultado do Percentil</h3>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-card">
+                            <div class="result-grid">
+                                <div>
+                                    <span class="label">Percentil de peso:</span>
+                                    <span id="percentil-peso" class="value highlight"></span>
+                                </div>
+                                <div>
+                                    <span class="label">Percentil de altura:</span>
+                                    <span id="percentil-altura" class="value highlight"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="patient-status">Estado Atual:</label>
+                    <select id="patient-status" class="form-control">
+                        <option value="stable">Estável</option>
+                        <option value="observation">Em Observação</option>
+                        <option value="critical">Crítico</option>
+                    </select>
+                </div>
+                
+                <button id="save-status" class="btn secondary">
+                    <i class="fas fa-save"></i> Salvar Status
+                </button>
+                
+                <div id="status-indicator" class="status-indicator hidden">
+                    <h4>Status do Paciente</h4>
+                    <div id="current-status" class="status-stable">Estável</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Laboratório -->
+        <section id="laboratorio" class="tool-section">
+            <h2><i class="fas fa-microscope"></i> Análise Laboratorial</h2>
+            
+            <div class="tabs">
+                <button class="tab-button active" data-tab="hemograma">Hemograma</button>
+                <button class="tab-button" data-tab="bioquimica">Bioquímica</button>
+            </div>
+            
+            <!-- Subseção de Hemograma -->
+            <div id="hemograma" class="tab-content active">
+                <div class="calculator-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hemoglobina">Hemoglobina (g/dL):</label>
+                            <input type="number" id="hemoglobina" step="0.1" min="1" max="30">
+                        </div>
+                        <div class="form-group">
+                            <label for="hematocrito">Hematócrito (%):</label>
+                            <input type="number" id="hematocrito" step="0.1" min="10" max="70">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="leucocitos">Leucócitos (x10³/µL):</label>
+                            <input type="number" id="leucocitos" step="0.1" min="0.1" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="plaquetas">Plaquetas (x10³/µL):</label>
+                            <input type="number" id="plaquetas" min="10" max="1000">
+                        </div>
+                    </div>
+                    
+                    <h4>Diferencial de Leucócitos</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="neutrofilos">Neutrófilos (%):</label>
+                            <input type="number" id="neutrofilos" step="0.1" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="linfocitos">Linfócitos (%):</label>
+                            <input type="number" id="linfocitos" step="0.1" min="0" max="100">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="monocitos">Monócitos (%):</label>
+                            <input type="number" id="monocitos" step="0.1" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="eosinofilos">Eosinófilos (%):</label>
+                            <input type="number" id="eosinofilos" step="0.1" min="0" max="100">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bastonetes">Bastonetes (%):</label>
+                        <input type="number" id="bastonetes" step="0.1" min="0" max="100">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="analisar-hemograma" class="btn primary"><i class="fas fa-search"></i> Analisar</button>
+                        <button id="limpar-hemograma" class="btn secondary"><i class="fas fa-broom"></i> Limpar</button>
+                    </div>
+                    
+                    <div id="resultado-hemograma" class="result-container hidden">
+                        <div class="result-header">
+                            <h3>Resultado do Hemograma</h3>
+                        </div>
+                        <div class="result-content">
+                            <div id="analise-hemograma"></div>
+                            <div id="alertas-hemograma"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Subseção de Bioquímica -->
+            <div id="bioquimica" class="tab-content">
+                <div class="calculator-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bio-glicemia">Glicemia (mg/dL):</label>
+                            <input type="number" id="bio-glicemia" min="20" max="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="bio-ureia">Uréia (mg/dL):</label>
+                            <input type="number" id="bio-ureia" min="5" max="300">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bio-creatinina">Creatinina (mg/dL):</label>
+                            <input type="number" id="bio-creatinina" step="0.01" min="0.1" max="20">
+                        </div>
+                        <div class="form-group">
+                            <label for="bio-tgo">TGO/AST (U/L):</label>
+                            <input type="number" id="bio-tgo" min="5" max="1000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bio-tgp">TGP/ALT (U/L):</label>
+                            <input type="number" id="bio-tgp" min="5" max="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="bio-bilirrubina-total">Bilirrubina Total (mg/dL):</label>
+                            <input type="number" id="bio-bilirrubina-total" step="0.1" min="0.1" max="50">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bio-bilirrubina-direta">Bilirrubina Direta (mg/dL):</label>
+                            <input type="number" id="bio-bilirrubina-direta" step="0.1" min="0.1" max="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="bio-proteinas-totais">Proteínas Totais (g/dL):</label>
+                            <input type="number" id="bio-proteinas-totais" step="0.1" min="1" max="15">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bio-albumina">Albumina (g/dL):</label>
+                            <input type="number" id="bio-albumina" step="0.1" min="1" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="bio-sodio">Sódio (mEq/L):</label>
+                            <input type="number" id="bio-sodio" min="100" max="180">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bio-potassio">Potássio (mEq/L):</label>
+                            <input type="number" id="bio-potassio" step="0.1" min="1" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="bio-calcio">Cálcio (mg/dL):</label>
+                            <input type="number" id="bio-calcio" step="0.1" min="1" max="20">
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="analisar-bioquimica" class="btn primary"><i class="fas fa-search"></i> Analisar</button>
+                        <button id="limpar-bioquimica" class="btn secondary"><i class="fas fa-broom"></i> Limpar</button>
+                    </div>
+                    
+                    <div id="resultado-bioquimica" class="result-container hidden">
+                        <div class="result-header">
+                            <h3>Resultado da Bioquímica</h3>
+                        </div>
+                        <div class="result-content">
+                            <div id="analise-bioquimica"></div>
+                            <div id="alertas-bioquimica"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Informações -->
+        <section id="informacoes" class="tool-section">
+            <h2><i class="fas fa-info-circle"></i> Informações e Precisão</h2>
+            <div class="info-content">
+                <div class="info-card">
+                    <h3>Precisão dos Cálculos</h3>
+                    <p>Todos os cálculos são baseados nas diretrizes mais recentes do Ministério da Saúde  e protocolos internacionais reconhecidos.</p>
+                    <p>As fórmulas utilizadas foram validadas por especialistas em pediatria e farmacologia clínica.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Fontes e Referências</h3>
+                    <ul>
+                        <li>Protocolos de Tratamento do MISAU (Edição 2023)</li>
+                        <li>WHO Guidelines on Paediatric Dosing</li>
+                        <li>Manual de Terapêutica Pediátrica - OMS</li>
+                        <li>Neonatal and Pediatric Dosage Handbook</li>
+                        <li>Directrizes de tratamento de doenças tropicais</li>
+                    </ul>
+                </div>
+
+                <div class="info-card warning">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Limitações</h3>
+                    <p>Esta calculadora fornece orientações gerais e não substitui o julgamento clínico profissional.</p>
+                    <p>Considere sempre as condições específicas do paciente, comorbidades e interações medicamentosas.</p>
+                </div>
+
+                <div class="info-card" id="estatisticas-container">
+                    <h3><i class="fas fa-chart-bar"></i> Estatísticas em Tempo Real</h3>
+                    
+                    <!-- Estatísticas básicas visíveis para todos -->
+                    <div class="estatisticas-container">
+                        <div class="stat-box">
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                                <div class="stat-value" id="usuarios-online">--</div>
+                                <div class="stat-label">Usuários Online</div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                                <div class="stat-value" id="visitas-hoje">--</div>
+                                <div class="stat-label">Visitas Hoje</div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-database"></i></div>
+                                <div class="stat-value" id="total-medicamentos">--</div>
+                                <div class="stat-label">Medicamentos</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Botão para mostrar estatísticas detalhadas (para administradores) -->
+                        <a href="#" class="admin-panel-btn" id="admin-panel-btn">
+                            <i class="fas fa-chart-line"></i> Ver estatísticas detalhadas
+                        </a>
+                        
+                        <!-- Dashboard detalhado de estatísticas (inicialmente oculto) -->
+                        <div class="stats-dashboard" id="stats-dashboard-user">
+                            <div class="dashboard-header">
+                                <h4><i class="fas fa-tachometer-alt"></i> Dashboard de Estatísticas</h4>
+                                <span class="update-time">Atualizado automaticamente a cada 30 segundos</span>
+                            </div>
+                            
+                            <div class="stats-grid">
+                                <!-- Gráfico de usuários online -->
+                                <div class="stats-card">
+                                    <h5><i class="fas fa-users"></i> Usuários Online (últimos 10 min)</h5>
+                                    <div class="chart-container">
+                                        <canvas id="usuarios-chart"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <!-- Gráfico de visitas -->
+                                <div class="stats-card">
+                                    <h5><i class="fas fa-chart-bar"></i> Comparativo de Visitas</h5>
+                                    <div class="chart-container">
+                                        <canvas id="visitas-chart"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <!-- Estatísticas de visitas -->
+                                <div class="stats-card">
+                                    <h5><i class="fas fa-eye"></i> Visitas e Engajamento</h5>
+                                    <div class="stat-summary">
+                                        <div class="stat-item">
+                                            <span class="stat-label">Visitas hoje:</span>
+                                            <span class="stat-value" id="visitas-hoje-detail">--</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Visitas esta semana:</span>
+                                            <span class="stat-value" id="visitas-semana">--</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Total de visitas:</span>
+                                            <span class="stat-value" id="visitas-total">--</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Tempo médio:</span>
+                                            <span class="stat-value" id="tempo-permanencia">--</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Páginas por visita:</span>
+                                            <span class="stat-value" id="paginas-vistas">--</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Estatísticas de dispositivos -->
+                                <div class="stats-card">
+                                    <h5><i class="fas fa-mobile-alt"></i> Dispositivos</h5>
+                                    <div id="device-type" class="device-stats">
+                                        <!-- Preenchido via JavaScript -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Estatísticas adicionais -->
+                                <div class="stats-card">
+                                    <h5><i class="fas fa-info-circle"></i> Informações Adicionais</h5>
+                                    <div class="stat-summary">
+                                        <div class="stat-item">
+                                            <span class="stat-label">Última entrada:</span>
+                                            <span class="stat-value" id="ultima-entrada">--</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Taxa de conversão:</span>
+                                            <span class="stat-value" id="taxa-conversao">--</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Total de medicamentos:</span>
+                                            <span class="stat-value" id="total-medicamentos-detail">--</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>Atualizações</h3>
+                    <p>Esta ferramenta é atualizada regularmente conforme novas evidências científicas e diretrizes são publicadas.</p>
+                    <p>Versão atual: 2.0.0 (Abril 2025)</p>
+                    <p>Próxima revisão programada: Maio 2025</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Seção de Administração (visível apenas para administradores) -->
+        <section id="admin-section" class="tool-section" style="display: none;">
+            <h2><i class="fas fa-user-shield"></i> Painel Administrativo</h2>
+            
+            <!-- Dashboard Principal -->
+            <div class="admin-dashboard">
+                <div class="admin-header">
+                    <div class="admin-title">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </div>
+                    <button id="refresh-dashboard" class="refresh-btn"><i class="fas fa-sync-alt"></i> Atualizar Dados</button>
+                </div>
+                
+                <div class="admin-tabs">
+                    <div class="admin-tab active" data-tab="stats-dashboard">Estatísticas</div>
+                    <div class="admin-tab" data-tab="users-dashboard">Usuários</div>
+                    <div class="admin-tab" data-tab="content-dashboard">Conteúdo</div>
+                    <div class="admin-tab" data-tab="logs-dashboard">Logs</div>
+                </div>
+                
+                <!-- Painel de Estatísticas -->
+                <div id="stats-dashboard-admin" class="admin-content active">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Usuários Totais</div>
+                                <div class="card-icon icon-blue"><i class="fas fa-users"></i></div>
+                            </div>
+                            <div class="card-value" id="total-users">0</div>
+                            <div class="card-footer">
+                                <span class="growth-positive"><i class="fas fa-arrow-up"></i> 12% </span>
+                                <span>vs mês anterior</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Novos Usuários</div>
+                                <div class="card-icon icon-green"><i class="fas fa-user-plus"></i></div>
+                            </div>
+                            <div class="card-value" id="new-users">0</div>
+                            <div class="card-footer">
+                                <span>Nos últimos 30 dias</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Usuários Ativos</div>
+                                <div class="card-icon icon-orange"><i class="fas fa-user-check"></i></div>
+                            </div>
+                            <div class="card-value" id="active-users">0</div>
+                            <div class="card-footer">
+                                <span>Nas últimas 24 horas</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Tempo Médio</div>
+                                <div class="card-icon icon-red"><i class="fas fa-clock"></i></div>
+                            </div>
+                            <div class="card-value" id="average-session">0m 0s</div>
+                            <div class="card-footer">
+                                <span>Por sessão</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Atividade de Usuários (Últimas 24h)</h3>
+                        <canvas id="user-activity-chart"></canvas>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Visitas Totais</div>
+                                <div class="card-icon icon-blue"><i class="fas fa-chart-line"></i></div>
+                            </div>
+                            <div class="card-value" id="total-visits">0</div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Visitas Hoje</div>
+                                <div class="card-icon icon-green"><i class="fas fa-calendar-day"></i></div>
+                            </div>
+                            <div class="card-value" id="today-visits">0</div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Esta Semana</div>
+                                <div class="card-icon icon-orange"><i class="fas fa-calendar-week"></i></div>
+                            </div>
+                            <div class="card-value" id="week-visits">0</div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Este Mês</div>
+                                <div class="card-icon icon-red"><i class="fas fa-calendar-alt"></i></div>
+                            </div>
+                            <div class="card-value" id="month-visits">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <div class="chart-container" style="width: 50%;">
+                            <h3>Distribuição de Dispositivos</h3>
+                            <canvas id="device-distribution-chart"></canvas>
+                        </div>
+                        
+                        <div class="chart-container" style="width: 50%;">
+                            <h3>Registro de Usuários</h3>
+                            <canvas id="registrations-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Páginas Mais Visitadas</h3>
+                        <canvas id="page-views-chart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Painel de Gerenciamento de Usuários -->
+                <div id="users-dashboard" class="admin-content">
+                    <div class="admin-actions">
+                        <button id="add-user-btn" class="btn primary"><i class="fas fa-user-plus"></i> Adicionar Usuário</button>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Função</th>
+                                <th>Último Login</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Os usuários serão carregados via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Painel de Conteúdo -->
+                <div id="content-dashboard" class="admin-content">
+                    <h3>Gerenciamento de Conteúdo</h3>
+                    <p>Aqui você pode gerenciar todo o conteúdo da aplicação.</p>
+                    
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Medicamentos</div>
+                                <div class="card-icon icon-blue"><i class="fas fa-pills"></i></div>
+                            </div>
+                            <div class="card-value">145</div>
+                            <div class="card-footer">
+                                <button class="btn secondary small">Gerenciar</button>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Protocolos</div>
+                                <div class="card-icon icon-green"><i class="fas fa-book-medical"></i></div>
+                            </div>
+                            <div class="card-value">24</div>
+                            <div class="card-footer">
+                                <button class="btn secondary small">Gerenciar</button>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Ferramentas</div>
+                                <div class="card-icon icon-orange"><i class="fas fa-tools"></i></div>
+                            </div>
+                            <div class="card-value">8</div>
+                            <div class="card-footer">
+                                <button class="btn secondary small">Gerenciar</button>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Referências</div>
+                                <div class="card-icon icon-red"><i class="fas fa-bookmark"></i></div>
+                            </div>
+                            <div class="card-value">36</div>
+                            <div class="card-footer">
+                                <button class="btn secondary small">Gerenciar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Painel de Logs -->
+                <div id="logs-dashboard" class="admin-content">
+                    <h3>Logs do Sistema</h3>
+                    <p>Aqui você pode visualizar os logs recentes do sistema.</p>
+                    
+                    <div class="logs-container">
+                        <div class="log-entry">
+                            <span class="log-time">06/06/2025 10:32:15</span>
+                            <span class="log-type info">INFO</span>
+                            <span class="log-message">Usuário José Silva (jose@email.com) fez login</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">06/06/2025 10:30:05</span>
+                            <span class="log-type warning">AVISO</span>
+                            <span class="log-message">Tentativa de login incorreta para usuario@example.com</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">06/06/2025 10:15:22</span>
+                            <span class="log-type info">INFO</span>
+                            <span class="log-message">Nova conta criada: maria@email.com</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">06/06/2025 09:45:10</span>
+                            <span class="log-type error">ERRO</span>
+                            <span class="log-message">Falha na atualização de dados do usuário ID:123</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">06/06/2025 08:30:55</span>
+                            <span class="log-type info">INFO</span>
+                            <span class="log-message">Sistema inicializado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Seção de Meu Perfil -->
+        <section id="perfil" class="tool-section">
+            <h2><i class="fas fa-user-circle"></i> Meu Perfil</h2>
+            
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar-container">
+                        <div class="profile-avatar" id="profile-avatar">
+                            <div id="profile-initials"></div>
+                        </div>
+                        <div class="profile-avatar-edit" id="profile-avatar-edit">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <h3 class="profile-name" id="profile-name">Carregando...</h3>
+                        <p class="profile-email" id="profile-email"></p>
+                        <span class="profile-role" id="profile-role">Usuário</span>
+                    </div>
+                </div>
+                
+                <div class="profile-tabs">
+                    <div class="profile-tab active" data-tab="profile-info-tab">Informações Pessoais</div>
+                    <div class="profile-tab" data-tab="profile-activity-tab">Atividades Recentes</div>
+                </div>
+                
+                <div class="profile-content" id="profile-content">
+                    <!-- Aba de informações pessoais -->
+                    <div id="profile-info-tab" class="profile-tab-content active">
+                        <div class="profile-section">
+                            <h4 class="profile-section-title">Dados do Perfil</h4>
+                            
+                            <form id="profile-form" class="profile-form">
+                                <div class="profile-form-group">
+                                    <label for="profile-photo-input">Foto de Perfil</label>
+                                    <input type="file" id="profile-photo-input" accept="image/*" style="display: none;">
+                                    <div class="profile-photo-preview">
+                                        <img id="photo-preview" src="images/default-avatar.png" alt="Pré-visualização da foto de perfil" style="display: none; max-width: 100px; max-height: 100px; border-radius: 50%;">
+                                        <button type="button" class="profile-btn secondary" onclick="document.getElementById('profile-photo-input').click()">
+                                            <i class="fas fa-camera"></i> Escolher Foto
+                                        </button>
+                                    </div>
+                                    <p class="profile-photo-status">Formatos aceitos: JPG, PNG. Tamanho máx: 5MB</p>
+                                </div>
+                                
+                                <div class="profile-form-group">
+                                    <label for="displayName">Nome Completo</label>
+                                    <input type="text" id="displayName" name="displayName" placeholder="Seu nome completo">
+                                </div>
+                                
+                                <div class="profile-form-row">
+                                    <div class="profile-form-group">
+                                        <label for="especialidade">Especialidade Médica</label>
+                                        <input type="text" id="especialidade" name="especialidade" placeholder="Ex: Pediatria, Clínica Geral">
+                                    </div>
+                                    
+                                    <div class="profile-form-group">
+                                        <label for="instituicao">Instituição</label>
+                                        <input type="text" id="instituicao" name="instituicao" placeholder="Hospital, Clínica ou Universidade">
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-form-group">
+                                    <label for="telefone">Telefone (opcional)</label>
+                                    <input type="tel" id="telefone" name="telefone" placeholder="+258 xx xxx xxx">
+                                </div>
+                                
+                                <div class="profile-form-group">
+                                    <label for="bio">Sobre Mim (opcional)</label>
+                                    <textarea id="bio" name="bio" placeholder="Breve descrição sobre sua experiência profissional"></textarea>
+                                </div>
+                                
+                                <div class="profile-actions">
+                                    <button type="submit" class="profile-btn">Salvar Alterações</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Aba de atividades recentes -->
+                    <div id="profile-activity-tab" class="profile-tab-content">
+                        <div class="profile-section">
+                            <h4 class="profile-section-title">Histórico de Atividades</h4>
+                            
+                            <ul class="activity-list" id="activities-list">
+                                <!-- Atividades serão carregadas dinamicamente -->
+                                <li class="activity-item">
+                                    <div class="activity-icon"><i class="fas fa-spinner fa-spin"></i></div>
+                                    <div class="activity-details">
+                                        <p class="activity-message">Carregando atividades...</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Configurações -->
+        <section id="configuracoes" class="tool-section">
+            <h2><i class="fas fa-cog"></i> Configurações</h2>
+            
+            <div class="settings-container">
+                <div class="settings-header">
+                    <h3 class="settings-title">Configurações da Conta</h3>
+                    <p class="settings-description">Personalize sua experiência e gerencie suas preferências de privacidade.</p>
+                </div>
+                
+                <div class="settings-saved" style="display:none">Configurações salvas com sucesso!</div>
+                <div class="settings-error" style="display:none">Ocorreu um erro ao salvar as configurações.</div>
+                
+                <div class="settings-layout">
+                    <div class="settings-sidebar">
+                        <ul class="settings-nav">
+                            <li class="settings-nav-item">
+                                <div class="settings-nav-link active" data-section="preferences-section">
+                                    <span class="settings-nav-icon"><i class="fas fa-sliders-h"></i></span>
+                                    Preferências
+                                </div>
+                            </li>
+                            <li class="settings-nav-item">
+                                <div class="settings-nav-link" data-section="account-section">
+                                    <span class="settings-nav-icon"><i class="fas fa-user-cog"></i></span>
+                                    Conta
+                                </div>
+                            </li>
+                            <li class="settings-nav-item">
+                                <div class="settings-nav-link" data-section="notifications-section">
+                                    <span class="settings-nav-icon"><i class="fas fa-bell"></i></span>
+                                    Notificações
+                                </div>
+                            </li>
+                            <li class="settings-nav-item">
+                                <div class="settings-nav-link" data-section="security-section">
+                                    <span class="settings-nav-icon"><i class="fas fa-shield-alt"></i></span>
+                                    Segurança
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <!-- Seção de Preferências -->
+                        <div id="preferences-section" class="settings-section active">
+                            <h3 class="settings-section-title">Preferências</h3>
+                            
+                            <form id="preferences-form">
+                                <div class="preferences-card">
+                                    <div class="preferences-card-header">
+                                        <h4 class="preferences-card-title">Aparência</h4>
+                                    </div>
+                                    <div class="preferences-card-description">
+                                        Personalize a aparência visual da aplicação.
+                                    </div>
+                                    
+                                    <div class="settings-form-group">
+                                        <div class="settings-toggle-label">
+                                            <span>Modo Escuro</span>
+                                            <div class="settings-toggle">
+                                                <input type="checkbox" id="darkMode" name="darkMode">
+                                                <label for="darkMode" class="settings-toggle-slider"></label>
+                                            </div>
+                                            <span class="settings-toggle-text">Habilitar modo escuro para melhor visualização noturna</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="preferences-card">
+                                    <div class="preferences-card-header">
+                                        <h4 class="preferences-card-title">Geral</h4>
+                                    </div>
+                                    
+                                    <div class="settings-form-group">
+                                        <div class="settings-toggle-label">
+                                            <span>Notificações</span>
+                                            <div class="settings-toggle">
+                                                <input type="checkbox" id="notifications" name="notifications">
+                                                <label for="notifications" class="settings-toggle-slider"></label>
+                                            </div>
+                                            <span class="settings-toggle-text">Receber notificações do sistema</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="settings-form-group">
+                                        <div class="settings-toggle-label">
+                                            <span>Newsletter</span>
+                                            <div class="settings-toggle">
+                                                <input type="checkbox" id="newsletter" name="newsletter">
+                                                <label for="newsletter" class="settings-toggle-slider"></label>
+                                            </div>
+                                            <span class="settings-toggle-text">Receber novidades e atualizações por email</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="settings-form-group">
+                                        <div class="settings-toggle-label">
+                                            <span>Auto Salvar</span>
+                                            <div class="settings-toggle">
+                                                <input type="checkbox" id="autoSave" name="autoSave">
+                                                <label for="autoSave" class="settings-toggle-slider"></label>
+                                            </div>
+                                            <span class="settings-toggle-text">Salvar automaticamente cálculos e configurações</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="settings-form-group">
+                                        <label for="language">Idioma da Interface</label>
+                                        <select id="language" name="language">
+                                            <option value="pt-BR">Português (Brasil)</option>
+                                            <option value="pt-MZ">Português (Moçambique)</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-actions">
+                                    <button type="submit" class="settings-btn">Salvar Preferências</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Seção de Conta -->
+                        <div id="account-section" class="settings-section">
+                            <h3 class="settings-section-title">Configurações de Conta</h3>
+                            
+                            <form id="account-form">
+                                <div class="settings-form-group">
+                                    <label for="account-name">Nome de Exibição</label>
+                                    <input type="text" id="account-name" name="displayName">
+                                </div>
+                                
+                                <div class="settings-form-group">
+                                    <label for="account-email">Email</label>
+                                    <input type="email" id="account-email" name="email" disabled>
+                                    <small>Para alterar seu email, acesse a seção de segurança.</small>
+                                </div>
+                                
+                                <div class="settings-actions">
+                                    <button type="submit" class="settings-btn">Salvar Alterações</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Seção de Notificações -->
+                        <div id="notifications-section" class="settings-section">
+                            <h3 class="settings-section-title">Preferências de Notificações</h3>
+                            
+                            <form id="notifications-form">
+                                <div class="settings-form-group">
+                                    <div class="settings-toggle-label">
+                                        <span>Emails</span>
+                                        <div class="settings-toggle">
+                                            <input type="checkbox" id="emailNotifications" name="emailNotifications">
+                                            <label for="emailNotifications" class="settings-toggle-slider"></label>
+                                        </div>
+                                        <span class="settings-toggle-text">Receber notificações por email</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-form-group">
+                                    <div class="settings-toggle-label">
+                                        <span>Alertas de Login</span>
+                                        <div class="settings-toggle">
+                                            <input type="checkbox" id="loginAlerts" name="loginAlerts">
+                                            <label for="loginAlerts" class="settings-toggle-slider"></label>
+                                        </div>
+                                        <span class="settings-toggle-text">Receber alertas sobre novos logins</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-form-group">
+                                    <div class="settings-toggle-label">
+                                        <span>Atualizações</span>
+                                        <div class="settings-toggle">
+                                            <input type="checkbox" id="updateNotifications" name="updateNotifications">
+                                            <label for="updateNotifications" class="settings-toggle-slider"></label>
+                                        </div>
+                                        <span class="settings-toggle-text">Ser notificado sobre novas atualizações do sistema</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-actions">
+                                    <button type="submit" class="settings-btn">Salvar Preferências</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Seção de Segurança -->
+                        <div id="security-section" class="settings-section">
+                            <h3 class="settings-section-title">Segurança</h3>
+                            
+                            <div class="preferences-card">
+                                <div class="preferences-card-header">
+                                    <h4 class="preferences-card-title">Alterar Senha</h4>
+                                </div>
+                                
+                                <form id="change-password-form">
+                                    <div class="settings-form-group">
+                                        <label for="currentPassword">Senha Atual</label>
+                                        <input type="password" id="currentPassword" name="currentPassword">
+                                    </div>
+                                    
+                                    <div class="settings-form-group">
+                                        <label for="newPassword">Nova Senha</label>
+                                        <input type="password" id="newPassword" name="newPassword">
+                                    </div>
+                                    
+                                    <div class="settings-form-group">
+                                        <label for="confirmPassword">Confirmar Nova Senha</label>
+                                        <input type="password" id="confirmPassword" name="confirmPassword">
+                                    </div>
+                                    
+                                    <div class="settings-actions">
+                                        <button type="submit" class="settings-btn">Alterar Senha</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div class="preferences-card">
+                                <div class="preferences-card-header">
+                                    <h4 class="preferences-card-title">Apagar Conta</h4>
+                                </div>
+                                <div class="preferences-card-description">
+                                    Esta ação excluirá permanentemente sua conta e todos os dados associados.
+                                </div>
+                                
+                                <div class="settings-actions">
+                                    <button id="delete-account" class="settings-btn danger">Excluir Minha Conta</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Sobre</h4>
+                    <p>Calculadora desenvolvida conforme protocolos do MISAU e diretrizes internacionais atualizadas.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <p>Email: finoriocuinica11@gmail.com</p>
+                    <p>Telefone: +258 86 381 2143</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Atualizações</h4>
+                    <p>Versão atual: 2.1.0 (Abril 2025)</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p> 2025 Finório Cuinica - Moçambique. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="medicamentos.js"></script>
+    <script src="novos_medicamentos.js"></script>
+    <script src="novos_medicamentos2.js"></script>
+    <script src="novos_medicamentos3.js"></script>
+    <script src="referencias.js"></script>
+    <script src="referencias_interface.js"></script>
+    <script src="validacao.js"></script>
+    <script src="validacao_interface.js"></script>
+    <script src="alertas.js"></script>
+    <script src="medicamentos_init.js"></script>
+    <script src="mainn.js"></script>
+    
+    <!-- Modal de Confirmação para Dupla Verificação -->
+    <div id="confirmacao-modal" class="confirmacao-modal" style="display: none;">
+        <div class="confirmacao-conteudo">
+            <div class="confirmacao-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Dupla Verificação Requerida</h3>
+            </div>
+            <p>Este medicamento/dose requer dupla verificação por motivos de segurança.</p>
+            
+            <div class="confirmacao-alertas">
+                <ul id="confirmacao-lista-avisos"></ul>
+            </div>
+            
+            <div class="confirmacao-acoes">
+                <button id="confirmacao-cancelar" class="btn secondary">Cancelar</button>
+                <button id="confirmacao-confirmar" class="btn primary">Confirmar Dose</button>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts - Organização modular -->
+    <!-- Scripts para medicamentos -->
+    <script src="js/modules/medicamentos/medicamentos.js"></script>
+    <script src="js/modules/medicamentos/correcao_medicamentos.js"></script>
+    <script src="js/modules/medicamentos/novos_medicamentos.js"></script>
+    <script src="js/modules/medicamentos/novos_medicamentos2.js"></script>
+    <script src="js/modules/medicamentos/novos_medicamentos3.js"></script>
+    <script src="js/modules/medicamentos/novos_medicamentos_essenciais.js"></script>
+    <script src="js/modules/medicamentos/novos_medicamentos_essenciais2.js"></script>
+    <script src="js/modules/medicamentos/medicamentos_mocambique.js"></script>
+    <script src="js/modules/medicamentos/medicamentos_mocambique2.js"></script>
+    <script src="js/modules/medicamentos/medicamentos_mocambique3.js"></script>
+    <script src="js/modules/medicamentos/medicamentos_mocambique4.js"></script>
+    <script src="js/modules/medicamentos/medicamentos_mocambique5.js"></script>
+    <script src="js/modules/medicamentos/medicamentos_mocambique6.js"></script>
+    <!-- Novos antiepilépticos e anticonvulsivantes -->
+    <script src="js/modules/medicamentos/antiepilepticos_parte1.js"></script>
+    <script src="js/modules/medicamentos/antiepilepticos_parte2.js"></script>
+    <script src="js/modules/medicamentos/antiepilepticos_parte3.js"></script>
+    <script src="js/modules/medicamentos/medicamentos_init.js"></script>
+    <script src="js/modules/medicamentos/contarMedicamentos.js"></script>
+    <script src="js/modules/medicamentos/estatisticas.js"></script>
+    <script src="js/modules/medicamentos/pesquisa_medicamentos.js"></script>
+    <script src="js/modules/medicamentos/atualizar_ui.js"></script>
+    <script src="js/modules/medicamentos/diagnostico.js"></script>
+    <!-- Referência ao verificador de duplicados removida após limpeza completa -->
+    
+    <!-- Módulos de validação -->
+    <script src="js/modules/validacao/validacao.js"></script>
+    <script src="js/modules/validacao/validacao_interface.js"></script>
+    
+    <!-- Módulos de referências -->
+    <script src="js/modules/referencias/referencias.js"></script>
+    <script src="js/modules/referencias/referencias_interface.js"></script>
+    
+    <!-- Módulo de alertas -->
+    <script src="js/modules/alertas/alertas.js"></script>
+    
+    <!-- Base de dados de medicamentos e módulos relacionados -->
+    <script src="js/modules/medicamentos/medicamentos.js"></script>
+    <script src="js/modules/medicamentos/medicamentos_init.js"></script>
+    <script src="js/modules/medicamentos/antiepilepticos_init.js"></script>
+    <script src="js/modules/medicamentos/pesquisa_medicamentos.js"></script>
+    
+    <!-- Scripts otimizados e minificados -->
+    <script src="js/build/bundle-config.js"></script>
+    <script src="js/dist/main.min.js"></script>
+    <script src="js/dist/medicamentos.min.js"></script>
+    
+    <!-- Registro do Service Worker -->
+    <script defer src="js/utils/sw-register.js"></script>
+
+    <!-- Scripts -->
+    <script src="js/core/mainn.js"></script>
+    <!-- Scripts para o modo escuro, estatísticas, login e dashboard -->
+    <script src="js/dark-mode.js"></script>
+    <script src="js/estatisticas-tempo-real.js"></script>
+    <script src="js/login-system.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+    
+    <!-- Modal de Login -->
+    <div id="login-container" class="login-container">
+        <div class="login-panel">
+            <button id="login-close" class="login-close"><i class="fas fa-times"></i></button>
+            
+            <div class="login-tabs">
+                <button id="login-tab" class="login-tab active">Entrar</button>
+                <button id="register-tab" class="login-tab">Registrar</button>
+            </div>
+            
+            <!-- Formulário de Login -->
+            <div id="login-form-container" class="login-form-container active">
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
+                    <div class="form-error" id="login-error"></div>
+                    <div class="reset-password">
+                        <a href="#">Esqueceu a senha?</a>
+                    </div>
+                    <button type="submit" class="login-btn">
+                        <span class="loading-spinner"></span>
+                        <span class="btn-text">Entrar</span>
+                    </button>
+                </form>
+                
+                <div class="social-login">
+                    <button class="social-btn google-btn">
+                        <i class="fab fa-google"></i> Entrar com Google
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Formulário de Registro -->
+            <div id="register-form-container" class="login-form-container">
+                <form id="register-form" class="login-form">
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Senha</label>
+                        <input type="password" id="register-password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm-password">Confirmar Senha</label>
+                        <input type="password" id="register-confirm-password" name="confirmPassword" required>
+                    </div>
+                    <div class="form-error" id="register-error"></div>
+                    <button type="submit" class="login-btn">
+                        <span class="loading-spinner"></span>
+                        <span class="btn-text">Registrar</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts da dashboard -->
+    <script src="js/dashboard/dashboard-admin.js"></script>
+    
+    <!-- Scripts do perfil e configurações -->
+    <script src="js/user-profile.js"></script>
+    <script src="js/user-settings.js"></script>
+    <script src="js/firebase-storage.js"></script>
+    <script src="js/user-notifications.js"></script>
+    <script src="js/main.js"></script>
+    <!-- Script para posicionamento e estilo do botão de login -->
+    <script src="js/login-position-fix.js"></script>
+    <script src="js/login-styling.js"></script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+/* Estilos para o verificador de interações medicamentosas */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 16px;
+    background-color: #f1f5f9;
+    color: var(--gray);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    transition: var(--transition);
+}
+
+.tab-button:hover {
+    background-color: #e2e8f0;
+}
+
+.tab-button.active {
+    background-color: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Estilos específicos para interações medicamentosas */
+.interacao-form {
+    margin-bottom: var(--space-md);
+}
+
+.interacao-header {
+    padding: 12px 16px;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Estilos para os diferentes níveis de gravidade */
+.interacao-contraindicada {
+    background-color: #fecaca;
+    color: #991b1b;
+    border-left: 4px solid #7f1d1d;
+}
+
+.interacao-grave {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border-left: 4px solid #b91c1c;
+}
+
+.interacao-moderada {
+    background-color: #fef3c7;
+    color: #92400e;
+    border-left: 4px solid #92400e;
+}
+
+.interacao-leve {
+    background-color: #f0fdf4;
+    color: #166534;
+    border-left: 4px solid #16a34a;
+}
+
+.interacao-segura {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border-left: 4px solid #2563eb;
+}
+
+/* Estilos para classificação de evidências */
+.evidencia-a {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.evidencia-b {
+    background-color: #e0f7fa;
+    color: #0288d1;
+}
+
+.evidencia-c {
+    background-color: #f0f9ff;
+    color: #0284c7;
+}
+
+.evidencia-d {
+    background-color: #f8fafc;
+    color: #64748b;
+}
+
+/* Estilos para as ações recomendadas */
+.acao-evitar {
+    background-color: #fecdd3;
+    color: #be123c;
+}
+
+.acao-monitorar {
+    background-color: #fef9c3;
+    color: #854d0e;
+}
+
+.acao-ajustar {
+    background-color: #d1fae5;
+    color: #047857;
+}
+
+.acao-observar {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.interacao-medicamentos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background-color: #f8fafc;
+    border-radius: var(--border-radius);
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.interacao-medicamentos span {
+    color: var(--primary);
+    padding: 0 6px;
+    font-weight: 600;
+}
+
+.interacao-medicamentos i {
+    color: #64748b;
+    margin: 0 8px;
+}
+
+/* Classificações de interação */
+.interacao-classificacao {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.classificacao-item {
+    flex: 1;
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.classificacao-titulo {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    opacity: 0.8;
+}
+
+.classificacao-valor {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.interacao-detalhes {
+    border: 1px solid #e2e8f0;
+    border-radius: var(--border-radius);
+    padding: 16px;
+    margin-bottom: 16px;
+    background-color: #ffffff;
+}
+
+.detalhe-item {
+    margin-bottom: 12px;
+    line-height: 1.6;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #f1f5f9;
+}
+
+.detalhe-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.detalhe-item strong {
+    color: #334155;
+    font-weight: 600;
+}
+
+/* Status seguro quando não há interação */
+.interacao-status-seguro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0fdf4;
+    border-radius: var(--border-radius);
+    padding: 16px;
+    margin-bottom: 16px;
+    color: #15803d;
+}
+
+.interacao-status-seguro i {
+    font-size: 2rem;
+    margin-right: 12px;
+}
+
+.status-mensagem {
+    font-weight: 500;
+}
+
+/* Alternativas medicamentosas */
+.interacao-alternativas {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--border-radius);
+    padding: 14px;
+    margin-bottom: 16px;
+}
+
+.interacao-alternativas strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #334155;
+}
+
+.interacao-alternativas ul {
+    margin: 0;
+    padding-left: 24px;
+}
+
+.interacao-alternativas li {
+    margin-bottom: 4px;
+}
+
+/* Referências e avisos */
+.interacao-referencia {
+    margin-top: 16px;
+    font-size: 0.9rem;
+}
+
+.referencia-item {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    margin-bottom: 8px;
+    gap: 6px;
+}
+
+.interacao-aviso {
+    background-color: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    color: #78350f;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.interacao-aviso i {
+    color: #f59e0b;
+    margin-right: 6px;
+}
+
+.interacao-aviso-detalhado {
+    padding: 14px;
+}
+
+.interacao-aviso-detalhado p {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.interacao-aviso-detalhado ul {
+    margin: 8px 0;
+    padding-left: 24px;
+}
+
+.interacao-aviso-detalhado li {
+    margin-bottom: 4px;
+}
+
+.interacao-timestamp {
+    margin-top: 12px;
+    color: #64748b;
+    font-size: 0.8rem;
+    text-align: right;
+    font-style: italic;
+}
+
+.detalhe-item strong {
+    color: var(--dark);
+}
+
+.interacao-nota {
+    padding: 12px;
+    background-color: #f8fafc;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    color: var(--gray);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.interacao-aviso {
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    font-size: 0.9rem;
+    color: #92400e;
+}
+
+.erro-interacao {
+    padding: 12px;
+    background-color: #fee2e2;
+    border-left: 4px solid #dc2626;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    color: #b91c1c;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .interacao-medicamentos {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .interacao-medicamentos:before {
+        content: "+";
+        margin: 4px 0;
+        color: var(--gray);
+    }
+}

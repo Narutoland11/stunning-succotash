@@ -1,0 +1,223 @@
+/* Moz Doctor Dose - Estilos específicos para conteúdo mobile */
+
+/* Estilos gerais para conteúdo mobile */
+.mobile-content-container {
+    padding: 8px;
+    border-radius: 8px;
+    background-color: var(--white);
+}
+
+/* Melhorias para seção de doses em mobile */
+@media (max-width: 768px) {
+    /* Layout de cards para link de navegação */
+    .mobile-nav-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 12px 0;
+    }
+
+    .mobile-nav-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--white);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .mobile-nav-card:hover,
+    .mobile-nav-card:focus {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .mobile-nav-card i {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: var(--primary);
+    }
+
+    .mobile-nav-card span {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    /* Formulário de doses otimizado para mobile */
+    #doses .calculator-form {
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    #doses .form-group {
+        margin-bottom: 8px;
+    }
+
+    #doses .form-row {
+        margin-bottom: 8px;
+    }
+
+    #doses label {
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    /* Botões adaptados para mobile */
+    #doses .button-group {
+        margin-top: 12px;
+    }
+
+    /* Área de resultados com melhor visualização */
+    #resultado-dose {
+        margin-top: 15px;
+    }
+
+    #resultado-dose .result-card {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+    
+    #resultado-dose .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    #resultado-dose .result-header h3 {
+        font-size: 16px;
+        margin: 0;
+    }
+    
+    #resultado-dose .result-content {
+        border-radius: 8px;
+        background-color: var(--white);
+    }
+
+    /* Resultado de cálculos mais legível */
+    .dose-value {
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--primary);
+        padding: 8px;
+        border-radius: 6px;
+        background-color: var(--primary-light);
+        display: block;
+        margin: 8px 0;
+        text-align: center;
+    }
+    
+    /* Estilos para detalhes da dose */
+    .dose-details {
+        margin-top: 12px;
+    }
+    
+    .dose-detail-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--light-grey);
+    }
+    
+    .dose-detail-item:last-child {
+        border-bottom: none;
+    }
+    
+    .detail-label {
+        font-weight: bold;
+        color: var(--text-dark);
+    }
+    
+    .detail-value {
+        color: var(--primary-dark);
+    }
+    
+    /* Estilos para o grid de resultados em mobile */
+    .mobile-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .result-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--light-grey);
+    }
+    
+    .result-item:last-child {
+        border-bottom: none;
+    }
+    
+    .result-label {
+        font-weight: bold;
+        color: var(--text-dark);
+        font-size: 14px;
+    }
+    
+    .mobile-value {
+        color: var(--primary-dark);
+        font-weight: 500;
+    }
+    
+    .mobile-header {
+        font-size: 16px;
+        color: var(--primary);
+        margin-bottom: 12px;
+        border-bottom: 1px solid var(--primary-light);
+        padding-bottom: 6px;
+    }
+    
+    .mobile-info {
+        margin-top: 12px;
+        font-size: 14px;
+        background-color: var(--light-grey);
+        padding: 8px;
+        border-radius: 4px;
+        color: var(--text-dark);
+    }
+
+    /* Informações de medicamentos mais compactas */
+    #medicamento-info {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Alertas mais visíveis */
+    .alert-info, .alert-warning {
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+    }
+}
+
+/* Smartphones pequenos */
+@media (max-width: 480px) {
+    .mobile-nav-cards {
+        grid-template-columns: 1fr;
+    }
+
+    /* Ajustes para formulário ainda mais compacto */
+    #doses .calculator-form {
+        padding: 8px;
+    }
+
+    #doses .form-group {
+        margin-bottom: 6px;
+    }
+
+    /* Melhor visualização de resultados em telas muito pequenas */
+    #resultado-dose .result-card {
+        padding: 10px;
+    }
+
+    /* Informações do medicamento em tela pequena */
+    #medicamento-info h3 {
+        font-size: 16px;
+    }
+}

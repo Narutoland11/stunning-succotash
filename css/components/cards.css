@@ -1,0 +1,231 @@
+/* 
+ * Moz Doctor Dose - Cards
+ * Estilos para cards e componentes de container
+ */
+
+/* Estilos base para cards */
+.card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  border: var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-md);
+  transition: var(--transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow);
+}
+
+.card-header {
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  border-bottom: var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0;
+}
+
+.card-subtitle {
+  color: var(--grey);
+  font-size: var(--font-size-sm);
+  margin-top: 0.25rem;
+}
+
+.card-body {
+  padding: var(--space-xs) 0;
+}
+
+.card-footer {
+  padding-top: var(--space-sm);
+  margin-top: var(--space-sm);
+  border-top: var(--border);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Variantes de cards */
+.card-primary {
+  border-top: 3px solid var(--primary);
+}
+
+.card-secondary {
+  border-top: 3px solid var(--secondary);
+}
+
+.card-danger {
+  border-top: 3px solid var(--danger);
+}
+
+.card-warning {
+  border-top: 3px solid var(--warning);
+}
+
+.card-info {
+  border-top: 3px solid var(--info);
+}
+
+/* Card com sombra */
+.card-elevated {
+  box-shadow: var(--shadow);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Card compacto */
+.card-compact {
+  padding: var(--space-sm);
+}
+
+/* Cards de resultado */
+.result-card {
+  background-color: var(--light);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: var(--border);
+}
+
+.result-card h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+  color: var(--dark);
+  font-size: var(--font-size-lg);
+}
+
+.result-card p {
+  color: var(--grey);
+  margin-bottom: var(--space-sm);
+}
+
+/* Cards de navegação mobile */
+.mobile-nav-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 12px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  text-decoration: none;
+  color: var(--dark);
+}
+
+.mobile-nav-card:hover,
+.mobile-nav-card:focus,
+.mobile-nav-card.active {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.mobile-nav-card i {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: var(--primary);
+}
+
+.mobile-nav-card span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Card de estatísticas */
+.stat-card {
+  background-color: var(--light);
+  padding: var(--space-md);
+  border-radius: var(--border-radius);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: var(--space-sm);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--grey);
+  margin-top: var(--space-xs);
+}
+
+/* Card de informações */
+.info-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: var(--border);
+  transition: var(--transition);
+}
+
+.info-card:hover {
+  box-shadow: var(--shadow);
+}
+
+.info-card h3 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--primary);
+}
+
+/* Responsividade para cards */
+@media (max-width: 768px) {
+  .card, .result-card, .info-card {
+    padding: var(--space-md);
+  }
+  
+  .mobile-nav-card i {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  
+  .mobile-nav-card span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card, .result-card, .info-card {
+    padding: var(--space-sm);
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+}

@@ -1,0 +1,110 @@
+/* Footer Styles - Modern Medical Design */
+footer {
+    background-color: var(--dark);
+    color: var(--white);
+    padding: var(--space-xl) 0 var(--space-md);
+    margin-top: var(--space-xl);
+    position: relative;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+
+.footer-section h4 {
+    color: var(--white);
+    margin-bottom: var(--space-md);
+    position: relative;
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.footer-section h4::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--primary);
+}
+
+.footer-section p {
+    font-size: 0.9rem;
+    margin-bottom: var(--space-sm);
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+}
+
+.copyright {
+    padding-top: var(--space-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: var(--space-sm);
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-links a:hover {
+    color: var(--primary-light);
+}
+
+.footer-social {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.footer-social a {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.25rem;
+    transition: var(--transition);
+}
+
+.footer-social a:hover {
+    color: var(--primary-light);
+    transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+    
+    .footer-section {
+        padding-bottom: var(--space-md);
+    }
+}

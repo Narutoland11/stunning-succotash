@@ -1,0 +1,183 @@
+/* Moz Doctor Dose - Dark Mode CSS */
+
+/* Ajuste global de transição para todas as propriedades relevantes */
+body, input, select, button, .tool-section, .calculator-form, .tab-button,
+.result-card, .preparo-card, .referencia-item, .tab-content, nav a {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode {
+    /* Substituição das cores principais */
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --primary-light: #1e3a8a;
+    --secondary: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #0ea5e9;
+    --light: #1e293b;
+    --dark: #f8fafc;
+    --gray: #94a3b8;
+    --white: #0f172a;
+    
+    /* Ajusta a cor de fundo principal */
+    background-color: #0f172a;
+    color: #f8fafc;
+}
+
+/* Ajustes específicos para o modo escuro */
+body.dark-mode .tool-section,
+body.dark-mode .calculator-form,
+body.dark-mode header,
+body.dark-mode footer {
+    background-color: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-mode .result-card,
+body.dark-mode .preparo-card,
+body.dark-mode .referencia-item,
+body.dark-mode .tab-content,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+body.dark-mode .btn-primary {
+    background-color: #3b82f6;
+}
+
+body.dark-mode .btn-primary:hover {
+    background-color: #2563eb;
+}
+
+body.dark-mode .btn-secondary {
+    background-color: #475569;
+}
+
+body.dark-mode .btn-secondary:hover {
+    background-color: #64748b;
+}
+
+body.dark-mode nav a:hover,
+body.dark-mode nav a.active {
+    background-color: #1e3a8a;
+}
+
+body.dark-mode .tab-button {
+    background-color: #1e293b;
+    color: #f8fafc;
+    border-color: #334155;
+}
+
+body.dark-mode .tab-button.active {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+body.dark-mode .confirmacao-conteudo {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+body.dark-mode .confirmacao-alertas {
+    background-color: #0f172a;
+    border-color: #f59e0b;
+}
+
+/* Cores para links */
+body.dark-mode a {
+    color: #3b82f6;
+}
+
+body.dark-mode a:hover {
+    color: #60a5fa;
+}
+
+/* Ajustes específicos para elementos de formulário */
+body.dark-mode .confirmacao-alertas {
+    background-color: #1e293b;
+}
+
+body.dark-mode .search-input {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+body.dark-mode .search-input:focus {
+    border-color: #3b82f6;
+}
+
+/* Ajustes para alertas e cartões */
+body.dark-mode .alert-card,
+body.dark-mode .preparo-card {
+    background-color: #1e293b;
+}
+
+body.dark-mode .alert-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+body.dark-mode .alert-info {
+    background-color: rgba(14, 165, 233, 0.1);
+}
+
+body.dark-mode .alert-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* Ajustes para tabelas */
+body.dark-mode table th {
+    background-color: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-mode table td {
+    border-color: #334155;
+}
+
+body.dark-mode table tr:nth-child(even) {
+    background-color: rgba(30, 41, 59, 0.5);
+}
+
+body.dark-mode #mobile-menu-toggle {
+    color: #f8fafc;
+    background-color: #1e293b;
+}
+
+/* Estilo para o botão de alternância do modo escuro */
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
