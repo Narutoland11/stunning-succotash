@@ -19,10 +19,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // Referência ao auth do Firebase
     let auth;
     try {
+        // Verificar se o Firebase já foi inicializado
+        if (!firebase.apps || !firebase.apps.length) {
+            // Se não foi inicializado, configurar e inicializar
+            const firebaseConfig = {
+                apiKey: "AIzaSyAW2V-AmQEkZPgA6WHdUG2z_n5AizBNDGo",
+                authDomain: "mozdoctordose.firebaseapp.com",
+                databaseURL: "https://mozdoctordose-default-rtdb.firebaseio.com",
+                projectId: "mozdoctordose",
+                storageBucket: "mozdoctordose.firebasestorage.app",
+                messagingSenderId: "241428315907",
+                appId: "1:241428315907:web:297fc71778b21b410b7336",
+                measurementId: "G-2WVCDZL9KL"
+            };
+            firebase.initializeApp(firebaseConfig);
+            console.log('Firebase inicializado pelo script de login');
+        } else {
+            console.log('Firebase já foi inicializado anteriormente');
+        }
+        
         auth = firebase.auth();
     } catch (error) {
         console.error('Erro ao inicializar Firebase Auth:', error);
-        return;
+        // Não retornar aqui para que o resto da página funcione mesmo sem auth
+        console.warn('Continuando sem autenticação...');
     }
     
     setupLoginEventListeners();
