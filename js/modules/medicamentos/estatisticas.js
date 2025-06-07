@@ -20,14 +20,14 @@ function inicializarEstatisticas() {
         const btnAtualizarEstatisticas = document.getElementById('atualizar-estatisticas');
         
         if (btnAtualizarEstatisticas) {
-            console.log('Botão de atualização de estatísticas encontrado');
+            // Botão de atualização de estatísticas encontrado
             
             btnAtualizarEstatisticas.addEventListener('click', function(event) {
                 event.preventDefault();
                 
                 // Verificar se a função contarMedicamentos está disponível
                 if (typeof window.contarMedicamentos !== 'function') {
-                    console.error('Função contarMedicamentos não encontrada. Verificando dependências...');
+                    // Função contarMedicamentos não disponível
                     verificarDependencias();
                     return;
                 }
@@ -42,31 +42,22 @@ function inicializarEstatisticas() {
                         try {
                             window.contarMedicamentos();
                             
-                            // Exibir notificação de sucesso
-                            if (typeof showAlert === 'function') {
-                                showAlert('Estatísticas de medicamentos atualizadas com sucesso!', 'success');
-                            }
+                            // Notificações removidas
                         } catch (erro) {
-                            console.error('Erro ao executar contarMedicamentos:', erro);
-                            if (typeof showAlert === 'function') {
-                                showAlert('Erro ao atualizar estatísticas. Verifique o console.', 'danger');
-                            }
+                            // Erro silencioso
+                            // Notificações removidas
                         } finally {
                             // Restaurar o texto do botão
                             botao.innerHTML = '<i class="fas fa-sync"></i> Atualizar estatísticas';
                         }
                     }, 500);
                 } catch (erro) {
-                    console.error('Erro:', erro);
+                    // Erro silencioso
                     botao.innerHTML = '<i class="fas fa-sync"></i> Atualizar estatísticas';
                     
-                    if (typeof showAlert === 'function') {
-                        showAlert('Erro ao atualizar estatísticas. Verifique o console.', 'danger');
-                    }
+                    // Notificações removidas
                 }
             });
-        } else {
-            console.warn('Botão de atualização de estatísticas não encontrado');
         }
         
         // Exibir informações adicionais sobre a contagem
@@ -78,7 +69,7 @@ function inicializarEstatisticas() {
             `;
         }
     } catch (erro) {
-        console.error('Erro ao inicializar módulo de estatísticas:', erro);
+        // Erro silencioso
     }
 }
 
@@ -86,19 +77,6 @@ function inicializarEstatisticas() {
  * Verifica se todas as dependências necessárias estão carregadas
  */
 function verificarDependencias() {
-    const dependencias = [
-        { nome: 'MEDICAMENTOS', tipo: 'objeto' },
-        { nome: 'contarMedicamentos', tipo: 'função' },
-        { nome: 'showAlert', tipo: 'função' }
-    ];
-    
-    console.log('Verificando dependências do módulo de estatísticas:');
-    
-    dependencias.forEach(dep => {
-        const disponivel = window[dep.nome] !== undefined;
-        console.log(`- ${dep.nome} (${dep.tipo}): ${disponivel ? 'Disponível' : 'Não encontrado'}`);
-    });
-    
     // Verificar script de contagem
     const scripts = document.getElementsByTagName('script');
     let contarMedicamentosScriptCarregado = false;
@@ -110,20 +88,13 @@ function verificarDependencias() {
         }
     }
     
-    console.log(`Script contarMedicamentos.js: ${contarMedicamentosScriptCarregado ? 'Carregado' : 'Não encontrado'}`);
-    
     if (!contarMedicamentosScriptCarregado) {
-        console.warn('Tentando carregar contarMedicamentos.js dinamicamente...');
         // Tentar carregar o script dinamicamente
         const script = document.createElement('script');
         script.src = 'js/modules/medicamentos/contarMedicamentos.js';
         script.onload = () => {
-            console.log('Script contarMedicamentos.js carregado com sucesso!');
             // Tentar inicializar novamente após carregamento
             setTimeout(inicializarEstatisticas, 500);
-        };
-        script.onerror = () => {
-            console.error('Falha ao carregar contarMedicamentos.js');
         };
         document.head.appendChild(script);
     }

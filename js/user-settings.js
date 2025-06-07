@@ -342,17 +342,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Depois excluir conta no Auth
                     return currentUser.delete();
                 }).then(() => {
-                    // Conta excluída com sucesso
-                    alert('Sua conta foi excluída com sucesso.');
+                    // Conta excluída com sucesso - redirecionamento silencioso
                     window.location.href = '/';
                 }).catch(error => {
                     // Tratar erros
                     if (error.code === 'auth/requires-recent-login') {
-                        alert('Por motivos de segurança, faça login novamente antes de excluir sua conta.');
-                        // Forçar logout para reautenticação
+                        // Forçar logout silencioso para reautenticação
                         auth.signOut();
                     } else {
-                        alert('Erro ao excluir conta: ' + error.message);
+                        // Erro silencioso
+                        console.error('Erro ao excluir conta:', error);
                     }
                 });
             }

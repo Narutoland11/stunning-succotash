@@ -7,7 +7,7 @@
 function analisarMedicamentos() {
     // Verificar se o objeto MEDICAMENTOS existe
     if (typeof MEDICAMENTOS === 'undefined') {
-        console.error('Erro: Objeto MEDICAMENTOS não definido. Certifique-se de que medicamentos.js está carregado.');
+        // Objeto MEDICAMENTOS não definido
         return {
             total: 0,
             porVia: {},
@@ -71,10 +71,10 @@ function analisarMedicamentos() {
             }
         });
         
-        console.log('Estatísticas de medicamentos:', stats);
+        // Retornar estatísticas
         return stats;
     } catch (erro) {
-        console.error('Erro ao analisar medicamentos:', erro);
+        // Erro silencioso
         return {
             total: 0,
             porVia: {},
@@ -189,16 +189,12 @@ function contarMedicamentos() {
     
     // Verificar se MEDICAMENTOS está disponível
     if (typeof MEDICAMENTOS === 'undefined') {
-        console.warn('Objeto MEDICAMENTOS não encontrado. Tentando novamente em 1 segundo...');
         setTimeout(contarMedicamentos, 1000);
         return;
     }
     
     try {
         const estatisticas = analisarMedicamentos();
-        
-        // Exibir no console para debugging
-        console.log(`Total de medicamentos disponíveis: ${estatisticas.total}`);
         
         // Atualizar elementos na interface
         if (document.getElementById('total-medicamentos')) {
@@ -207,10 +203,8 @@ function contarMedicamentos() {
         
         // Atualizar a seção de estatísticas na interface
         atualizarEstatisticasInterface(estatisticas);
-        
-        console.log('Estatísticas de medicamentos atualizadas com sucesso');
     } catch (erro) {
-        console.error('Erro ao executar contarMedicamentos:', erro);
+        // Erro silencioso
     }
 }
 
@@ -218,7 +212,6 @@ function contarMedicamentos() {
 let contarMedicamentosInicializado = false;
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Esperar um pouco para garantir que outros scripts carreguem primeiro
     setTimeout(() => {
         if (!contarMedicamentosInicializado) {
             contarMedicamentosInicializado = true;

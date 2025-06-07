@@ -1,14 +1,15 @@
 /**
- * Sistema de Alertas Robusto para a Calculadora Pediátrica
+ * Sistema de Alertas Minimalista para a Calculadora Pediátrica
  * Este módulo fornece funcionalidades para exibir diferentes tipos de alertas na interface
+ * Versão simplificada com menos alertas intrusivos
  */
 
 const ALERTA_SISTEMA = {
-    // Configurações de duração (em milissegundos)
+    // Configurações de duração (em milissegundos) - reduzidas para menos intrusividade
     duracoes: {
-        curto: 3000,
-        medio: 5000,
-        longo: 8000
+        curto: 1800,  // Reduzido para ser menos intrusivo
+        medio: 2500,  // Reduzido para ser menos intrusivo
+        longo: 3500   // Reduzido para ser menos intrusivo
     },
     
     // Classes CSS para os diferentes tipos de alerta
@@ -40,7 +41,7 @@ const ALERTA_SISTEMA = {
             this.adicionarEstilosCSS();
         }
         
-        console.log('Sistema de alertas inicializado com sucesso');
+        // Sistema inicializado silenciosamente
     },
     
     // Adiciona estilos CSS diretamente ao documento
@@ -321,8 +322,32 @@ const ALERTA_SISTEMA = {
     }
 };
 
-// Função global para mostrar alertas
+// Função global para mostrar alertas - agora com filtro para reduzir alertas desnecesssários
 function showAlert(mensagem, tipo = 'info', opcoes = {}) {
+    // Ignorar alertas de informação e sucesso comuns que são desnecessários
+    const alertasDesnecessarios = [
+        'Estatísticas de medicamentos atualizadas com sucesso!',
+        'Configurações salvas com sucesso',
+        'Perfil atualizado com sucesso',
+        'Dados carregados com sucesso',
+        'Operação concluída',
+        'Dados atualizados'
+    ];
+    
+    // Verificar se a mensagem está na lista de alertas desnecessários 
+    // e não é um alerta de erro/perigo
+    if ((tipo === 'info' || tipo === 'success') && alertasDesnecessarios.some(texto => mensagem.includes(texto))) {
+        // Não mostrar o alerta
+        return -1;
+    }
+    
+    // Reduzir a duração de todos os alertas para torná-los menos intrusivos
+    if (!opcoes.duracao) {
+        if (tipo === 'info' || tipo === 'success') {
+            opcoes.duracao = ALERTA_SISTEMA.duracoes.curto;
+        }
+    }
+    
     return ALERTA_SISTEMA.mostrar(mensagem, tipo, opcoes);
 }
 
