@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const navToggle = document.getElementById('nav-toggle');
     const mainNav = document.getElementById('main-nav');
     const navLinks = document.querySelectorAll('.main-nav a');
-    const userDropdownButton = document.getElementById('user-menu-button');
+    const userMenuButton = document.getElementById('user-menu-button');
     const userDropdown = document.getElementById('user-dropdown');
     const mobileNavCards = document.querySelectorAll('.mobile-nav-card');
     const toolSections = document.querySelectorAll('.tool-section');
