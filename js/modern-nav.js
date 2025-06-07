@@ -5,6 +5,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Verificar ambiente - útil para debugging
+    console.log('Ambiente:', window.location.hostname);
     // Elementos principais da navegação
     const navToggle = document.getElementById('nav-toggle');
     const mainNav = document.getElementById('main-nav');
@@ -57,7 +59,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Função para ativar a seção correta com base na URL atual
     function activateCurrentSection() {
-        const hash = window.location.hash || '#doses';
+        // Garantir que haja um hash padrão se nenhum estiver presente
+        let hash = window.location.hash || '#doses';
+        
+        // Verificar se o hash é válido (corresponde a uma seção existente)
+        let targetSection = document.querySelector(hash);
+        
+        // Se o hash não corresponder a uma seção válida, use o padrão '#doses'
+        if (!targetSection) {
+            hash = '#doses';
+            // Atualiza a URL sem recarregar a página
+            if (history.pushState) {
+                history.pushState(null, null, hash);
+            } else {
+                window.location.hash = hash;
+            }
+        }
+        
+        console.log('Ativando seção:', hash);
         
         // Remover atributos ativos de todos os links e seções
         navLinks.forEach(link => {
@@ -82,6 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentLink) {
             currentLink.classList.add('active');
             currentLink.setAttribute('aria-current', 'page');
+            console.log('Link ativado:', currentLink);
+        } else {
+            console.warn('Link não encontrado para:', hash);
         }
         
         if (currentMobileLink) {
@@ -89,7 +111,12 @@ document.addEventListener('DOMContentLoaded', function() {
             currentMobileLink.setAttribute('aria-selected', 'true');
         }
         
-        if (currentSection) currentSection.classList.add('active');
+        if (currentSection) {
+            currentSection.classList.add('active');
+            console.log('Seção ativada:', currentSection.id);
+        } else {
+            console.warn('Seção não encontrada para:', hash);
+        }
         
         // Fechar o menu móvel após clicar em um link (se estiver aberto)
         if (mainNav && mainNav.classList.contains('active')) {
@@ -112,22 +139,50 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Adicionar event listeners aos links de navegação
     navLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function(e) {
+            // Impedir comportamento padrão para garantir controle total
+            e.preventDefault();
+            
             const targetId = this.getAttribute('href');
             
-            // Atualizar URL hash
-            window.location.hash = targetId;
+            // Atualizar URL hash sem recarregar a página
+            if (history.pushState) {
+                history.pushState(null, null, targetId);
+            } else {
+                window.location.hash = targetId;
+            }
             
             // Ativar seção correspondente
             activateCurrentSection();
+            
+            // Rolar suavemente até o topo se necessário
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     });
     
     // Inicializar a seção ativa baseada na URL atual
-    activateCurrentSection();
+    setTimeout(function() {
+        activateCurrentSection();
+        
+        // Verificação adicional para garantir que a seção esteja ativa
+        const hash = window.location.hash || '#doses';
+        const activeSection = document.querySelector('.tool-section.active');
+        if (!activeSection) {
+            console.log('Forçando ativação da seção padrão devido a problema no deploy');
+            const defaultSection = document.querySelector(hash) || document.querySelector('#doses');
+            if (defaultSection) defaultSection.classList.add('active');
+        }
+    }, 100); // Pequeno atraso para garantir que o DOM esteja pronto
     
     // Atualizar a seção quando a URL mudar
-    window.addEventListener('hashchange', activateCurrentSection);
+    window.addEventListener('hashchange', function(e) {
+        e.preventDefault(); // Prevenir comportamento padrão
+        console.log('Hash alterado:', window.location.hash);
+        activateCurrentSection();
+    }, false);
     
     // Fechar dropdown se clicar fora dele
     document.addEventListener('click', function(event) {
