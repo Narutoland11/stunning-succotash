@@ -90,7 +90,10 @@ function analisarMedicamentos() {
 function atualizarEstatisticasInterface(stats) {
     // Verificar se a seção de informações existe
     const secaoInfo = document.getElementById('informacoes');
-    if (!secaoInfo) return;
+    if (!secaoInfo) {
+        console.warn('Seção de informações não encontrada. Não é possível atualizar estatísticas.');
+        return;
+    }
     
     // Verificar se o elemento de estatísticas já existe
     let estatisticasDiv = document.getElementById('estatisticas-medicamentos');
@@ -182,8 +185,16 @@ function atualizarEstatisticasInterface(stats) {
  * Função principal para contar medicamentos e atualizar interface
  */
 function contarMedicamentos() {
-    // Aguarda um tempo para garantir que todos os medicamentos foram carregados
-    setTimeout(() => {
+    contarMedicamentosInicializado = true;
+    
+    // Verificar se MEDICAMENTOS está disponível
+    if (typeof MEDICAMENTOS === 'undefined') {
+        console.warn('Objeto MEDICAMENTOS não encontrado. Tentando novamente em 1 segundo...');
+        setTimeout(contarMedicamentos, 1000);
+        return;
+    }
+    
+    try {
         const estatisticas = analisarMedicamentos();
         
         // Exibir no console para debugging
@@ -196,11 +207,25 @@ function contarMedicamentos() {
         
         // Atualizar a seção de estatísticas na interface
         atualizarEstatisticasInterface(estatisticas);
-    }, 1000); // Aumentado para 1000ms para garantir carregamento completo
+        
+        console.log('Estatísticas de medicamentos atualizadas com sucesso');
+    } catch (erro) {
+        console.error('Erro ao executar contarMedicamentos:', erro);
+    }
 }
 
-// Executa a contagem quando o DOM estiver carregado
-document.addEventListener('DOMContentLoaded', contarMedicamentos);
+// Executa a contagem quando o DOM estiver carregado, mas apenas se não for chamado por outro script
+let contarMedicamentosInicializado = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Esperar um pouco para garantir que outros scripts carreguem primeiro
+    setTimeout(() => {
+        if (!contarMedicamentosInicializado) {
+            contarMedicamentosInicializado = true;
+            contarMedicamentos();
+        }
+    }, 1500);
+});
 
 // Expor funções para uso global
 window.contarMedicamentos = contarMedicamentos;
