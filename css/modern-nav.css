@@ -2,6 +2,7 @@
  * Modern Navigation
  * Estilos modernos para a navegação do Moz Doctor Dose
  * Inclui melhorias de acessibilidade, design responsivo e animações suaves
+ * Otimizado para Netlify e dispositivos móveis de todos os tamanhos
  */
 
 /* Variáveis CSS para fácil personalização */
@@ -18,6 +19,11 @@
   --border-radius: 4px;
 }
 
+/* Garantir que todos os navegadores interpretem o box model da mesma forma */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 /* Base do cabeçalho */
 .header {
   background-color: var(--nav-bg);
@@ -27,6 +33,8 @@
   z-index: 1000;
   width: 100%;
   height: var(--header-height);
+  -webkit-box-shadow: var(--shadow-sm);
+  -moz-box-shadow: var(--shadow-sm);
 }
 
 .header-wrapper {
@@ -119,9 +127,11 @@
   position: absolute;
   bottom: -2px;
   left: 0;
+  right: 0;
   width: 100%;
   height: 2px;
   background-color: var(--nav-active);
+  z-index: 1;
 }
 
 /* Botão toggle */
@@ -168,7 +178,11 @@
   padding: 8px 12px;
   border-radius: var(--border-radius);
   cursor: pointer;
+  -webkit-transition: background-color var(--transition-speed) ease;
+  -moz-transition: background-color var(--transition-speed) ease;
   transition: background-color var(--transition-speed) ease;
+  text-decoration: none;
+  color: var(--nav-text);
 }
 
 .user-dropdown-toggle:hover {
@@ -195,9 +209,13 @@
   width: 200px;
   background-color: white;
   border-radius: var(--border-radius);
+  -webkit-box-shadow: var(--shadow-md);
+  -moz-box-shadow: var(--shadow-md);
   box-shadow: var(--shadow-md);
   padding: 5px 0;
   display: none;
+  -webkit-animation: fadeInDown var(--transition-speed) ease forwards;
+  -moz-animation: fadeInDown var(--transition-speed) ease forwards;
   animation: fadeInDown var(--transition-speed) ease forwards;
   z-index: 1002;
 }
@@ -276,11 +294,14 @@
 
   .header-wrapper {
     flex-wrap: wrap;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .nav-toggle {
-    display: block;
+    display: block !important;
     order: 3;
+    z-index: 1002;
   }
 
   .logo {
@@ -293,18 +314,23 @@
     width: 100%;
     max-height: 0;
     overflow: hidden;
+    -webkit-transition: max-height var(--transition-speed) ease;
+    -moz-transition: max-height var(--transition-speed) ease;
     transition: max-height var(--transition-speed) ease;
     margin: 0;
   }
 
   .main-nav.active {
-    max-height: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .main-nav ul {
     flex-direction: column;
     width: 100%;
     padding: 1rem 0;
+    margin: 0;
   }
 
   .main-nav a {
@@ -324,6 +350,12 @@
     margin-left: auto;
     order: 2;
   }
+  
+  /* Ajuste para evitar quebra de layout em telas muito pequenas */
+  .header-actions .theme-toggle,
+  .header-actions .user-dropdown-toggle {
+    padding: 8px 6px;
+  }
 }
 
 /* Pequenos ajustes para telas muito pequenas */
@@ -338,10 +370,46 @@
 
   .logo img {
     height: 40px;
+    max-width: 100%;
   }
   
   .user-dropdown-toggle span#user-name {
     display: none;
+  }
+  
+  .user-dropdown-toggle {
+    padding: 6px;
+  }
+  
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+  }
+  
+  .main-nav a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+  }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 360px) {
+  .header-wrapper {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  
+  .logo {
+    max-width: 160px;
+  }
+  
+  .logo h1 {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
