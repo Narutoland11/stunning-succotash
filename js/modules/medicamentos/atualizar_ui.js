@@ -52,13 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Seletor de medicamentos inicializado');
             }
             
-            // Exibir alerta sobre a atualização
-            if (typeof ALERTA_SISTEMA !== 'undefined') {
-                ALERTA_SISTEMA.info('Banco de dados de medicamentos atualizado: ' + medicamentosKeys.length + ' medicamentos disponíveis agora, incluindo novos antiepilépticos.', {
-                    duracao: ALERTA_SISTEMA.duracoes.medio,
-                    fechavel: true
-                });
-            }
+            // Banco de dados atualizado silenciosamente sem exibir notificações
+            // console.log('Banco de dados de medicamentos atualizado: ' + medicamentosKeys.length + ' medicamentos disponíveis');
+            
         } catch (error) {
             console.error('Erro durante atualização forçada da UI:', error);
         }

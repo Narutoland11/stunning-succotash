@@ -50,15 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.warn('Função adicionarAntiepilepticosParte3 não encontrada');
             }
             
-            // Exibir mensagem informativa usando o novo sistema de alertas
-            if (typeof ALERTA_SISTEMA !== 'undefined') {
-                setTimeout(function() {
-                    ALERTA_SISTEMA.sucesso('Medicamentos adicionais carregados com sucesso: ampicilina, ceftriaxona, azitromicina, albendazol, metronidazol, salbutamol, prednisolona, paracetamol, amoxicilina e anticonvulsivantes (carbamazepina, fenitoína, fenobarbital, valproato, lamotrigina, levetiracetam e outros).', {
-                        duracao: ALERTA_SISTEMA.duracoes.longo,
-                        fechavel: true
-                    });
-                }, 1000);
-            }
+            // Medicamentos carregados silenciosamente sem exibir notificação ao usuário
             
             console.log('Total de medicamentos disponíveis:', Object.keys(MEDICAMENTOS).length);
         } else {
