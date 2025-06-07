@@ -1,5 +1,6 @@
 /**
  * Moz Doctor Dose - Estilos para Configurações do Usuário
+ * Versão responsiva 2025 - Otimizada para todos dispositivos
  */
 
 /* Container principal */
@@ -7,9 +8,11 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
+    padding: clamp(15px, 4vw, 30px);
+    width: calc(100% - 30px);
     max-width: 800px;
-    margin: 20px auto;
+    margin: 15px auto;
+    transition: all 0.3s ease;
 }
 
 .dark-mode .settings-container {
@@ -19,11 +22,11 @@
 
 /* Cabeçalho */
 .settings-header {
-    margin-bottom: 30px;
+    margin-bottom: clamp(20px, 5vw, 30px);
 }
 
 .settings-title {
-    font-size: 24px;
+    font-size: clamp(20px, 4vw, 24px);
     font-weight: bold;
     margin: 0 0 10px 0;
     color: #333;
@@ -46,24 +49,56 @@
 /* Menu de navegação lateral */
 .settings-layout {
     display: flex;
-    gap: 30px;
+    gap: clamp(15px, 3vw, 30px);
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .settings-layout {
+        flex-direction: row;
+    }
 }
 
 .settings-sidebar {
-    width: 25%;
-    min-width: 200px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .settings-sidebar {
+        width: 25%;
+        min-width: 200px;
+    }
 }
 
 .settings-content {
     flex: 1;
+    min-width: 0;
 }
 
 .settings-nav {
     list-style: none;
     padding: 0;
     margin: 0;
-    border-right: 1px solid #eee;
-    height: 100%;
+    display: flex;
+    overflow-x: auto;
+    gap: 5px;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+
+.settings-nav::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+
+@media (min-width: 768px) {
+    .settings-nav {
+        flex-direction: column;
+        overflow-x: visible;
+        border-right: 1px solid #eee;
+        height: 100%;
+        padding-bottom: 0;
+    }
 }
 
 .dark-mode .settings-nav {
@@ -72,17 +107,26 @@
 
 .settings-nav-item {
     margin-bottom: 5px;
+    flex-shrink: 0;
 }
 
 .settings-nav-link {
     display: flex;
     align-items: center;
-    padding: 12px 15px;
+    padding: 10px 15px;
     color: #555;
     text-decoration: none;
     border-radius: 6px;
     transition: all 0.2s;
     cursor: pointer;
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+    .settings-nav-link {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
 }
 
 .dark-mode .settings-nav-link {
@@ -185,8 +229,8 @@
 .settings-toggle {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: clamp(46px, 12vw, 60px);
+    height: clamp(26px, 8vw, 34px);
 }
 
 .settings-toggle input { 
@@ -233,8 +277,15 @@
 
 .settings-toggle-label {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+@media (min-width: 768px) {
+    .settings-toggle-label {
+        justify-content: space-between;
+    }
 }
 
 .settings-toggle-text {
@@ -242,13 +293,28 @@
     font-weight: normal;
 }
 
+.preferences-card-description {
+    color: #777;
+    font-size: 14px;
+    flex-basis: 100%;
+    margin-top: 5px;
+}
+
+@media (min-width: 768px) {
+    .settings-toggle-text {
+        margin-left: 15px;
+        flex-basis: auto;
+        margin-top: 0;
+    }
+}
+
 /* Cartões de preferências */
 .preferences-card {
-    padding: 20px;
-    border: 1px solid #eee;
+    background-color: #f9f9f9;
     border-radius: 8px;
-    margin-bottom: 20px;
-    transition: all 0.3s;
+    padding: clamp(15px, 4vw, 20px);
+    margin-bottom: clamp(15px, 5vw, 25px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .dark-mode .preferences-card {
@@ -294,8 +360,23 @@
 .settings-actions {
     display: flex;
     justify-content: flex-end;
+    margin-top: clamp(20px, 5vw, 30px);
     gap: 10px;
-    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 580px) {
+    .settings-actions {
+        justify-content: center;
+    }
+    
+    .settings-actions .settings-btn {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+.settings-actions {
     padding-top: 20px;
     border-top: 1px solid #eee;
 }
@@ -308,12 +389,12 @@
     background-color: #3498db;
     color: white;
     border: none;
-    padding: 12px 20px;
+    padding: clamp(10px, 3vw, 12px) clamp(15px, 4vw, 20px);
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
     font-weight: 500;
-    transition: background-color 0.3s;
+    transition: all 0.2s;
+    font-size: clamp(14px, 3vw, 16px);
 }
 
 .settings-btn:hover {

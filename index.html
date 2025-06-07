@@ -19,6 +19,20 @@
     <link rel="preload" href="css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/main.css"></noscript>
     
+    <!-- CSS Responsivo -->
+    <link rel="preload" href="css/responsive-ui.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/responsive-ui.css"></noscript>
+    
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/cloudinary-integration.css">
+    
+    <!-- CSS do Perfil do Usuário -->
+    <link rel="stylesheet" href="css/user-profile.css">
+    
+    <!-- Nova Navegação Moderna -->
+    <link rel="stylesheet" href="css/modern-nav.css">
+    
     <!-- Font Awesome para ícones (carregamento otimizado) -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
@@ -35,9 +49,20 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
-    <!-- Script de inicialização do Firebase -->
+    <!-- Script de inicialização do Firebase e objetos globais -->
     <script src="js/firebase-init.js"></script>
+    
+    <!-- Detector de ambiente (Local/Netlify) -->
+    <script src="js/environment-detector.js"></script>
+    
+    <!-- Integração com Cloudinary (upload de imagens gratuito) -->
+    <script src="js/cloudinary-integration.js"></script>
+    <script src="js/cloudinary-test.js"></script>
+    <script src="js/cloudinary-direct-test.js"></script>
+    <script src="js/medicamentos-init.js"></script>
     
     <!-- Script auxiliar para carregamento otimizado de CSS -->
     <script>
@@ -128,91 +153,105 @@
     </style>
 </head>
 <body>
-    <header>
+    <!-- Link de acessibilidade para pular para o conteúdo principal -->
+    <a href="#main-content" class="skip-to-content">Pular para o conteúdo</a>
+    
+    <header class="header" role="banner">
         <div class="container">
-            <div class="logo">
-                <img src="./images/Flag_of_Mozambique.svg.png" alt="MISAU">
-                <div>
-                    <h1>Calculadora Médica</h1>
-                    <p>- Moçambique</p>
+            <div class="header-wrapper">
+                <!-- Logo --> 
+                <div class="logo">
+                    <img src="./images/Flag_of_Mozambique.svg.png" alt="MISAU - Bandeira de Moçambique">
+                    <div>
+                        <h1>Calculadora Médica</h1>
+                        <p>- Moçambique</p>
+                    </div>
                 </div>
-            </div>
-            <div class="header-actions">
-                <!-- Botão de troca de tema -->
-                <button id="theme-toggle" class="theme-toggle" title="Alternar tema">
-                    <i class="fas fa-sun"></i>
-                </button>
 
-                <div class="auth-buttons">
-                    <!-- Botão de Login (mostrado quando não logado) -->
-                    <button id="login-button" class="btn btn-primary btn-rounded login-button">
-                        <i class="fas fa-user"></i> Entrar
+                <!-- Botão de toggle para navegação móvel -->
+                <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Abrir menu de navegação">
+                    <span class="sr-only">Menu</span>
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <!-- Navegação principal -->
+                <nav id="main-nav" class="main-nav" aria-label="Menu principal">
+                    <ul role="menubar">
+                        <li role="none"><a href="#doses" role="menuitem" aria-current="page" class="active"><i class="fas fa-syringe"></i> Doses</a></li>
+                        <li role="none"><a href="#laboratorio" role="menuitem"><i class="fas fa-microscope"></i> Laboratório</a></li>
+                        <li role="none"><a href="#eletrolitos" role="menuitem"><i class="fas fa-flask"></i> Eletrólitos</a></li>
+                        <li role="none"><a href="#gasometria" role="menuitem"><i class="fas fa-lungs"></i> Gasometria</a></li>
+                        <li role="none"><a href="#protocolos" role="menuitem"><i class="fas fa-book-medical"></i> Protocolos</a></li>
+                        <li role="none"><a href="#interamed" role="menuitem"><i class="fas fa-pills"></i> InteraMed</a></li>
+                        <li role="none"><a href="#ferramentas" role="menuitem"><i class="fas fa-tools"></i> Ferramentas</a></li>
+                        <li role="none"><a href="#informacoes" role="menuitem"><i class="fas fa-info-circle"></i> Info</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <!-- Botão de troca de tema -->
+                    <button id="theme-toggle" class="theme-toggle" title="Alternar tema" aria-label="Alternar tema claro/escuro">
+                        <i class="fas fa-sun"></i>
                     </button>
-                    
-                    <!-- Menu de usuário (mostrado quando logado) -->
-                    <div id="user-menu-button" class="user-dropdown" style="display: none;">
-                        <button class="user-dropdown-toggle">
-                            <span id="user-avatar" class="user-avatar">U</span>
-                            <span id="user-name">Usuário</span>
-                            <i class="fas fa-chevron-down"></i>
+
+                    <div class="auth-buttons">
+                        <!-- Botão de Login (mostrado quando não logado) -->
+                        <button id="login-button" class="btn btn-primary btn-rounded login-button">
+                            <i class="fas fa-user"></i> Entrar
                         </button>
-                        <div id="user-dropdown" class="user-dropdown-menu">
-                            <a href="#perfil" class="user-dropdown-item" id="menu-perfil">
-                                <i class="fas fa-user-circle"></i> Meu Perfil
-                            </a>
-                            <a href="#configuracoes" class="user-dropdown-item" id="menu-configuracoes">
-                                <i class="fas fa-cog"></i> Configurações
-                            </a>
-                            <div class="user-dropdown-divider"></div>
-                            <button id="logout-button" class="user-dropdown-item">
-                                <i class="fas fa-sign-out-alt"></i> Sair
+                        
+                        <!-- Menu de usuário (mostrado quando logado) -->
+                        <div id="user-menu-button" class="user-dropdown" style="display: none;">
+                            <button class="user-dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Abrir menu do usuário">
+                                <span id="user-avatar" class="user-avatar" aria-hidden="true">U</span>
+                                <span id="user-name">Usuário</span>
+                                <i class="fas fa-chevron-down" aria-hidden="true"></i>
                             </button>
+                            <div id="user-dropdown" class="user-dropdown-menu" role="menu">
+                                <a href="#perfil" class="user-dropdown-item" id="menu-perfil" role="menuitem">
+                                    <i class="fas fa-user-circle" aria-hidden="true"></i> Meu Perfil
+                                </a>
+                                <a href="#configuracoes" class="user-dropdown-item" id="menu-configuracoes" role="menuitem">
+                                    <i class="fas fa-cog" aria-hidden="true"></i> Configurações
+                                </a>
+                                <div class="user-dropdown-divider" role="separator"></div>
+                                <button id="logout-button" class="user-dropdown-item" role="menuitem">
+                                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sair
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="nav-toggle" id="nav-toggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <nav id="main-nav" class="nav-container">
-                <ul>
-                    <li><a href="#doses" class="active"><i class="fas fa-syringe"></i> Doses</a></li>
-                    <li><a href="#laboratorio"><i class="fas fa-microscope"></i> Laboratório</a></li>
-                    <li><a href="#eletrolitos"><i class="fas fa-flask"></i> Eletrólitos</a></li>
-                    <li><a href="#gasometria"><i class="fas fa-lungs"></i> Gasometria</a></li>
-                    <li><a href="#interamed"><i class="fas fa-pills"></i> InteraMed</a></li>
-                    <li><a href="#protocolos"><i class="fas fa-book-medical"></i> Protocolos</a></li>
-                    <li><a href="#ferramentas"><i class="fas fa-tools"></i> Ferramentas</a></li>
-                    <li><a href="#informacoes"><i class="fas fa-info-circle"></i> Informações</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
-    <main class="container">
+    <main id="main-content" class="container">
         <!-- Seção de Cálculo de Doses -->
         <section id="doses" class="tool-section active">
             <h2><i class="fas fa-syringe"></i> Cálculo de Doses Pediátricas</h2>
             
             <!-- Navegação rápida para mobile -->
-            <div class="mobile-nav-cards">
-                <a href="#doses" class="mobile-nav-card active">
-                    <i class="fas fa-syringe"></i>
-                    <span>Doses</span>
-                </a>
-                <a href="#laboratorio" class="mobile-nav-card">
-                    <i class="fas fa-microscope"></i>
-                    <span>Laboratório</span>
-                </a>
-                <a href="#eletrolitos" class="mobile-nav-card">
-                    <i class="fas fa-flask"></i>
-                    <span>Eletrólitos</span>
-                </a>
-                <a href="#gasometria" class="mobile-nav-card">
-                    <i class="fas fa-lungs"></i>
-                    <span>Gasometria</span>
-                </a>
-            </div>
+            <nav aria-label="Menu rápido para dispositivos móveis" class="mobile-nav">
+                <div class="mobile-nav-cards" role="tablist">
+                    <a href="#doses" class="mobile-nav-card active" role="tab" aria-selected="true" aria-label="Seção de doses">
+                        <i class="fas fa-syringe" aria-hidden="true"></i>
+                        <span>Doses</span>
+                    </a>
+                    <a href="#laboratorio" class="mobile-nav-card" role="tab" aria-selected="false" aria-label="Seção de laboratório">
+                        <i class="fas fa-microscope" aria-hidden="true"></i>
+                        <span>Laboratório</span>
+                    </a>
+                    <a href="#eletrolitos" class="mobile-nav-card" role="tab" aria-selected="false" aria-label="Seção de eletrólitos">
+                        <i class="fas fa-flask" aria-hidden="true"></i>
+                        <span>Eletrólitos</span>
+                    </a>
+                    <a href="#gasometria" class="mobile-nav-card" role="tab" aria-selected="false" aria-label="Seção de gasometria">
+                        <i class="fas fa-lungs" aria-hidden="true"></i>
+                        <span>Gasometria</span>
+                    </a>
+                </div>
+            </nav>
             
             <div class="calculator-form mobile-content-container">
                 <div class="form-row">
@@ -1658,6 +1697,9 @@
     
     <!-- Scripts otimizados e minificados -->
     <script src="js/build/bundle-config.js"></script>
+    
+    <!-- Script para controles responsivos -->
+    <script src="js/responsive-controls.js"></script>
     <script src="js/dist/main.min.js"></script>
     <script src="js/dist/medicamentos.min.js"></script>
     
@@ -1666,11 +1708,13 @@
 
     <!-- Scripts -->
     <script src="js/core/mainn.js"></script>
-    <!-- Scripts para o modo escuro, estatísticas, login e dashboard -->
+    <!-- Scripts para o modo escuro, estatísticas, login, dashboard e perfil do usuário -->
     <script src="js/dark-mode.js"></script>
     <script src="js/estatisticas-tempo-real.js"></script>
     <script src="js/login-system.js"></script>
     <script src="js/admin-dashboard.js"></script>
+    <script src="js/user-profile.js"></script>
+    <script src="js/mobile-navigation.js"></script>
     
     <!-- Modal de Login (versão melhorada) -->
     <div id="login-container" class="login-container">
@@ -1745,11 +1789,16 @@
     <!-- Scripts do perfil e configurações -->
     <script src="js/user-profile.js"></script>
     <script src="js/user-settings.js"></script>
+    <script src="js/profile-upload-service.js"></script>
     <script src="js/firebase-storage.js"></script>
     <script src="js/user-notifications.js"></script>
+    <script src="js/modern-nav.js"></script>
     <script src="js/main.js"></script>
-    <!-- Scripts de login com melhorias para desktop e dispositivos móveis -->
-    <script src="js/login-unified.js"></script>
-    <script src="js/login-mobile-fix.js"></script>
+    
+    <!-- Verificador de status do Firebase Auth -->
+    <script src="js/firebase-auth-ready.js"></script>
+    
+    <!-- Script de login otimizado -->
+    <script src="js/login-fixed.js"></script>
 </body>
 </html>

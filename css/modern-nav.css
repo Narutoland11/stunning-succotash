@@ -1,0 +1,372 @@
+/**
+ * Modern Navigation
+ * Estilos modernos para a navegação do Moz Doctor Dose
+ * Inclui melhorias de acessibilidade, design responsivo e animações suaves
+ */
+
+/* Variáveis CSS para fácil personalização */
+:root {
+  --nav-bg: #ffffff;
+  --nav-text: #333333;
+  --nav-hover: #2980b9;
+  --nav-active: #3498db;
+  --nav-active-bg: rgba(52, 152, 219, 0.1);
+  --header-height: 70px;
+  --transition-speed: 0.3s;
+  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --border-radius: 4px;
+}
+
+/* Base do cabeçalho */
+.header {
+  background-color: var(--nav-bg);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  height: var(--header-height);
+}
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  position: relative;
+  height: 100%;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 280px;
+  margin-right: auto;
+}
+
+.logo img {
+  height: 48px;
+  width: auto;
+  border-radius: 4px;
+}
+
+.logo div {
+  line-height: 1.2;
+}
+
+.logo h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--nav-text);
+}
+
+.logo p {
+  font-size: 0.85rem;
+  margin: 0;
+  color: #555;
+}
+
+/* Navegação principal */
+.main-nav {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.main-nav ul {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  display: flex;
+  align-items: center;
+  color: var(--nav-text);
+  text-decoration: none;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all var(--transition-speed) ease;
+}
+
+.main-nav a i {
+  margin-right: 5px;
+  font-size: 1.1rem;
+  color: var(--nav-hover);
+}
+
+.main-nav a:hover {
+  background-color: var(--nav-active-bg);
+  color: var(--nav-hover);
+}
+
+.main-nav a.active {
+  background-color: var(--nav-active-bg);
+  color: var(--nav-active);
+  position: relative;
+}
+
+.main-nav a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--nav-active);
+}
+
+/* Botão toggle */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  margin-left: 1rem;
+  cursor: pointer;
+  color: var(--nav-text);
+  font-size: 1.5rem;
+  transition: color var(--transition-speed) ease;
+  z-index: 1001;
+}
+
+.nav-toggle:hover {
+  color: var(--nav-hover);
+}
+
+/* Classe para "pular para o conteúdo" (acessibilidade) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Dropdown do usuário */
+.user-dropdown {
+  position: relative;
+}
+
+.user-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.user-dropdown-toggle:hover {
+  background-color: var(--nav-active-bg);
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--nav-active);
+  color: white;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  width: 200px;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: 5px 0;
+  display: none;
+  animation: fadeInDown var(--transition-speed) ease forwards;
+  z-index: 1002;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-dropdown.active .user-dropdown-menu {
+  display: block;
+}
+
+.user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: var(--nav-text);
+  font-size: 0.9rem;
+  transition: background-color var(--transition-speed) ease;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.user-dropdown-item:hover {
+  background-color: var(--nav-active-bg);
+  color: var(--nav-hover);
+}
+
+.user-dropdown-divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 5px 0;
+}
+
+/* Header actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--nav-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--nav-active-bg);
+  color: var(--nav-hover);
+}
+
+/* Layout responsivo */
+@media (max-width: 992px) {
+  .header {
+    height: auto;
+    min-height: var(--header-height);
+  }
+
+  .header-wrapper {
+    flex-wrap: wrap;
+  }
+
+  .nav-toggle {
+    display: block;
+    order: 3;
+  }
+
+  .logo {
+    margin-right: 0;
+    flex-grow: 1;
+  }
+
+  .main-nav {
+    order: 4;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-speed) ease;
+    margin: 0;
+  }
+
+  .main-nav.active {
+    max-height: 400px;
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem 0;
+  }
+
+  .main-nav a {
+    width: 100%;
+    border-radius: 0;
+    padding: 0.75rem 1rem;
+  }
+
+  .main-nav a.active::after {
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .header-actions {
+    margin-left: auto;
+    order: 2;
+  }
+}
+
+/* Pequenos ajustes para telas muito pequenas */
+@media (max-width: 576px) {
+  .logo h1 {
+    font-size: 1rem;
+  }
+
+  .logo p {
+    font-size: 0.75rem;
+  }
+
+  .logo img {
+    height: 40px;
+  }
+  
+  .user-dropdown-toggle span#user-name {
+    display: none;
+  }
+}
+
+/* Estilos para tema escuro */
+body.dark-theme {
+  --nav-bg: #1a1a1a;
+  --nav-text: #f0f0f0;
+  --nav-hover: #4dabf7;
+  --nav-active: #5daaff;
+  --nav-active-bg: rgba(93, 170, 255, 0.15);
+}
+
+body.dark-theme .header {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .logo h1,
+body.dark-theme .logo p {
+  color: #f0f0f0;
+}
+
+body.dark-theme .user-dropdown-menu {
+  background-color: #2a2a2a;
+}
+
+body.dark-theme .user-dropdown-divider {
+  background-color: #444;
+}
