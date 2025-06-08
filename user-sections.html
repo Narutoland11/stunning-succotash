@@ -8,9 +8,9 @@
                 <div class="profile-avatar" id="profile-avatar">
                     <div id="profile-initials"></div>
                 </div>
-                <div class="profile-avatar-edit" id="profile-avatar-edit">
-                    <i class="fas fa-camera"></i>
-                </div>
+                <button type="button" class="profile-avatar-edit" id="profile-avatar-edit" aria-label="Alterar foto de perfil">
+                    <i class="fas fa-camera" aria-hidden="true"></i>
+                </button>
             </div>
             
             <div class="profile-info">
@@ -20,14 +20,14 @@
             </div>
         </div>
         
-        <div class="profile-tabs">
-            <div class="profile-tab active" data-tab="profile-info-tab">Informações Pessoais</div>
-            <div class="profile-tab" data-tab="profile-activity-tab">Atividades Recentes</div>
+        <div class="profile-tabs" role="tablist">
+            <button class="profile-tab active" id="tab-info" role="tab" aria-selected="true" aria-controls="profile-info-tab" data-tab="profile-info-tab">Informações Pessoais</button>
+            <button class="profile-tab" id="tab-activity" role="tab" aria-selected="false" aria-controls="profile-activity-tab" data-tab="profile-activity-tab">Atividades Recentes</button>
         </div>
         
         <div class="profile-content" id="profile-content">
             <!-- Aba de informações pessoais -->
-            <div id="profile-info-tab" class="profile-tab-content active">
+            <div id="profile-info-tab" class="profile-tab-content active" role="tabpanel" aria-labelledby="tab-info">
                 <div class="profile-section">
                     <h4 class="profile-section-title">Dados do Perfil</h4>
                     
@@ -79,7 +79,7 @@
             </div>
             
             <!-- Aba de atividades recentes -->
-            <div id="profile-activity-tab" class="profile-tab-content">
+            <div id="profile-activity-tab" class="profile-tab-content" role="tabpanel" aria-labelledby="tab-activity">
                 <div class="profile-section">
                     <h4 class="profile-section-title">Histórico de Atividades</h4>
                     

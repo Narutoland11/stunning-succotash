@@ -1,0 +1,67 @@
+/* Estilos para o sistema de login fixo - versão otimizada */
+
+/* Posicionamento fixo dos botões de autenticação */
+.auth-buttons-fixed {
+    position: fixed !important;
+    top: 1rem !important;
+    right: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    z-index: 1000 !important;
+    transition: all 0.3s ease;
+}
+
+/* Botão de login com posicionamento fixo */
+.login-button-fixed {
+    background: var(--primary, #2563eb) !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 0.6rem 1.2rem !important;
+    border-radius: 50px !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25) !important;
+    cursor: pointer !important;
+}
+
+/* Estados de hover e foco para melhorar acessibilidade */
+.login-button-fixed:hover,
+.login-button-fixed:focus {
+    background: var(--primary-dark, #1d4ed8) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3) !important;
+    outline: none !important;
+}
+
+.login-button-fixed:focus {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4) !important;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .auth-buttons-fixed {
+        top: 0.75rem !important;
+        right: 1rem !important;
+    }
+    
+    .login-button-fixed {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+/* Modo escuro */
+.dark-mode .login-button-fixed {
+    background: var(--primary-dark, #1d4ed8) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-mode .login-button-fixed:hover,
+.dark-mode .login-button-fixed:focus {
+    background: var(--primary, #2563eb) !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4) !important;
+}

@@ -320,7 +320,7 @@
     color: #777;
     font-size: 14px;
     flex-basis: 100%;
-    margin-top: 5px;
+    margin: 10px 0 5px;
 }
 
 @media (min-width: 768px) {
@@ -371,11 +371,7 @@
     color: #eee;
 }
 
-.preferences-card-description {
-    color: #777;
-    font-size: 14px;
-    margin: 10px 0;
-}
+/* .preferences-card-description merged above */
 
 .dark-mode .preferences-card-description {
     color: #aaa;
@@ -388,6 +384,8 @@
     margin-top: clamp(20px, 5vw, 30px);
     gap: 10px;
     flex-wrap: wrap;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
 }
 
 @media (max-width: 580px) {
@@ -401,10 +399,7 @@
     }
 }
 
-.settings-actions {
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-}
+/* .settings-actions merged above */
 
 .dark-mode .settings-actions {
     border-top: 1px solid #444;

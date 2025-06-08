@@ -128,24 +128,6 @@ nav a i {
     font-size: 1rem;
 }
 
-/* Estilos para menu hamburguer */
-.nav-toggle {
-    display: none; /* Escondido por padrão, mostrado apenas em mobile via media query */
-    font-size: 1.5rem;
-    color: var(--primary);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: var(--space-sm);
-    border-radius: var(--border-radius);
-    transition: var(--transition);
-}
-
-.nav-toggle:hover {
-    color: var(--primary-dark);
-    background-color: var(--primary-light);
-}
-
 /* Estilos para campos de formulário com foco em dispositivos móveis */
 .field-focus {
     background-color: rgba(37, 99, 235, 0.05);
@@ -682,10 +664,16 @@ footer {
     background-color: var(--primary-light);
     color: var(--primary);
     font-weight: 600;
+    position: sticky;
+    top: 0;
 }
 
 .result-table tr:nth-child(even) {
-    background-color: var(--light);
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.result-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.04);
 }
 
 .result-table .normal {
@@ -904,29 +892,6 @@ footer {
     max-width: 100%;
     margin-bottom: var(--space-md);
     border-collapse: collapse;
-}
-
-.result-table th, 
-.result-table td {
-    padding: var(--space-sm);
-    text-align: left;
-    border-bottom: 1px solid var(--gray);
-}
-
-.result-table th {
-    background-color: var(--primary-light);
-    color: var(--primary);
-    font-weight: 600;
-    position: sticky;
-    top: 0;
-}
-
-.result-table tr:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.02);
-}
-
-.result-table tr:hover {
-    background-color: rgba(0, 0, 0, 0.04);
 }
 
 /* Container para tabelas */

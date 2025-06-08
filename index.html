@@ -19,19 +19,19 @@
     <link rel="preload" href="css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/main.css"></noscript>
     
-    <!-- CSS Responsivo -->
+    <!-- CSS Responsivo (consolidado) -->
     <link rel="preload" href="css/responsive-ui.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/responsive-ui.css"></noscript>
     
-    <!-- Estilos CSS -->
+    <!-- Estilos CSS essenciais -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/cloudinary-integration.css">
     
-    <!-- CSS do Perfil do Usuário -->
-    <link rel="stylesheet" href="css/user-profile.css">
-    
-    <!-- Nova Navegação Moderna -->
+    <!-- Nova Navegação Moderna (contém estilos de navegação consolidados) -->
     <link rel="stylesheet" href="css/modern-nav.css">
+    
+    <!-- CSS de componentes específicos -->
+    <link rel="stylesheet" href="css/cloudinary-integration.css">
+    <link rel="stylesheet" href="css/user-profile.css">
     
     <!-- Font Awesome para ícones (carregamento otimizado) -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -74,83 +74,14 @@
         document.body.appendChild(replacement);
         addStylesNode.parentElement.removeChild(addStylesNode);
       };
-      var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+      var raf = window.requestAnimationFrame ||
           window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
       if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
       else window.addEventListener('load', loadDeferredStyles);
     </script>
     
-    <!-- Estilos inline foram migrados para os arquivos CSS modulares -->
-    <style>
-        /* Estilos temporários para referências médicas - serão migrados em breve */
-        .referencias-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .referencia-item {
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            padding: 12px;
-            background-color: #f9f9f9;
-        }
-        
-        .referencia-item h4 {
-            margin-top: 0;
-            margin-bottom: 5px;
-            color: #2c3e50;
-        }
-        
-        .ref-pediatrica {
-            font-weight: 600;
-            color: #3498db;
-            font-size: 0.9em;
-            margin-bottom: 8px;
-        }
-        
-        .ref-desc {
-            font-size: 0.85em;
-            color: #555;
-            margin-bottom: 10px;
-        }
-        
-        .ref-link {
-            display: inline-block;
-            background-color: #3498db;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 0.85em;
-            transition: background-color 0.2s;
-        }
-        
-        .ref-link:hover {
-            background-color: #2980b9;
-        }
-        
-        /* Estilos para a pesquisa de medicamentos */
-        .search-container {
-            margin-bottom: 8px;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        
-        .search-input:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-    </style>
+    <!-- Estilos para referências e pesquisa de medicamentos -->
+    <link rel="stylesheet" href="css/referencias.css">
 </head>
 <body>
     <!-- Link de acessibilidade para pular para o conteúdo principal -->
@@ -168,11 +99,14 @@
                     </div>
                 </div>
 
-                <!-- Botão de toggle para navegação móvel -->
+                <!-- Botão de toggle para navegação móvel (design moderno) -->
                 <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Abrir menu de navegação">
                     <span class="sr-only">Menu</span>
-                    <i class="fas fa-bars"></i>
+                    <span class="hamburger-icon"></span>
                 </button>
+                
+                <!-- Overlay para menu mobile -->
+                <div id="nav-overlay" class="nav-overlay"></div>
                 
                 <!-- Navegação principal -->
                 <nav id="main-nav" class="main-nav" aria-label="Menu principal">
@@ -233,20 +167,20 @@
             
             <!-- Navegação rápida para mobile -->
             <nav aria-label="Menu rápido para dispositivos móveis" class="mobile-nav">
-                <div class="mobile-nav-cards" role="tablist">
-                    <a href="#doses" class="mobile-nav-card active" role="tab" aria-selected="true" aria-label="Seção de doses">
+                <div class="mobile-nav-cards" role="menu">
+                    <a href="#doses" class="mobile-nav-card active" role="menuitem" aria-current="page" aria-label="Seção de doses">
                         <i class="fas fa-syringe" aria-hidden="true"></i>
                         <span>Doses</span>
                     </a>
-                    <a href="#laboratorio" class="mobile-nav-card" role="tab" aria-selected="false" aria-label="Seção de laboratório">
+                    <a href="#laboratorio" class="mobile-nav-card" role="menuitem" aria-label="Seção de laboratório">
                         <i class="fas fa-microscope" aria-hidden="true"></i>
                         <span>Laboratório</span>
                     </a>
-                    <a href="#eletrolitos" class="mobile-nav-card" role="tab" aria-selected="false" aria-label="Seção de eletrólitos">
+                    <a href="#eletrolitos" class="mobile-nav-card" role="menuitem" aria-label="Seção de eletrólitos">
                         <i class="fas fa-flask" aria-hidden="true"></i>
                         <span>Eletrólitos</span>
                     </a>
-                    <a href="#gasometria" class="mobile-nav-card" role="tab" aria-selected="false" aria-label="Seção de gasometria">
+                    <a href="#gasometria" class="mobile-nav-card" role="menuitem" aria-label="Seção de gasometria">
                         <i class="fas fa-lungs" aria-hidden="true"></i>
                         <span>Gasometria</span>
                     </a>
@@ -255,11 +189,11 @@
             
             <div class="calculator-form mobile-content-container">
                 <div class="form-row">
-                    <div class="form-group">
+                    <div class="form-group mobile-adjusted">
                         <label for="peso">Peso (kg):</label>
                         <input type="number" id="peso" step="0.1" min="0.1" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mobile-adjusted">
                         <label for="idade-input">Idade:</label>
                         <div class="age-input">
                             <input type="number" id="idade-input" min="0">
@@ -273,7 +207,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mobile-adjusted">
                     <label for="medicamento">Medicamento:</label>
                     <div class="search-container">
                         <input type="text" id="pesquisa-medicamento" placeholder="Pesquisar medicamento..." class="search-input">
@@ -712,13 +646,13 @@
         <section id="laboratorio" class="tool-section">
             <h2><i class="fas fa-microscope"></i> Análise Laboratorial</h2>
             
-            <div class="tabs">
-                <button class="tab-button active" data-tab="hemograma">Hemograma</button>
-                <button class="tab-button" data-tab="bioquimica">Bioquímica</button>
+            <div class="tabs" role="tablist">
+                <button class="tab-button active" id="tab-hemograma" role="tab" aria-selected="true" aria-controls="hemograma-content" data-tab="hemograma">Hemograma</button>
+                <button class="tab-button" id="tab-bioquimica" role="tab" aria-selected="false" aria-controls="bioquimica-content" data-tab="bioquimica">Bioquímica</button>
             </div>
             
             <!-- Subseção de Hemograma -->
-            <div id="hemograma" class="tab-content active">
+            <div id="hemograma-content" class="tab-content active" role="tabpanel" aria-labelledby="tab-hemograma">
                 <div class="calculator-form">
                     <div class="form-row">
                         <div class="form-group">
@@ -788,7 +722,7 @@
             </div>
             
             <!-- Subseção de Bioquímica -->
-            <div id="bioquimica" class="tab-content">
+            <div id="bioquimica-content" class="tab-content" role="tabpanel" aria-labelledby="tab-bioquimica">
                 <div class="calculator-form">
                     <div class="form-row">
                         <div class="form-group">
@@ -1652,26 +1586,8 @@
         </div>
     </div>
     <!-- Scripts - Organização modular -->
-    <!-- Scripts para medicamentos -->
-    <script src="js/modules/medicamentos/medicamentos.js"></script>
-    <script src="js/modules/medicamentos/correcao_medicamentos.js"></script>
-    <script src="js/modules/medicamentos/novos_medicamentos.js"></script>
-    <script src="js/modules/medicamentos/novos_medicamentos2.js"></script>
-    <script src="js/modules/medicamentos/novos_medicamentos3.js"></script>
-    <script src="js/modules/medicamentos/novos_medicamentos_essenciais.js"></script>
-    <script src="js/modules/medicamentos/novos_medicamentos_essenciais2.js"></script>
-    <script src="js/modules/medicamentos/medicamentos_mocambique.js"></script>
-    <script src="js/modules/medicamentos/medicamentos_mocambique2.js"></script>
-    <script src="js/modules/medicamentos/medicamentos_mocambique3.js"></script>
-    <script src="js/modules/medicamentos/medicamentos_mocambique4.js"></script>
-    <script src="js/modules/medicamentos/medicamentos_mocambique5.js"></script>
-    <script src="js/modules/medicamentos/medicamentos_mocambique6.js"></script>
-    <!-- Novos antiepilépticos e anticonvulsivantes -->
-    <script src="js/modules/medicamentos/antiepilepticos_parte1.js"></script>
-    <script src="js/modules/medicamentos/antiepilepticos_parte2.js"></script>
-    <script src="js/modules/medicamentos/antiepilepticos_parte3.js"></script>
+    <!-- Scripts para medicamentos - organizado em uma única seção para evitar duplicações -->
     <!-- Verificadores de duplicados removidos -->
-    <!-- Scripts de medicamentos movidos para uma secção unificada abaixo -->
     
     <!-- Módulos de validação -->
     <script src="js/modules/validacao/validacao.js"></script>
@@ -1684,15 +1600,8 @@
     <!-- Módulo de alertas -->
     <script src="js/modules/alertas/alertas.js"></script>
     
-    <!-- Base de dados de medicamentos e módulos relacionados - reorganizados na ordem correta -->
-    <script src="js/modules/medicamentos/medicamentos.js"></script>
-    <script src="js/modules/medicamentos/medicamentos_init.js"></script>
-    <script src="js/modules/medicamentos/antiepilepticos_init.js"></script>
-    <script src="js/modules/medicamentos/atualizar_ui.js"></script>
-    <script src="js/modules/medicamentos/contarMedicamentos.js"></script>
-    <script src="js/modules/medicamentos/estatisticas.js"></script>
-    <script src="js/modules/medicamentos/pesquisa_medicamentos.js"></script>
-    <script src="js/modules/medicamentos/diagnostico.js"></script>
+    <!-- Base de dados de medicamentos e módulos relacionados carregados via bundle para evitar duplicação -->
+    <!-- Scripts individuais removidos para evitar carregamento duplicado com o bundle minificado -->
     
     <!-- Scripts otimizados e minificados -->
     <script src="js/build/bundle-config.js"></script>
@@ -1702,11 +1611,15 @@
     <script src="js/dist/main.min.js"></script>
     <script src="js/dist/medicamentos.min.js"></script>
     
+    <!-- Script para corrigir o carregamento de medicamentos -->
+    <script src="js/fix-medicamentos.js"></script>
+    
     <!-- Registro do Service Worker -->
     <script defer src="js/utils/sw-register.js"></script>
 
     <!-- Scripts -->
-    <script src="js/core/mainn.js"></script>
+    <!-- Script comentado para evitar conflitos com a navegação unificada -->
+    <!-- <script src="js/core/mainn.js"></script> -->
     <!-- Scripts para o modo escuro, estatísticas, login, dashboard e perfil do usuário -->
     <script src="js/dark-mode.js"></script>
     <script src="js/estatisticas-tempo-real.js"></script>
