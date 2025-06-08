@@ -92,7 +92,7 @@ body.dark-mode .confirmacao-conteudo {
 }
 
 body.dark-mode .confirmacao-alertas {
-    background-color: #0f172a;
+    background-color: #1e293b; /* Updated to match the later rule */
     border-color: #f59e0b;
 }
 
@@ -106,9 +106,7 @@ body.dark-mode a:hover {
 }
 
 /* Ajustes específicos para elementos de formulário */
-body.dark-mode .confirmacao-alertas {
-    background-color: #1e293b;
-}
+/* Seletor movido acima para evitar duplicação */
 
 body.dark-mode .search-input {
     background-color: #1e293b;

@@ -3,8 +3,13 @@
  * Este arquivo implementa a funcionalidade de pesquisa para o seletor de medicamentos
  */
 
+// Iniciar a pesquisa de medicamentos assim que o documento estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
-    initPesquisaMedicamentos();
+    // Pequeno delay para garantir que outros scripts tenham sido executados
+    setTimeout(() => {
+        initPesquisaMedicamentos();
+        console.log("Sistema de pesquisa de medicamentos inicializado");
+    }, 100);
 });
 
 function initPesquisaMedicamentos() {

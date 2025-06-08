@@ -1,0 +1,74 @@
+/**
+ * referencias.css - Estilos para referências médicas e pesquisa de medicamentos
+ * Parte do projeto Moz Doctor Dose
+ * Contém estilos que estavam anteriormente inline no HTML
+ */
+
+/* Estilos para referências médicas */
+.referencias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.referencia-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 12px;
+    background-color: #f9f9f9;
+}
+
+.referencia-item h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.ref-pediatrica {
+    font-weight: 600;
+    color: #3498db;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+}
+
+.ref-desc {
+    font-size: 0.85em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.ref-link {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85em;
+    transition: background-color 0.2s;
+}
+
+.ref-link:hover {
+    background-color: #2980b9;
+}
+
+/* Estilos para a pesquisa de medicamentos */
+.search-container {
+    margin-bottom: 8px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}

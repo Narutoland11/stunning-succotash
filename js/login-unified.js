@@ -1,27 +1,32 @@
 /**
  * Sistema unificado de login para Moz Doctor Dose
- * Este script centraliza todas as funções de login para evitar duplicação
- * de elementos e garantir comportamento consistente entre ambientes
+ * Centraliza toda a lógica do sistema de login, incluindo autenticação Firebase,
+ * alternância entre abas de login e registro, e atualização da interface do usuário.
  * 
- * Versão 2.0 - Melhorias de responsividade e UX
+ * @version 2.1.0
+ * @author Moz Doctor Dose Dev Team
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar se já existe um container de login
-    // para evitar duplicação no ambiente Netlify
-    const existingLoginContainer = document.getElementById('login-container');
-    if (existingLoginContainer && existingLoginContainer.querySelector('#login-form')) {
-        console.log('Login container já existe, evitando duplicação.');
-        setupLoginEventListeners();
+    console.log('Login script inicializado');
+    
+    // Evitar múltiplas inicializações de formulário de login (problema reportado no Netlify)
+    if (window.loginScriptInitialized) {
+        console.warn('Script de login já foi inicializado anteriormente, evitando duplicação');
         return;
     }
+    window.loginScriptInitialized = true;
 
-    // Referência ao auth do Firebase
+    // Referência ao auth do Firebase - usar a instância já inicializada pelo firebase-init.js
     let auth;
     try {
-        // Verificar se o Firebase já foi inicializado
-        if (!firebase.apps || !firebase.apps.length) {
-            // Se não foi inicializado, configurar e inicializar
+        // Usar a instância do Firebase que já deveria estar inicializada
+        if (firebase && firebase.apps && firebase.apps.length > 0) {
+            console.log('Usando instância do Firebase já inicializada');
+            auth = firebase.auth();
+        } else {
+            console.warn('Firebase não encontrado ou não inicializado, tentando inicializar...');
+            // Fallback - tentar inicializar se não foi feito antes
             const firebaseConfig = {
                 apiKey: "AIzaSyAW2V-AmQEkZPgA6WHdUG2z_n5AizBNDGo",
                 authDomain: "mozdoctordose.firebaseapp.com",
@@ -33,15 +38,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 measurementId: "G-2WVCDZL9KL"
             };
             firebase.initializeApp(firebaseConfig);
-            console.log('Firebase inicializado pelo script de login');
-        } else {
-            console.log('Firebase já foi inicializado anteriormente');
+            auth = firebase.auth();
+            console.log('Firebase inicializado pelo script de login como fallback');
         }
-        
-        auth = firebase.auth();
     } catch (error) {
-        console.error('Erro ao inicializar Firebase Auth:', error);
-        // Não retornar aqui para que o resto da página funcione mesmo sem auth
+        console.error('Erro ao obter Firebase Auth:', error);
         console.warn('Continuando sem autenticação...');
     }
     
@@ -141,37 +142,103 @@ function setupLoginEventListeners() {
         }
     }
     
-    // Função para atualizar UI com estado do usuário
+    // Função melhorada para atualizar UI com estado do usuário
     function updateUIWithUser(user) {
-        if (user) {
-            if (loginButton) loginButton.style.display = 'none';
-            if (userMenuButton) userMenuButton.style.display = 'flex';
+        console.log('Atualizando interface para', user ? 'usuário autenticado' : 'usuário desconectado');
+        
+        try {
+            // Garantir que todos os elementos sejam buscados novamente
+            // para evitar problemas de referências nulas após DOM ser atualizado
+            const loginBtn = document.getElementById('login-button');
+            const userMenuBtn = document.getElementById('user-menu-button');
+            const userNameElement = document.getElementById('user-name');
+            const userAvatarElement = document.getElementById('user-avatar');
+            const logoutBtn = document.getElementById('logout-button');
             
-            // Atualizar avatar e nome
-            if (userName) userName.textContent = user.email.split('@')[0];
-            if (userAvatar) userAvatar.textContent = user.email.charAt(0).toUpperCase();
-            
-            // Verificar se é admin
-            const adminSection = document.getElementById('admin-section');
-            if (adminSection) {
-                user.getIdTokenResult().then((idTokenResult) => {
-                    if (idTokenResult.claims.admin) {
-                        adminSection.style.display = 'block';
-                    } else {
+            // Verificar se os elementos existem antes de manipulá-los
+            if (user) {
+                // Usuário está logado
+                console.log('Mostrando UI para usuário logado');
+                
+                // Esconder botão de login e mostrar menu do usuário
+                if (loginBtn) {
+                    loginBtn.style.display = 'none';
+                    console.log('Botão de login ocultado');
+                }
+                
+                if (userMenuBtn) {
+                    userMenuBtn.style.display = 'flex';
+                    console.log('Menu do usuário exibido');
+                }
+                
+                // Atualizar avatar e nome com dados do usuário
+                if (userNameElement && user.email) {
+                    userNameElement.textContent = user.email.split('@')[0];
+                    console.log('Nome do usuário atualizado');
+                }
+                
+                if (userAvatarElement && user.email) {
+                    userAvatarElement.textContent = user.email.charAt(0).toUpperCase();
+                    console.log('Avatar do usuário atualizado');
+                }
+                
+                // Configurar o botão de logout
+                if (logoutBtn) {
+                    // Garantir que temos apenas um listener para evitar múltiplas chamadas
+                    logoutBtn.addEventListener('click', handleLogout);
+                    console.log('Botão de logout configurado');
+                }
+                
+                // Verificar se é admin
+                const adminSection = document.getElementById('admin-section');
+                if (adminSection) {
+                    user.getIdTokenResult().then((idTokenResult) => {
+                        if (idTokenResult.claims && idTokenResult.claims.admin) {
+                            adminSection.style.display = 'block';
+                            console.log('Seção de admin exibida para usuário admin');
+                        } else {
+                            adminSection.style.display = 'none';
+                            console.log('Seção de admin ocultada (usuário não é admin)');
+                        }
+                    }).catch(error => {
+                        console.error('Erro ao verificar status de admin:', error);
                         adminSection.style.display = 'none';
-                    }
-                }).catch(error => {
-                    console.error('Erro ao verificar status de admin:', error);
-                    adminSection.style.display = 'none';
-                });
+                    });
+                }
+                
+                // Atualizar quaisquer outros elementos que dependam do estado de login
+                document.body.classList.add('user-logged-in');
+                document.body.classList.remove('user-logged-out');
+                
+            } else {
+                // Usuário não está logado
+                console.log('Mostrando UI para usuário deslogado');
+                
+                // Mostrar botão de login e esconder menu do usuário
+                if (loginBtn) {
+                    loginBtn.style.display = 'flex';
+                    console.log('Botão de login exibido');
+                }
+                
+                if (userMenuBtn) {
+                    userMenuBtn.style.display = 'none';
+                    console.log('Menu do usuário ocultado');
+                }
+                
+                // Limpar informações do usuário anterior
+                if (userNameElement) userNameElement.textContent = '';
+                if (userAvatarElement) userAvatarElement.textContent = '';
+                
+                // Esconder seção de admin
+                const adminSection = document.getElementById('admin-section');
+                if (adminSection) adminSection.style.display = 'none';
+                
+                // Atualizar quaisquer outros elementos que dependam do estado de login
+                document.body.classList.add('user-logged-out');
+                document.body.classList.remove('user-logged-in');
             }
-        } else {
-            if (loginButton) loginButton.style.display = 'flex';
-            if (userMenuButton) userMenuButton.style.display = 'none';
-            
-            // Esconder seção de admin
-            const adminSection = document.getElementById('admin-section');
-            if (adminSection) adminSection.style.display = 'none';
+        } catch (error) {
+            console.error('Erro ao atualizar UI com estado do usuário:', error);
         }
     }
     
@@ -192,30 +259,31 @@ function setupLoginEventListeners() {
         registerTab.addEventListener('click', switchToRegisterTab);
     }
     
-    if (userMenuButton) {
-        userMenuButton.addEventListener('click', function() {
-            if (userDropdown) userDropdown.classList.toggle('active');
-        });
+if (userMenuButton) {
+    userMenuButton.addEventListener('click', function() {
+        if (userDropdown) userDropdown.classList.toggle('active');
+    });
+}
+
+// Função de logout separada para poder ser referenciada em qualquer lugar
+function handleLogout(event) {
+    if (event) event.preventDefault();
+    
+    console.log('Iniciando processo de logout...');
+    if (!auth) {
+        console.error('Auth não disponível, não é possível fazer logout');
+        return;
     }
     
-    if (logoutButton) {
-        logoutButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            // Fechar dropdown se estiver aberto
+    auth.signOut()
+        .then(() => {
+            console.log('Logout bem-sucedido');
+            // Esconder menu dropdown se existir
+            const userDropdown = document.getElementById('user-dropdown');
             if (userDropdown) userDropdown.classList.remove('active');
             
-            // Fazer logout
-            auth.signOut().then(() => {
-                console.log('Usuário deslogado com sucesso');
-            }).catch((error) => {
-                console.error('Erro ao fazer logout:', error);
-            });
-        });
-    }
-    
-    // Clicar fora do dropdown para fechar
-    document.addEventListener('click', function(event) {
-        if (userMenuButton && userDropdown && 
+            // Atualizar interface imediatamente sem esperar pelo onAuthStateChanged
+            updateUIWithUser(null);
             !userMenuButton.contains(event.target) && 
             !userDropdown.contains(event.target)) {
             userDropdown.classList.remove('active');
@@ -228,6 +296,24 @@ function setupLoginEventListeners() {
             closeLoginModal();
         }
     });
+    
+    // Monitorar o estado de autenticação - CRUCIAL para atualizar a UI
+    if (auth) {
+        console.log('Configurando listener de estado de autenticação');
+        auth.onAuthStateChanged(function(user) {
+            console.log('Estado de autenticação alterado:', user ? 'Usuário logado' : 'Usuário não logado');
+            updateUIWithUser(user);
+            
+            // Armazenar estado de login para referência
+            if (user) {
+                localStorage.setItem('userLoggedIn', 'true');
+            } else {
+                localStorage.removeItem('userLoggedIn');
+            }
+        });
+    } else {
+        console.warn('Auth não disponível, não é possível monitorar estado de autenticação');
+    }
     
     // Configurar o menu toggle para dispositivos móveis
     if (navToggle && mainNav) {

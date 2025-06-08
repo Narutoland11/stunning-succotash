@@ -1,0 +1,239 @@
+/**
+ * Estilos de acessibilidade para a navegação
+ * Estes estilos melhoram a usabilidade da navegação para todos os usuários,
+ * incluindo aqueles que navegam com teclado ou tecnologias assistivas
+ */
+
+/* Estilos base para acessibilidade */
+:focus {
+    outline: 3px solid #3498db;
+    outline-offset: 2px;
+}
+
+/* Esconder o outline apenas para usuários de mouse, mantendo para teclado */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 3px solid #3498db;
+    outline-offset: 2px;
+}
+
+/* Skip to content link - acessibilidade por teclado */
+.skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    padding: 8px 12px;
+    z-index: 9999;
+    background: #3498db;
+    color: white;
+    transition: top 0.3s;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 0 0 4px 0;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
+/* Melhorias para o botão de alternância do menu */
+button.nav-toggle {
+    display: none;
+    font-size: 1.5rem;
+    color: var(--primary, #3498db);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 992px) {
+    button.nav-toggle {
+        display: block;
+    }
+}
+
+button.nav-toggle:hover,
+button.nav-toggle:focus {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+button.nav-toggle[aria-expanded="true"] {
+    background-color: rgba(52, 152, 219, 0.2);
+}
+
+/* Melhorias para a navegação principal */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Suporte a ARIA para menu */
+.nav-container ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-container ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-container a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-container a:hover,
+.nav-container a:focus {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.nav-container a.active,
+.nav-container a[aria-current="page"] {
+    position: relative;
+}
+
+.nav-container a.active::after,
+.nav-container a[aria-current="page"]::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #3498db;
+}
+
+/* Melhorias para navegação mobile */
+.mobile-nav {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #3498db #f1f1f1;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+}
+
+.mobile-nav-cards {
+    display: flex;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+.mobile-nav-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: #f8f9fa;
+    text-decoration: none;
+    color: #555;
+    min-width: 80px;
+    transition: all 0.2s ease;
+}
+
+.mobile-nav-card:hover,
+.mobile-nav-card:focus {
+    background: #e9f0f7;
+    color: #2980b9;
+}
+
+.mobile-nav-card.active,
+.mobile-nav-card[aria-selected="true"] {
+    background: #e9f0f7;
+    color: #2980b9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Alinhação dos ícones e texto */
+.nav-container a i,
+.mobile-nav-card i {
+    margin-right: 5px;
+}
+
+.mobile-nav-card i {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+}
+
+/* Testes de contraste aumentado para protocolos */
+.tool-section#protocolos h2 {
+    color: #2980b9;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+#protocolos select, 
+#protocolos button {
+    min-height: 44px; /* Tamanho mínimo para facilidade de toque */
+}
+
+#protocolos select {
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    padding: 8px 12px;
+}
+
+#protocolos select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+}
+
+/* Responsivo para navegação */
+@media (max-width: 992px) {
+    .nav-container {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 100;
+    }
+    
+    .nav-container.active {
+        display: block;
+    }
+    
+    .nav-container ul {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .nav-container li {
+        width: 100%;
+    }
+    
+    .nav-container a {
+        padding: 12px 20px;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+    }
+    
+    .nav-container a.active::after,
+    .nav-container a[aria-current="page"]::after {
+        bottom: auto;
+        top: 0;
+        height: 100%;
+        width: 3px;
+        left: 0;
+    }
+}

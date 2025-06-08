@@ -1,0 +1,66 @@
+/**
+ * Estilos para componentes relacionados ao upload de imagens Cloudinary
+ */
+
+.cloudinary-upload-progress {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    display: none; /* Inicialmente oculto */
+}
+
+.cloudinary-upload-progress-bar {
+    height: 8px;
+    background-color: #4CAF50;
+    width: 0;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.cloudinary-upload-status {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+.cloudinary-success {
+    color: #4CAF50;
+}
+
+.cloudinary-error {
+    color: #f44336;
+}
+
+/* Estilo de hover para imagem de perfil editável */
+.profile-image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-image-container:hover .profile-image-overlay {
+    opacity: 1;
+}
+
+.profile-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.profile-image-overlay i {
+    font-size: 24px;
+}

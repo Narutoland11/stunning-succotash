@@ -574,9 +574,8 @@ function verificarInteracao(med1, med2) {
                     `<div class="referencia-item"><i class="fas fa-book-medical"></i> Fonte: ${interacao.referencia}</div>` : 
                     ''
                 }
-                <div class="interacao-aviso">
-                    <i class="fas fa-exclamation-circle"></i> Esta informação é baseada na literatura disponível. 
-                    Consulte literatura atualizada e avalie o risco-benefício para cada paciente.
+                <div class="interacao-aviso interacao-aviso-compacto">
+                    <i class="fas fa-exclamation-circle"></i> Avalie sempre o risco-benefício para cada paciente.
                 </div>
             </div>
         `;
@@ -606,16 +605,9 @@ function verificarInteracao(med1, med2) {
                 <div class="status-mensagem">Interação não documentada na base de dados</div>
             </div>
             
-            <div class="interacao-aviso interacao-aviso-detalhado">
-                <p><i class="fas fa-info-circle"></i> <strong>Importante:</strong> A ausência de interação documentada não garante que não existam interações entre estes medicamentos.</p>
-                <p>Considerações:</p>
-                <ul>
-                    <li>Nossa base de dados é limitada e pode não incluir todas as interações conhecidas.</li>
-                    <li>Novas interações são descobertas regularmente na literatura.</li>
-                    <li>Alguns pacientes podem apresentar interações idiossincráticas.</li>
-                </ul>
-                <p>Recomenda-se consultar literatura farmacológica atualizada e monitorías (Micromedex, UpToDate, DrugBank) para informações mais recentes.</p>
-                <div class="interacao-timestamp">Pesquisa realizada em: ${new Date().toLocaleString()}</div>
+            <div class="interacao-aviso interacao-aviso-simples">
+                <p><i class="fas fa-info-circle"></i> <strong>Nota:</strong> A ausência de registro não garante que não existam interações.</p>
+                <p>Consulte sempre fontes atualizadas.</p>
             </div>
         `;
         

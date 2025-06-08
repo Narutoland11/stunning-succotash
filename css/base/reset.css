@@ -52,6 +52,7 @@ textarea {
   background-color: transparent;
   border: none;
   outline: none;
+  font-size: 100%; /* Evita zoom automático em iOS */
 }
 
 button {
@@ -86,13 +87,7 @@ svg {
   display: block;
 }
 
-/* Melhoria para formulários em dispositivos móveis */
-input, 
-button, 
-textarea, 
-select {
-  font-size: 100%; /* Evita zoom automático em iOS */
-}
+/* Melhoria para formulários em dispositivos móveis já aplicada acima nas linhas 46-49 */
 
 /* Classes auxiliares para acessibilidade */
 .sr-only {

@@ -47,31 +47,53 @@ function initDoseCalculator() {
     const limparBtn = document.getElementById('limpar-dose');
     const resultadoContainer = document.getElementById('resultado-dose');
     
+    console.log('Inicializando seletor de medicamentos...');
+    console.log('MEDICAMENTOS object:', MEDICAMENTOS ? 'Disponível' : 'Não disponível');
+    console.log('Total de medicamentos:', MEDICAMENTOS ? Object.keys(MEDICAMENTOS).length : 0);
+    
     // Preenche os medicamentos em ordem alfabética
     medicamentoSelect.innerHTML = '<option value="">Selecione...</option>';
     
-    // Cria um array de chaves e ordena pelo nome do medicamento
-    const medicamentosOrdenados = Object.keys(MEDICAMENTOS).sort((a, b) => {
-        return MEDICAMENTOS[a].nome.localeCompare(MEDICAMENTOS[b].nome);
-    });
+    try {
+        // Cria um array de chaves e ordena pelo nome do medicamento
+        const medicamentosOrdenados = Object.keys(MEDICAMENTOS || {}).sort((a, b) => {
+            return MEDICAMENTOS[a].nome.localeCompare(MEDICAMENTOS[b].nome);
+        });
+        console.log('Medicamentos ordenados:', medicamentosOrdenados.length);
+        
+        // Adiciona os medicamentos ordenados ao select
+        medicamentosOrdenados.forEach(key => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = MEDICAMENTOS[key].nome;
+            medicamentoSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Erro ao preencher medicamentos:', error);
+    }
     
-    // Adiciona os medicamentos ordenados ao select
-    medicamentosOrdenados.forEach(key => {
-        const option = document.createElement('option');
-        option.value = key;
-        option.textContent = MEDICAMENTOS[key].nome;
-        medicamentoSelect.appendChild(option);
-    });
+    // Atualiza indicações e vias quando o medicamento muda - Assegura que o evento seja adicionado apenas uma vez
+    medicamentoSelect?.removeEventListener('change', medicamentoChangeHandler);
+    medicamentoSelect?.addEventListener('change', medicamentoChangeHandler);
     
-    // Atualiza indicações e vias quando o medicamento muda
-    medicamentoSelect.addEventListener('change', function() {
-        const medicamento = this.value;
+    function medicamentoChangeHandler(event) {
+        const medicamento = medicamentoSelect.value;
+        console.log('Evento change disparado, medicamento selecionado:', medicamento);
         
         // Limpa e desativa os selects
         indicacaoSelect.innerHTML = '<option value="">Selecione...</option>';
         viaSelect.innerHTML = '<option value="">Selecione...</option>';
         
         if (!medicamento) {
+            console.log('Nenhum medicamento selecionado, desativando selects');
+            indicacaoSelect.disabled = true;
+            viaSelect.disabled = true;
+            return;
+        }
+        
+        // Verifica se os dados do medicamento existem
+        if (!MEDICAMENTOS || !MEDICAMENTOS[medicamento] || !MEDICAMENTOS[medicamento].formas) {
+            console.error('Dados do medicamento não disponíveis:', medicamento);
             indicacaoSelect.disabled = true;
             viaSelect.disabled = true;
             return;
@@ -104,10 +126,18 @@ function initDoseCalculator() {
         
         indicacaoSelect.disabled = false;
         viaSelect.disabled = false;
-    });
+        
+        // Log para depuração
+        console.log('Medicamento selecionado:', medicamento);
+        console.log('Indicações disponíveis:', [...indicacoes]);
+        console.log('Vias disponíveis:', Object.keys(MEDICAMENTOS[medicamento].formas));
+    }
     
-    // Calcula a dose
-    calcularBtn.addEventListener('click', function() {
+    // Calcula a dose - Assegura que o evento seja adicionado apenas uma vez
+    calcularBtn?.removeEventListener('click', calcularDoseHandler);
+    calcularBtn?.addEventListener('click', calcularDoseHandler);
+    
+    function calcularDoseHandler() {
         const peso = parseFloat(pesoInput.value);
         const idade = document.getElementById('idade') ? parseFloat(document.getElementById('idade').value) : null;
         const idadeUnidade = document.getElementById('idade-unidade') ? document.getElementById('idade-unidade').value : 'anos';

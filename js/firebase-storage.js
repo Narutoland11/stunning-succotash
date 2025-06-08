@@ -1,23 +1,26 @@
 /**
  * Moz Doctor Dose - Sistema de Gerenciamento de Arquivos
- * Implementação de armazenamento local para upload de fotos de perfil e outros arquivos
- * Adaptado para trabalhar com servidor XAMPP local
+ * Implementação de armazenamento para upload de fotos de perfil e outros arquivos
+ * Versão otimizada para Netlify sem dependência de PHP
  */
 
-// Configuração do armazenamento local
-const LOCAL_STORAGE_CONFIG = {
-    // Caminho base para o script PHP de upload (ajuste para seu ambiente XAMPP)
-    uploadUrl: 'upload-profile.php',
+// Configuração do armazenamento 
+const STORAGE_CONFIG = {
     // Tamanho máximo de arquivo em bytes (5MB)
     maxFileSize: 5 * 1024 * 1024
 };
 
+// Verificar se ProfileUploadService está disponível
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Sistema de armazenamento local inicializado');
+    if (typeof window.ProfileUploadService !== 'undefined') {
+        console.log('Sistema de armazenamento inicializado com ProfileUploadService');
+    } else {
+        console.warn('ProfileUploadService não encontrado. Certifique-se de que profile-upload-service.js está carregado antes deste script.');
+    }
 });
 
 /**
- * Upload de foto de perfil para servidor local via XAMPP
+ * Upload de foto de perfil usando ProfileUploadService
  * @param {File} file - O arquivo de imagem selecionado pelo usuário
  * @param {Function} progressCallback - Função de callback para progresso de upload
  * @param {Function} errorCallback - Função de callback para erros
@@ -43,7 +46,7 @@ function uploadProfilePhoto(file, progressCallback, errorCallback, completeCallb
     }
     
     // Validar tamanho (5MB máximo)
-    if (file.size > LOCAL_STORAGE_CONFIG.maxFileSize) {
+    if (file.size > STORAGE_CONFIG.maxFileSize) {
         if (typeof errorCallback === 'function') {
             errorCallback('Arquivo muito grande. O tamanho máximo permitido é 5MB.');
         }
@@ -58,69 +61,43 @@ function uploadProfilePhoto(file, progressCallback, errorCallback, completeCallb
         return;
     }
     
-    // Criar formulário para envio
-    const formData = new FormData();
-    formData.append('profile_image', file);
-    formData.append('user_id', currentUser.uid);
-    
-    // Criar objeto XMLHttpRequest para envio
-    const xhr = new XMLHttpRequest();
-    
-    // Configurar event listeners
-    xhr.upload.addEventListener('progress', function(e) {
-        if (e.lengthComputable && typeof progressCallback === 'function') {
-            const progress = (e.loaded / e.total) * 100;
-            progressCallback(progress);
-        }
-    });
-    
-    xhr.addEventListener('error', function(e) {
-        console.error('Erro no upload:', e);
+    // Verificar se ProfileUploadService está disponível
+    if (typeof window.ProfileUploadService === 'undefined') {
+        console.error('ProfileUploadService não está disponível');
         if (typeof errorCallback === 'function') {
-            errorCallback('Erro de conexão durante o upload');
+            errorCallback('Serviço de upload não disponível');
         }
-    });
+        return;
+    }
     
-    xhr.addEventListener('abort', function() {
-        if (typeof errorCallback === 'function') {
-            errorCallback('Upload cancelado');
-        }
-    });
+    // Referência para cancelamento (será definida abaixo)
+    let isCancelled = false;
     
-    xhr.addEventListener('load', function() {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            try {
-                const response = JSON.parse(xhr.responseText);
-                if (response.status === 'success') {
-                    if (typeof completeCallback === 'function') {
-                        completeCallback(response.photoURL);
-                    }
-                } else {
-                    if (typeof errorCallback === 'function') {
-                        errorCallback(response.message || 'Erro no servidor');
-                    }
-                }
-            } catch (e) {
-                console.error('Erro ao processar resposta:', e);
-                if (typeof errorCallback === 'function') {
-                    errorCallback('Erro ao processar resposta do servidor');
-                }
+    // Usar o novo ProfileUploadService para upload
+    window.ProfileUploadService.uploadProfileImage(file, currentUser.uid, progressCallback)
+        .then(response => {
+            if (isCancelled) return;
+            
+            if (response.status === 'success' && typeof completeCallback === 'function') {
+                completeCallback(response.photoURL);
+            } else if (response.status === 'error' && typeof errorCallback === 'function') {
+                errorCallback(response.message || 'Erro no servidor');
             }
-        } else {
+        })
+        .catch(error => {
+            if (isCancelled) return;
+            
+            console.error('Erro no upload:', error);
             if (typeof errorCallback === 'function') {
-                errorCallback(`Erro ${xhr.status}: ${xhr.statusText}`);
+                errorCallback(error.message || 'Erro durante o upload');
             }
-        }
-    });
+        });
     
-    // Enviar requisição
-    xhr.open('POST', LOCAL_STORAGE_CONFIG.uploadUrl, true);
-    xhr.send(formData);
-    
-    // Retorna o objeto XHR para possível cancelamento
+    // Retorna objeto com método para cancelar
     return {
         cancel: function() {
-            xhr.abort();
+            isCancelled = true;
+            console.log('Upload cancelado pelo usuário');
         }
     };
 }

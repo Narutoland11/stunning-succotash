@@ -35,7 +35,8 @@ function initMainNavigation() {
   const navLinks = document.querySelectorAll('.main-nav a');
   navLinks.forEach(link => {
     link.addEventListener('click', function(e) {
-      const section = this.getAttribute('href').substring(1);
+      // Obtém o ID da seção (não armazenamos em variável já que não é utilizada)
+      this.getAttribute('href').substring(1);
       
       // Atualiza estados ativos
       navLinks.forEach(navLink => {
@@ -63,7 +64,8 @@ function initMobileNavigation() {
   
   mobileCards.forEach(card => {
     card.addEventListener('click', function(e) {
-      const section = this.getAttribute('href').substring(1);
+      // Obtém o ID da seção (não armazenamos em variável já que não é utilizada)
+      this.getAttribute('href').substring(1);
       
       // Atualiza estados ativos
       mobileCards.forEach(navCard => {

@@ -1,0 +1,26 @@
+# Configurações de deploy para o Netlify
+[build]
+  publish = "."
+  command = ""
+
+# Redirecionamento para fazer o SPA funcionar
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers específicos para Cloudinary para resolver problemas de CORS
+[[headers]]
+  for = "/js/cloudinary-integration.js"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+# Cabeçalhos de segurança
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebase.com https://*.gstatic.com wss://*.firebaseio.com https://*.cloudinary.com https://api.cloudinary.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.googleusercontent.com https://*.googleapis.com https://*.firebasestorage.googleapis.com https://*.cloudinary.com https://res.cloudinary.com; script-src 'self' 'unsafe-inline' https://*.firebaseio.com https://*.googleapis.com https://*.cloudinary.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebase.com wss://*.firebaseio.com https://*.cloudinary.com https://api.cloudinary.com;"

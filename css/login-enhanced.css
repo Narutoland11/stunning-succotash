@@ -23,45 +23,11 @@
   --login-radius-full: 9999px;
 }
 
-/* Botão de login no cabeçalho */
-.auth-buttons {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  display: flex;
-  align-items: center;
-  z-index: 100;
-}
-
-#login-button {
-  background: var(--login-primary);
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--login-radius-full);
-  font-weight: 600;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  box-shadow: var(--login-shadow);
-  cursor: pointer;
-}
-
-#login-button:hover {
-  background: var(--login-primary-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--login-shadow-md);
-}
-
-#login-button:active {
-  transform: translateY(0);
-}
-
-#login-button i {
-  font-size: 0.9rem;
-}
+/* 
+ * Nota: estilos básicos comuns como .auth-buttons e #login-button 
+ * foram removidos deste arquivo para evitar duplicação com login.css.
+ * Este arquivo agora se concentra apenas em estilos específicos da versão melhorada.
+ */
 
 /* Container do modal de login */
 .login-container {

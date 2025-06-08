@@ -1,39 +1,14 @@
-/* Estilos modernizados para o sistema de login do Moz Doctor Dose */
+/* 
+ * Login System (Updated) - Moz Doctor Dose
+ * Este arquivo contém apenas estilos específicos da versão atualizada
+ * Os estilos base do login foram movidos para login.css
+ */
 
-/* Estilo do botão de login no cabeçalho */
-.auth-buttons {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  display: flex;
-  align-items: center;
-}
-
-#login-button {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25);
-  cursor: pointer;
-}
-
-#login-button:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
-}
-
-#login-button i {
-  font-size: 0.9rem;
-}
+/* 
+ * Nota: estilos básicos como .auth-buttons, #login-button foram 
+ * removidos deste arquivo para evitar duplicação. Eles agora
+ * estão definidos apenas em login.css
+ */
 
 /* Modal de login */
 .login-container {

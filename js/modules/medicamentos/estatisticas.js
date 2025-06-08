@@ -1,9 +1,15 @@
 /**
  * Script para manipular a atualização das estatísticas de medicamentos
- * Versão: 2.0 - Melhoria de robustez e compatibilidade com Netlify
+ * Versão: 3.0 - Refatoração para eliminar duplicações de código
  */
 
+// Verificar se utils está disponível ou carregar dinamicamente
+let utils = window.utils;
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Tentar carregar utils primeiro
+    carregarUtils();
+    
     // Aguardar que o documento esteja completamente carregado
     // usando setTimeout para garantir que outros scripts tenham sido carregados
     setTimeout(() => {
@@ -12,10 +18,37 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
+ * Função para carregar módulo utils se necessário
+ */
+function carregarUtils() {
+    if (!window.utils) {
+        console.log('Carregando módulo utils...');
+        const script = document.createElement('script');
+        script.src = '/js/modules/medicamentos/utils.js';
+        document.head.appendChild(script);
+        
+        // Aguardar carregamento do script
+        setTimeout(() => {
+            utils = window.utils;
+            console.log('Módulo utils disponível:', !!utils);
+        }, 500);
+    } else {
+        utils = window.utils;
+        console.log('Módulo utils já está disponível');
+    }
+}
+
+/**
  * Função para inicializar o módulo de estatísticas
  */
 function inicializarEstatisticas() {
     try {
+        // Verificar se objetos globais existem
+        if (utils && typeof utils.verificarObjetosGlobais === 'function') {
+            utils.verificarObjetosGlobais();
+            console.log('Objetos globais verificados via utils');
+        }
+        
         // Configurar botão de atualização das estatísticas
         const btnAtualizarEstatisticas = document.getElementById('atualizar-estatisticas');
         
@@ -25,7 +58,27 @@ function inicializarEstatisticas() {
             btnAtualizarEstatisticas.addEventListener('click', function(event) {
                 event.preventDefault();
                 
-                // Verificar se a função contarMedicamentos está disponível
+                // Verificar se utils ou a função contarMedicamentos está disponível
+                if (utils && typeof utils.atualizarContadoresInterface === 'function') {
+                    // Efeito visual de atualização
+                    this.innerHTML = '<i class="fas fa-sync fa-spin"></i> Atualizando...';
+                    const botao = this; // Guardar referência ao botão
+                    
+                    // Usar utils para atualizar a interface
+                    utils.atualizarContadoresInterface();
+                    if (typeof utils.atualizarSeletorMedicamentos === 'function') {
+                        utils.atualizarSeletorMedicamentos();
+                    }
+                    
+                    // Restaurar o texto do botão
+                    setTimeout(() => {
+                        botao.innerHTML = '<i class="fas fa-sync"></i> Atualizar estatísticas';
+                    }, 500);
+                    
+                    return;
+                }
+                
+                // Fallback quando utils não está disponível
                 if (typeof window.contarMedicamentos !== 'function') {
                     // Função contarMedicamentos não disponível
                     verificarDependencias();
@@ -41,11 +94,8 @@ function inicializarEstatisticas() {
                     setTimeout(() => {
                         try {
                             window.contarMedicamentos();
-                            
-                            // Notificações removidas
                         } catch (erro) {
                             // Erro silencioso
-                            // Notificações removidas
                         } finally {
                             // Restaurar o texto do botão
                             botao.innerHTML = '<i class="fas fa-sync"></i> Atualizar estatísticas';
@@ -77,25 +127,51 @@ function inicializarEstatisticas() {
  * Verifica se todas as dependências necessárias estão carregadas
  */
 function verificarDependencias() {
-    // Verificar script de contagem
-    const scripts = document.getElementsByTagName('script');
-    let contarMedicamentosScriptCarregado = false;
+    console.log('Verificando dependências para estatísticas...');
     
-    for (let i = 0; i < scripts.length; i++) {
-        if (scripts[i].src && scripts[i].src.includes('contarMedicamentos.js')) {
-            contarMedicamentosScriptCarregado = true;
-            break;
+    // Usar utils se disponível ou fallback
+    if (utils && typeof utils.verificarObjetosGlobais === 'function') {
+        utils.verificarObjetosGlobais();
+    } else {
+        // Verificar se o objeto MEDICAMENTOS existe
+        if (typeof window.MEDICAMENTOS === 'undefined') {
+            console.warn('Objeto MEDICAMENTOS não encontrado');
+            window.MEDICAMENTOS = {};
+        }
+        
+        // Verificar outros objetos importantes
+        if (typeof window.INDICACOES === 'undefined') {
+            console.warn('Objeto INDICACOES não encontrado');
+            window.INDICACOES = {};
         }
     }
     
-    if (!contarMedicamentosScriptCarregado) {
-        // Tentar carregar o script dinamicamente
-        const script = document.createElement('script');
-        script.src = 'js/modules/medicamentos/contarMedicamentos.js';
-        script.onload = () => {
-            // Tentar inicializar novamente após carregamento
-            setTimeout(inicializarEstatisticas, 500);
+    // Verificar se temos alguma função de contagem implementada
+    if (typeof window.contarMedicamentos !== 'function') {
+        console.warn('Função contarMedicamentos não encontrada - implementando função padrão');
+        
+        // Implementar função de contagem padrão
+        window.contarMedicamentos = function() {
+            const medicamentos = window.MEDICAMENTOS || {};
+            const total = Object.keys(medicamentos).length;
+            console.log(`Total de medicamentos: ${total}`);
+            
+            // Atualizar UI se possível
+            if (utils && typeof utils.atualizarContadoresInterface === 'function') {
+                utils.atualizarContadoresInterface();
+            } else {
+                // Atualizar elementos na interface manualmente
+                const elementosContagem = document.querySelectorAll('.total-medicamentos, #total-medicamentos, [data-medicamentos-count]');
+                elementosContagem.forEach(elem => {
+                    if (elem) elem.textContent = total;
+                });
+            }
+            
+            return total;
         };
-        document.head.appendChild(script);
+        
+        console.log('Função contarMedicamentos implementada');
     }
+    
+    return true;
 }

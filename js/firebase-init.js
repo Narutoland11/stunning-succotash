@@ -31,6 +31,27 @@
         // Inicializar serviços comumente usados
         if (firebase.analytics) firebase.analytics();
         
+        // Inicializar serviços necessários e exportar referências globais
+        window.auth = firebase.auth();
+        window.database = firebase.database();
+        window.storage = firebase.storage();
+        window.firestore = firebase.firestore();
+        
+        // Disparar evento de inicialização do Firebase
+        const event = new Event('firebase_initialized');
+        window.dispatchEvent(event);
+        console.log('Evento firebase_initialized disparado');
+        
+        // Configurar persistência do Firestore para funcionamento offline
+        firebase.firestore().enablePersistence({synchronizeTabs: true})
+          .catch((err) => {
+            if (err.code == 'failed-precondition') {
+              console.warn('Múltiplas abas abertas, persistência disponível apenas em uma aba por vez');
+            } else if (err.code == 'unimplemented') {
+              console.warn('O navegador não suporta persistência de dados');
+            }
+          });
+        
     } catch (error) {
         console.error('Erro ao inicializar Firebase:', error);
         

@@ -4,74 +4,52 @@
  * Versão 3.0 - Refatoração para eliminar duplicações de código
  */
 
+// Carregando o arquivo de utilidades primeiro
+document.addEventListener('DOMContentLoaded', function() {
+    const utilsScript = document.createElement('script');
+    utilsScript.src = '/js/modules/medicamentos/utils.js';
+    utilsScript.onload = function() {
+        console.log('Utils carregado com sucesso');
+        inicializarCorrecaoMedicamentos();
+    };
+    utilsScript.onerror = function() {
+        console.error('Erro ao carregar utils.js - inicializando sem utilidades');
+        inicializarCorrecaoMedicamentos();
+    };
+    document.head.appendChild(utilsScript);
+});
+
 // Função auto-executável para isolar o código
-(function() {
+function inicializarCorrecaoMedicamentos() {
     console.log('=== CORREÇÃO EMERGENCIAL DE MEDICAMENTOS ===');
     
-    // Verificar se utils está disponível ou carregar dinamicamente
-    let utils = window.utils;
-    if (!utils) {
-        console.log('Utils não encontrado, tentando carregar dinamicamente...');
-        // Tentativa de carregar utils.js se não estiver disponível
-        const script = document.createElement('script');
-        script.src = '/js/modules/medicamentos/utils.js';
-        document.head.appendChild(script);
-        
-        // Esperar carregar antes de continuar
-        setTimeout(function() {
-            utils = window.utils || {};
-            iniciarCorrecaoMedicamentos();
-        }, 500);
-    } else {
-        iniciarCorrecaoMedicamentos();
-    }
-    
-    // Função principal de inicialização
-    function iniciarCorrecaoMedicamentos() {
-        // Verificar e iniciar objetos necessários
-        const MEDICAMENTOS = verificarMedicamentos();
-        
-        console.log('Iniciando adição emergencial de medicamentos...');
-        adicionarMedicamentosEmergencial();
-        atualizarContadores();
-    }
+    // Verificar se utils está disponível
+    const utils = window.utils || {};
     
     // Função simplificada para verificar e iniciar objeto MEDICAMENTOS
     function verificarMedicamentos() {
-        if (utils && typeof utils.verificarObjetosGlobais === 'function') {
+        if (typeof utils.verificarObjetosGlobais === 'function') {
             return utils.verificarObjetosGlobais();
         } else {
             if (typeof window.MEDICAMENTOS === 'undefined' || Object.keys(window.MEDICAMENTOS).length === 0) {
                 console.warn("Criando objeto MEDICAMENTOS que não existia ou estava vazio");
                 window.MEDICAMENTOS = {};
             }
-            
-            // Verificar outros objetos necessários
-            if (typeof window.INDICACOES === 'undefined') {
-                console.warn("Criando objeto INDICACOES que não existia");
-                window.INDICACOES = {};
-            }
-            
-            if (typeof window.VIAS === 'undefined') {
-                console.warn("Criando objeto VIAS que não existia");
-                window.VIAS = {};
-            }
-            
-            // Adicionar vias padrão se não existirem
-            if (!window.VIAS.oral) window.VIAS.oral = "Via Oral";
-            if (!window.VIAS.iv) window.VIAS.iv = "Intravenoso";
-            
             return window.MEDICAMENTOS;
         }
     }
     
-    // Função para atualizar contadores na interface
-    function atualizarContadores() {
-        if (utils && typeof utils.atualizarContadoresInterface === 'function') {
-            utils.atualizarContadoresInterface();
-        } else {
-            try {
+    // Atualizar contagem de medicamentos na interface
+    function atualizarContagem() {
+        try {
+            if (typeof utils.atualizarContadoresInterface === 'function') {
+                utils.atualizarContadoresInterface();
+            } else {
+                // Fallback para código original se utils não estiver disponível
+                // Verificar se o objeto existe
                 const MEDICAMENTOS = verificarMedicamentos();
+                
+                // Calcular contagem
                 const total = Object.keys(MEDICAMENTOS).length;
                 console.log(`Total de medicamentos: ${total}`);
                 
@@ -80,45 +58,24 @@
                 elementosContagem.forEach(elem => {
                     if (elem) {
                         elem.textContent = total;
+                        console.log('Elemento de contagem atualizado:', elem);
                     }
                 });
                 
                 // Executar análise de medicamentos se disponível
                 if (typeof window.analisarMedicamentos === 'function') {
+                    console.log('Executando análise de medicamentos...');
                     const stats = window.analisarMedicamentos();
                     
+                    // Atualizar estatísticas na interface
                     if (typeof window.atualizarEstatisticasInterface === 'function') {
                         window.atualizarEstatisticasInterface(stats);
-                    }
-                    
-                    // Avisar sobre a atualização
-                    if (typeof window.ALERTA_SISTEMA !== 'undefined') {
-                        window.ALERTA_SISTEMA.sucesso(`Base de medicamentos atualizada! Total: ${total} medicamentos.`, {
-                            duracao: 8000,
-                            fechavel: true
-                        });
+                        console.log('Interface de estatísticas atualizada');
                     }
                 }
-            } catch (error) {
-                console.error('Erro ao atualizar contagem:', error);
-            }
-        }
-    }
-
-    // Função genérica para adicionar medicamento
-    function adicionarMedicamento(chave, definicao) {
-        try {
-            if (utils && typeof utils.adicionarMedicamento === 'function') {
-                return utils.adicionarMedicamento(chave, definicao);
-            } else {
-                const MEDICAMENTOS = verificarMedicamentos();
-                MEDICAMENTOS[chave] = definicao;
-                console.log(`Medicamento ${definicao.nome} adicionado com sucesso`);
-                return true;
             }
         } catch (error) {
-            console.error(`Erro ao adicionar medicamento ${chave}:`, error);
-            return false;
+            console.error('Erro ao atualizar contagem:', error);
         }
     }
 
@@ -174,7 +131,14 @@
                 }
             };
             
-            adicionarMedicamento('azitromicina', azitromicina);
+            // Usar função de utilidade se disponível
+            if (typeof utils.adicionarMedicamento === 'function') {
+                utils.adicionarMedicamento('azitromicina', azitromicina);
+            } else {
+                // Fallback para código original
+                const MEDICAMENTOS = verificarMedicamentos();
+                MEDICAMENTOS.azitromicina = azitromicina;
+            }
             
             // Adicionar indicacoes
             if (typeof window.INDICACOES !== 'undefined') {
@@ -194,12 +158,15 @@
 
     // Função principal para adicionar os medicamentos diretamente
     function adicionarMedicamentosEmergencial() {
+        // Usar funções de utilidade se disponíveis
+        const MEDICAMENTOS = verificarMedicamentos();
+        
         console.log('Iniciando adição emergencial de medicamentos...');
         let medicamentosAdicionados = 0;
         
         try {
             // === CARBAMAZEPINA ===
-            adicionarMedicamento('carbamazepina', {
+            MEDICAMENTOS.carbamazepina = {
                 nome: "Carbamazepina",
                 formas: {
                     oral: {
@@ -226,10 +193,10 @@
                         }
                     }
                 }
-            });
+            };
             
             // === VALPROATO ===
-            adicionarMedicamento('valproato', {
+            MEDICAMENTOS.valproato = {
                 nome: "Valproato de Sódio",
                 formas: {
                     oral: {
@@ -256,55 +223,129 @@
                         }
                     }
                 }
-            });
+            };
             
             // === FENITOÍNA ===
-            adicionarMedicamento('fenitoina', {
+            MEDICAMENTOS.fenitoina = {
                 nome: "Fenitoína",
                 formas: {
                     oral: {
-                        descricao: "Comprimidos 100mg; Suspensão oral 50mg/mL",
+                        descricao: "Comprimidos 100mg; Suspensão oral 20mg/mL",
                         tipo: "comprimido",
                         passos: [
-                            "Administrar durante ou após as refeições",
-                            "Agitar bem a suspensão antes de usar",
-                            "Manter intervalo regular entre doses"
+                            "Administrar preferencialmente junto com as refeições",
+                            "Manter horários regulares de administração",
+                            "Agitar bem a suspensão antes de usar"
                         ],
                         precaucoes: [
-                            "Monitorar níveis séricos regularmente",
-                            "Risco de hiperplasia gengival",
-                            "Interações medicamentosas significativas",
-                            "Administração com cuidado em idosos"
+                            "Monitorar níveis séricos",
+                            "Pode causar hiperplasia gengival",
+                            "Indução enzimática - múltiplas interações",
+                            "Monitorar hemograma e função hepática"
                         ],
                         indicacoes: {
                             epilepsia: {
-                                dose: "4-8 mg/kg/dia",
-                                doseMaxima: "300 mg/dia",
-                                frequencia: "1-2 vezes ao dia",
+                                dose: "5-8 mg/kg/dia (dose de manutenção)",
+                                doseMaxima: "300 mg/dia em crianças",
+                                frequencia: "2-3 vezes ao dia",
                                 duracao: "Tratamento contínuo, conforme necessário"
+                            }
+                        }
+                    },
+                    iv: {
+                        descricao: "Solução injetável 50mg/mL",
+                        tipo: "solucao",
+                        passos: [
+                            "Diluir em solução salina",
+                            "Administrar lentamente (≤50 mg/min)",
+                            "Monitorar ECG e sinais vitais durante administração"
+                        ],
+                        precaucoes: [
+                            "Risco de hipotensão e arritmias na administração IV rápida",
+                            "Incompatível com soluções glicosadas",
+                            "Não administrar IM (cristalização e absorção errática)"
+                        ],
+                        indicacoes: {
+                            statusEpilepticus: {
+                                dose: "15-20 mg/kg dose de carga",
+                                doseMaxima: "1000 mg dose única",
+                                frequencia: "Infusão lenta (≤50 mg/min)",
+                                duracao: "Dose única, seguida de manutenção"
                             }
                         }
                     }
                 }
-            });
+            };
             
-            // === OXCARBAZEPINA ===
-            adicionarMedicamento('oxcarbazepina', {
-                nome: "Oxcarbazepina",
+            // === FENOBARBITAL ===
+            MEDICAMENTOS.fenobarbital = {
+                nome: "Fenobarbital",
                 formas: {
                     oral: {
-                        descricao: "Comprimidos 300mg, 600mg; Suspensão oral 60mg/mL",
+                        descricao: "Comprimidos 50mg, 100mg; Solução oral 40mg/mL",
                         tipo: "comprimido",
                         passos: [
-                            "Administrar com alimentos",
-                            "Iniciar com dose baixa e aumentar gradualmente",
-                            "Usar seringa dosadora para suspensão oral"
+                            "Administrar preferencialmente à noite",
+                            "Não interromper abruptamente",
+                            "Pode ser administrado com ou sem alimentos"
                         ],
                         precaucoes: [
-                            "Risco de hiponatremia - monitorar sódio sérico",
-                            "Menor indução enzimática que carbamazepina",
-                            "Reações cutâneas menos frequentes que carbamazepina",
-                            "Risco de tontura e diplopia"
+                            "Sedação e alterações cognitivas",
+                            "Risco de dependência física",
+                            "Múltiplas interações medicamentosas",
+                            "Efeito indutor enzimático significativo"
+                        ],
+                        indicacoes: {
+                            epilepsia: {
+                                dose: "3-5 mg/kg/dia",
+                                doseMaxima: "8 mg/kg/dia ou 300 mg/dia",
+                                frequencia: "1-2 vezes ao dia",
+                                duracao: "Tratamento contínuo, conforme necessário"
+                            }
+                        }
+                    },
+                    iv: {
+                        descricao: "Solução injetável 100mg/mL",
+                        tipo: "solucao",
+                        passos: [
+                            "Diluir em água para injeção ou solução salina",
+                            "Administrar lentamente (máx 60 mg/min)",
+                            "Monitorar frequência respiratória"
+                        ],
+                        precaucoes: [
+                            "Risco de depressão respiratória",
+                            "Equipamento de ventilação deve estar disponível",
+                            "Pode causar hipotensão"
+                        ],
+                        indicacoes: {
+                            statusEpilepticus: {
+                                dose: "15-20 mg/kg",
+                                doseMaxima: "1000 mg dose única",
+                                frequencia: "Infusão lenta (60 mg/min)",
+                                duracao: "Dose única, seguida de manutenção"
+                            }
+                        }
+                    }
+                }
+            };
+            
+            // === LAMOTRIGINA ===
+            MEDICAMENTOS.lamotrigina = {
+                nome: "Lamotrigina",
+                formas: {
+                    oral: {
+                        descricao: "Comprimidos 25mg, 50mg, 100mg, 200mg",
+                        tipo: "comprimido",
+                        passos: [
+                            "Iniciar com doses baixas e titular lentamente",
+                            "Aumentar dose a cada 1-2 semanas",
+                            "Administrar com ou sem alimentos"
+                        ],
+                        precaucoes: [
+                            "Risco de reações cutâneas graves (incluindo Síndrome de Stevens-Johnson)",
+                            "Monitorar sinais de rash, especialmente em crianças",
+                            "Ajustar dose se usado com valproato",
+                            "Monitorar para sinais de depressão e ideação suicida"
                         ],
                         indicacoes: {
                             epilepsiaMonoterapia: {
@@ -316,19 +357,65 @@
                         }
                     }
                 }
-            });
+            };
             
             // Chamar função específica para adicionar azitromicina
             adicionarAzitromicina();
             
             // Contar quantos medicamentos foram adicionados
-            const MEDICAMENTOS = verificarMedicamentos();
             medicamentosAdicionados = Object.keys(MEDICAMENTOS).length;
-            console.log(`Medicamentos disponíveis: ${medicamentosAdicionados}`);            
+            console.log(`Medicamentos adicionados com sucesso! Total na base: ${medicamentosAdicionados}`);            
             return medicamentosAdicionados;
         } catch (error) {
             console.error('Erro ao adicionar medicamentos emergencialmente:', error);
             return 0;
         }
     }
+    
+            }
+        }
+    }
+};
+
+// === VALPROATO ===
+MEDICAMENTOS.valproato = {
+    nome: "Valproato de Sódio",
+    formas: {
+        oral: {
+            descricao: "Comprimidos 250mg, 500mg; Solução oral 50mg/mL",
+            tipo: "comprimido",
+            passos: [
+                "Iniciar com dose baixa e aumentar gradualmente",
+                "Administrar com alimentos para reduzir efeitos gastrointestinais",
+                "Monitorar função hepática"
+            ],
+            precaucoes: [
+                "Hepatotoxicidade grave, especialmente em crianças < 2 anos",
+                "Monitorar função hepática nos primeiros 6 meses de tratamento",
+                "Teratogenicidade - evitar em mulheres em idade fértil se possível",
+                "Monitorar contagem de plaquetas e coagulação"
+            ],
+            indicacoes: {
+                epilepsiaGeral: {
+                    dose: "Inicial: 10-15 mg/kg/dia; Manutenção: 30-60 mg/kg/dia",
+                    doseMaxima: "60 mg/kg/dia ou 3000 mg/dia",
+                    frequencia: "2-3 vezes ao dia",
+                    duracao: "Tratamento contínuo, conforme necessário"
+                }
+            console.log('Iniciando correção emergencial dos medicamentos...');
+            verificarObjetosGlobais();
+            const quantidadeAdicionada = adicionarMedicamentosEmergencial();
+            
+            if (quantidadeAdicionada > 0) {
+                console.log(`${quantidadeAdicionada} medicamentos adicionados com sucesso!`);
+                atualizarContagem();
+                atualizarContadoresInterface();
+            } else {
+                console.warn('Nenhum medicamento foi adicionado. Verificando o MEDICAMENTOS...');
+                console.log('Estado atual do MEDICAMENTOS:', Object.keys(verificarMedicamentos()));
+            }
+            
+            console.log('=== FIM DA CORREÇÃO EMERGENCIAL ===');
+        }, 1000);
+    });
 })();

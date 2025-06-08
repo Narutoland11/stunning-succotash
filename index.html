@@ -58,6 +58,13 @@
     <!-- Detector de ambiente (Local/Netlify) -->
     <script src="js/environment-detector.js"></script>
     
+    <!-- Componentes reutilizáveis para reduzir duplicações -->
+    <script src="components/navigation.js"></script>
+    <script src="components/tabs.js"></script>
+    <script src="components/user-profile.js"></script>
+    <script src="components/user-settings.js"></script>
+    <script src="js/components-loader.js"></script>
+    
     <!-- Integração com Cloudinary (upload de imagens gratuito) -->
     <script src="js/cloudinary-integration.js"></script>
     <script src="js/cloudinary-test.js"></script>
@@ -111,14 +118,14 @@
                 <!-- Navegação principal -->
                 <nav id="main-nav" class="main-nav" aria-label="Menu principal">
                     <ul role="menubar">
-                        <li role="none"><a href="#doses" role="menuitem" aria-current="page" class="active"><i class="fas fa-syringe"></i> Doses</a></li>
-                        <li role="none"><a href="#laboratorio" role="menuitem"><i class="fas fa-microscope"></i> Laboratório</a></li>
-                        <li role="none"><a href="#eletrolitos" role="menuitem"><i class="fas fa-flask"></i> Eletrólitos</a></li>
-                        <li role="none"><a href="#gasometria" role="menuitem"><i class="fas fa-lungs"></i> Gasometria</a></li>
-                        <li role="none"><a href="#protocolos" role="menuitem"><i class="fas fa-book-medical"></i> Protocolos</a></li>
-                        <li role="none"><a href="#interamed" role="menuitem"><i class="fas fa-pills"></i> InteraMed</a></li>
-                        <li role="none"><a href="#ferramentas" role="menuitem"><i class="fas fa-tools"></i> Ferramentas</a></li>
-                        <li role="none"><a href="#informacoes" role="menuitem"><i class="fas fa-info-circle"></i> Info</a></li>
+                        <li role="none presentation"><a href="#doses" role="menuitem" aria-current="page" class="active"><i class="fas fa-syringe"></i> Doses</a></li>
+                        <li role="none presentation"><a href="#laboratorio" role="menuitem"><i class="fas fa-microscope"></i> Laboratório</a></li>
+                        <li role="none presentation"><a href="#eletrolitos" role="menuitem"><i class="fas fa-flask"></i> Eletrólitos</a></li>
+                        <li role="none presentation"><a href="#gasometria" role="menuitem"><i class="fas fa-lungs"></i> Gasometria</a></li>
+                        <li role="none presentation"><a href="#protocolos" role="menuitem"><i class="fas fa-book-medical"></i> Protocolos</a></li>
+                        <li role="none presentation"><a href="#interamed" role="menuitem"><i class="fas fa-pills"></i> InteraMed</a></li>
+                        <li role="none presentation"><a href="#ferramentas" role="menuitem"><i class="fas fa-tools"></i> Ferramentas</a></li>
+                        <li role="none presentation"><a href="#informacoes" role="menuitem"><i class="fas fa-info-circle"></i> Info</a></li>
                     </ul>
                 </nav>
 

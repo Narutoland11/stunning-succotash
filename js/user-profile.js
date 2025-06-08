@@ -1,6 +1,7 @@
 /**
  * Moz Doctor Dose - Sistema de Gerenciamento de Perfil de Usuário
  * Responsável pela interface e funcionalidades da página "Meu Perfil"
+ * Versão aprimorada com melhor integração mobile
  */
 
 // Disparado quando o DOM estiver completamente carregado
@@ -18,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const photoPreview = document.getElementById('photo-preview');
     const profileTabs = document.querySelectorAll('.profile-tab');
     const tabContents = document.querySelectorAll('.profile-tab-content');
+    const navToggle = document.getElementById('nav-toggle');
+    const mainNav = document.getElementById('main-nav');
+    const navOverlay = document.getElementById('nav-overlay');
     
     // Firebase Auth e Database
     const auth = firebase.auth();
@@ -27,6 +31,24 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentUser = null;
     let isAdmin = false;
     let userProfile = {};
+    let isMobile = window.innerWidth <= 768;
+    
+    // Função para verificação de dispositivo móvel
+    function checkMobileState() {
+        isMobile = window.innerWidth <= 768;
+        return isMobile;
+    }
+    
+    // Detectar mudanças de tamanho da tela
+    window.addEventListener('resize', () => {
+        const wasMobile = isMobile;
+        const nowMobile = checkMobileState();
+        
+        if (wasMobile !== nowMobile) {
+            // O estado mudou entre desktop/mobile, ajustar a interface
+            updateProfileUILayout();
+        }
+    });
     
     // Listener para alterações no estado de autenticação
     auth.onAuthStateChanged(function(user) {
@@ -135,8 +157,59 @@ document.addEventListener('DOMContentLoaded', function() {
             profileForm.elements['bio'].value = userProfile.bio || '';
         }
         
+        // Ajustar o layout com base no dispositivo
+        updateProfileUILayout();
+        
         // Mostrar atividades recentes (se implementado)
         updateRecentActivities();
+    }
+    
+    // Ajusta o layout da UI do perfil com base no tipo de dispositivo
+    function updateProfileUILayout() {
+        if (!profileSection) return;
+        
+        checkMobileState(); // Atualiza a variável isMobile
+        
+        // Ajustes específicos para mobile
+        if (isMobile) {
+            // Garantir que os botões de perfil tenham tamanho adequado
+            const profileButtons = profileSection.querySelectorAll('.profile-btn');
+            profileButtons.forEach(btn => {
+                btn.classList.add('mobile-optimized');
+            });
+            
+            // Ajustar tamanho do formulário para dispositivos menores
+            if (profileForm) {
+                profileForm.classList.add('mobile-layout');
+            }
+            
+            // Ajustar lista de atividades para formato mobile
+            const activityList = document.getElementById('activities-list');
+            if (activityList) {
+                activityList.classList.add('mobile-view');
+            }
+        } else {
+            // Reverter ajustes para desktop
+            const profileButtons = profileSection.querySelectorAll('.profile-btn');
+            profileButtons.forEach(btn => {
+                btn.classList.remove('mobile-optimized');
+            });
+            
+            if (profileForm) {
+                profileForm.classList.remove('mobile-layout');
+            }
+            
+            const activityList = document.getElementById('activities-list');
+            if (activityList) {
+                activityList.classList.remove('mobile-view');
+            }
+        }
+        
+        // Verificar se o modo escuro está ativo para ajustes específicos
+        if (document.body.classList.contains('dark-mode')) {
+            profileSection.querySelectorAll('.profile-avatar, .profile-avatar-edit')
+                .forEach(el => el.classList.add('dark-mode-adjusted'));
+        }
     }
     
     // Atualiza o avatar do perfil
@@ -175,6 +248,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Função para lidar com o redirecionamento para a seção de perfil
+    function handleProfileNavigation() {
+        // Verificar se estamos em dispositivo móvel e o menu está aberto
+        if (window.innerWidth <= 768 && mainNav && mainNav.classList.contains('visible')) {
+            // Fechar o menu móvel
+            if (typeof toggleMenu === 'function') {
+                toggleMenu(false);
+            } else {
+                // Fallback se a função toggleMenu não estiver disponível
+                mainNav.classList.remove('visible');
+                if (navOverlay) navOverlay.classList.remove('visible');
+                if (navToggle) {
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    navToggle.classList.remove('active');
+                }
+                document.body.classList.remove('menu-open');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // Exibir a seção de perfil
+        if (profileSection) {
+            // Ocultar todas as seções primeiro
+            const allSections = document.querySelectorAll('.tool-section');
+            allSections.forEach(section => section.classList.remove('active'));
+            
+            // Mostrar a seção de perfil
+            profileSection.classList.add('active');
+            
+            // Atualizar o hash da URL
+            history.replaceState(null, null, '#perfil');
+            
+            // Scroll suave para a seção
+            setTimeout(() => {
+                const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+                const targetPosition = profileSection.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                window.scrollTo({top: targetPosition, behavior: 'smooth'});
+            }, 100);
+        }
+    }
+
+    // Manipulador de eventos para cliques em links de perfil no menu
+    const profileMenuLinks = document.querySelectorAll('a[href="#perfil"]');
+    if (profileMenuLinks) {
+        profileMenuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                handleProfileNavigation();
+            });
+        });
+    }
+
     // Eventos para tabs do perfil
     if (profileTabs) {
         profileTabs.forEach(tab => {
@@ -191,6 +317,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     content.classList.remove('active');
                     if (content.id === targetId) {
                         content.classList.add('active');
+                        
+                        // Animação de fade in
+                        content.style.opacity = '0';
+                        setTimeout(() => {
+                            content.style.opacity = '1';
+                        }, 50);
                     }
                 });
             });
@@ -314,6 +446,81 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => messageEl.remove(), 500);
             }, duration);
         }
+    }
+    
+    // Função para fazer upload da imagem - Compatível com Netlify
+    function uploadProfileImage(file) {
+        // Mostrar indicador de progresso
+        const progressIndicator = document.createElement('div');
+        progressIndicator.className = 'upload-progress-indicator';
+        progressIndicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando imagem...';
+        profileAvatar.parentNode.appendChild(progressIndicator);
+        
+        // Verificar se o Firebase Storage está inicializado
+        if (!firebase.storage) {
+            console.error('Firebase Storage não está inicializado');
+            progressIndicator.remove();
+            showProfileMessage('error', 'Serviço de armazenamento não disponível');
+            return;
+        }
+        
+        // Referência para o arquivo no Storage
+        const storageRef = firebase.storage().ref();
+        const profileImagesRef = storageRef.child(`profile_images/${currentUser.uid}/profile_${Date.now()}`);
+        
+        // Upload do arquivo
+        const uploadTask = profileImagesRef.put(file);
+        
+        // Monitorar progresso
+        uploadTask.on('state_changed', 
+            // Progresso
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload: ' + progress + '%');
+                progressIndicator.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Enviando: ${Math.round(progress)}%`;
+            },
+            // Erro
+            (error) => {
+                progressIndicator.remove();
+                console.error('Erro no upload:', error);
+                showProfileMessage('error', 'Falha no upload da imagem');
+            },
+            // Sucesso
+            () => {
+                // Obter URL do arquivo
+                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    // Remover indicador
+                    progressIndicator.remove();
+                    
+                    // Salvar URL no perfil
+                    userProfile.photoURL = downloadURL;
+                    
+                    // Atualizar no Firebase Database
+                    database.ref('users/' + currentUser.uid).update({
+                        photoURL: downloadURL,
+                        lastUpdated: firebase.database.ServerValue.TIMESTAMP
+                    });
+                    
+                    // Atualizar no Auth
+                    currentUser.updateProfile({
+                        photoURL: downloadURL
+                    });
+                    
+                    // Atualizar UI
+                    updateProfileAvatar();
+                    
+                    // Registrar atividade
+                    logUserActivity(currentUser.uid, 'profile_update', 'Atualizou foto de perfil');
+                    
+                    // Mensagem de sucesso
+                    showProfileMessage('success', 'Foto de perfil atualizada com sucesso!');
+                })
+                .catch(error => {
+                    console.error('Erro ao obter URL:', error);
+                    showProfileMessage('error', 'Falha ao processar a imagem');
+                });
+            }
+        );
     }
     
     // Atualiza atividades recentes no perfil

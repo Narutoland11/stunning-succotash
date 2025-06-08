@@ -106,17 +106,24 @@ function adicionarAntiepilepticosParte2() {
                     descricao: "Solução injetável 100mg/mL",
                     tipo: "solucao",
                     passos: [
-                        "Diluir em água para injeção",
-                        "Administrar lentamente (< 50 mg/minuto)",
-                        "Monitorar função respiratória durante administração"
+                        "Diluir em água estéril para injeção ou soro",
+                        "Administrar lentamente (≤60 mg/min)",
+                        "Verificar permeabilidade do acesso venoso"
                     ],
                     precaucoes: [
-                        "Pode causar depressão respiratória",
-                        "Risco de hipotensão com administração rápida",
-                        "Monitorização contínua necessária"
+                        "Risco de depressão respiratória",
+                        "Monitorar sinais vitais durante a administração",
+                        "Ter equipamentos de reanimação disponíveis",
+                        "Evitar extravasamento (necrose tecidual)"
                     ],
                     indicacoes: {
                         statusEpilepticus: {
+                            dose: "15-20 mg/kg",
+                            doseMaxima: "1000 mg dose única",
+                            frequencia: "Infusão lenta, dose única",
+                            duracao: "Seguir com dose de manutenção oral"
+                        },
+                        convulsoesNeonatais: {
                             dose: "15-20 mg/kg dose de ataque, 3-4 mg/kg/dia manutenção",
                             doseMaxima: "30 mg/kg dose total",
                             frequencia: "Dose de ataque única, manutenção diária",
@@ -125,7 +132,7 @@ function adicionarAntiepilepticosParte2() {
                     }
                 }
             }
-        });
+        };
 
         // Lamotrigina
         adicionarMedicamento('lamotrigina', {
@@ -161,7 +168,7 @@ function adicionarAntiepilepticosParte2() {
                     }
                 }
             }
-        });
+        };
 
         // Levetiracetam
         adicionarMedicamento('levetiracetam', {
@@ -219,13 +226,11 @@ function adicionarAntiepilepticosParte2() {
                     }
                 }
             }
-        });
+        };
 
-        console.log('Antiepilépticos parte 2 adicionados com sucesso!');
-        return true;
+        console.log('Antiepiléticos parte 2 adicionados com sucesso!');
     } catch (error) {
-        console.error('Erro ao adicionar antiepilépticos (parte 2):', error);
-        return false;
+        console.error('Erro ao adicionar antiepiléticos (parte 2):', error);
     }
 }
 
@@ -243,6 +248,6 @@ document.addEventListener('DOMContentLoaded', function() {
             utils.atualizarContadoresInterface();
         }
         
-        console.log('Inicialização dos antiepilépticos parte 2 concluída');
+        console.log('Inicialização dos antiepiléticos parte 2 concluída');
     }, 500);
 });

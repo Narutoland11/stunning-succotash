@@ -1,0 +1,24 @@
+/* Estilos adicionais carregados de forma otimizada */
+.avatar-fallback {
+    width: 40px;
+    height: 40px;
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Estilos para componentes dinâmicos */
+.dynamic-component {
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+
+.dynamic-component.hidden {
+    opacity: 0;
+    transform: translateY(10px);
+}

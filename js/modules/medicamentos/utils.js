@@ -22,15 +22,15 @@ function verificarObjetosGlobais() {
     
     // Garantir que os objetos estejam disponíveis no escopo global
     if (typeof MEDICAMENTOS === 'undefined' || typeof window.MEDICAMENTOS === 'undefined') {
-        window.MEDICAMENTOS = window.MEDICAMENTOS || {};
+        window.MEDICAMENTOS = {};
     }
     
     if (typeof INDICACOES === 'undefined' || typeof window.INDICACOES === 'undefined') {
-        window.INDICACOES = window.INDICACOES || {};
+        window.INDICACOES = {};
     }
     
     if (typeof VIAS === 'undefined' || typeof window.VIAS === 'undefined') {
-        window.VIAS = window.VIAS || {};
+        window.VIAS = {};
     }
     
     // Adicionar vias padrão se não existirem
