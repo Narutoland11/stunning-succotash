@@ -322,8 +322,8 @@
             adicionarAzitromicina();
             
             // Contar quantos medicamentos foram adicionados
-            const MEDICAMENTOS = verificarMedicamentos();
-            medicamentosAdicionados = Object.keys(MEDICAMENTOS).length;
+            const medicamentosObj = verificarMedicamentos();
+            medicamentosAdicionados = Object.keys(medicamentosObj).length;
             console.log(`Medicamentos disponíveis: ${medicamentosAdicionados}`);            
             return medicamentosAdicionados;
         } catch (error) {

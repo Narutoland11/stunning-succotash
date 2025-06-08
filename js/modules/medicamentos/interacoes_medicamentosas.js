@@ -481,13 +481,13 @@ function verificarInteracao(med1, med2) {
     
     // Se algum dos medicamentos não foi selecionado
     if (!med1 || !med2) {
-        exibirMensagemErro(analiseInteracao, 'Selecione dois medicamentos para verificar interações.');
+        exibirMensagemErro(resultadoContainer, 'Selecione dois medicamentos para verificar interações.');
         return;
     }
     
     // Se o mesmo medicamento foi selecionado duas vezes
     if (med1 === med2) {
-        exibirMensagemErro(analiseInteracao, 'Selecione medicamentos diferentes para verificar interações.');
+        exibirMensagemErro(resultadoContainer, 'Selecione medicamentos diferentes para verificar interações.');
         return;
     }
     
@@ -624,7 +624,8 @@ function verificarInteracao(med1, med2) {
  * @param {string} mensagem - Mensagem de erro a ser exibida
  */
 function exibirMensagemErro(container, mensagem) {
-    const analiseInteracao = document.getElementById('analise-interacao');
+    // Encontrar o container de análise dentro do container principal
+    const analiseInteracao = container.querySelector('#analise-interacao') || container;
     
     analiseInteracao.innerHTML = `
         <div class="erro-interacao">
