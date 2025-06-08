@@ -1,24 +1,176 @@
 /**
  * Script emergencial para correção direta da base de medicamentos
- * Este arquivo força a adição dos medicamentos antiepilépticos
+ * Este arquivo força a adição dos medicamentos antiepilépticos e outros medicamentos essenciais
+ * Versão 2.0 - Correção completa de sintaxe e dados
  */
 
 // Função auto-executável para isolar o código
 (function() {
     console.log('=== CORREÇÃO EMERGENCIAL DE MEDICAMENTOS ===');
     
-    // Função para verificar se objeto global existe
+    // Função para verificar e iniciar objeto MEDICAMENTOS
     function verificarMedicamentos() {
-        if (typeof window.MEDICAMENTOS === 'undefined') {
-            console.error('MEDICAMENTOS não definido - criando objeto vazio');
+        if (typeof window.MEDICAMENTOS === 'undefined' || Object.keys(window.MEDICAMENTOS).length === 0) {
+            console.warn("Criando objeto MEDICAMENTOS que não existia ou estava vazio");
             window.MEDICAMENTOS = {};
         }
         return window.MEDICAMENTOS;
     }
+
+    // Verificar e inicializar os outros objetos globais necessários
+    function verificarObjetosGlobais() {
+        if (typeof window.INDICACOES === 'undefined' || Object.keys(window.INDICACOES).length === 0) {
+            console.warn("Criando objeto INDICACOES que não existia ou estava vazio");
+            window.INDICACOES = {};
+        }
+        
+        if (typeof window.VIAS === 'undefined' || Object.keys(window.VIAS).length === 0) {
+            console.warn("Criando objeto VIAS que não existia ou estava vazio");
+            window.VIAS = {};
+        }
+        
+        // Garantir que os objetos estejam disponíveis no escopo global
+        if (typeof MEDICAMENTOS === 'undefined') {
+            window.MEDICAMENTOS = window.MEDICAMENTOS;
+        }
+        
+        if (typeof INDICACOES === 'undefined') {
+            window.INDICACOES = window.INDICACOES;
+        }
+        
+        if (typeof VIAS === 'undefined') {
+            window.VIAS = window.VIAS;
+        }
+        
+        // Adicionar vias padrão se não existirem
+        if (typeof window.VIAS !== 'undefined') {
+            if (!window.VIAS.oral) window.VIAS.oral = "Via Oral";
+            if (!window.VIAS.iv) window.VIAS.iv = "Intravenoso";
+        }
+        
+        console.log('Objetos globais verificados e inicializados com sucesso');
+    }
     
-    // Função para adicionar os medicamentos diretamente
+    // Atualizar contagem de medicamentos na interface
+    function atualizarContagem() {
+        try {
+            // Verificar se o objeto existe
+            const MEDICAMENTOS = verificarMedicamentos();
+            
+            // Calcular contagem
+            const total = Object.keys(MEDICAMENTOS).length;
+            console.log(`Total de medicamentos: ${total}`);
+            
+            // Atualizar elementos na interface
+            const elementosContagem = document.querySelectorAll('.total-medicamentos, #total-medicamentos, [data-medicamentos-count]');
+            elementosContagem.forEach(elem => {
+                if (elem) {
+                    elem.textContent = total;
+                    console.log('Elemento de contagem atualizado:', elem);
+                }
+            });
+            
+            // Executar análise de medicamentos se disponível
+            if (typeof window.analisarMedicamentos === 'function') {
+                console.log('Executando análise de medicamentos...');
+                const stats = window.analisarMedicamentos();
+                
+                // Atualizar estatísticas na interface
+                if (typeof window.atualizarEstatisticasInterface === 'function') {
+                    window.atualizarEstatisticasInterface(stats);
+                    console.log('Interface de estatísticas atualizada');
+                }
+                
+                // Avisar sobre a atualização
+                if (typeof window.ALERTA_SISTEMA !== 'undefined') {
+                    window.ALERTA_SISTEMA.sucesso(`Base de medicamentos atualizada! Total de ${total} medicamentos disponíveis.`, {
+                        duracao: 8000,
+                        fechavel: true
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Erro ao atualizar contagem:', error);
+        }
+    }
+
+    // Função para adicionar azitromicina 
+    function adicionarAzitromicina() {
+        console.log('Adicionando azitromicina ao objeto MEDICAMENTOS...');
+        const MEDICAMENTOS = verificarMedicamentos();
+        
+        try {
+            // Adicionar azitromicina
+            MEDICAMENTOS.azitromicina = {
+                nome: "Azitromicina",
+                formas: {
+                    oral: {
+                        descricao: "Suspensão oral 200mg/5mL",
+                        tipo: "suspensao",
+                        passos: [
+                            "Agitar bem antes de usar",
+                            "Administrar 1 hora antes ou 2 horas após as refeições",
+                            "Administrar com seringa dosadora específica"
+                        ],
+                        precaucoes: [
+                            "Risco de prolongamento do QT",
+                            "Interação com antiácidos e ergotamínicos",
+                            "Monitorar função hepática"
+                        ],
+                        indicacoes: {
+                            pneumonia: {
+                                dose: "10 mg/kg no dia 1, depois 5 mg/kg",
+                                doseMaxima: "500 mg no dia 1, 250 mg depois",
+                                frequencia: "1 vez ao dia",
+                                duracao: "5 dias"
+                            },
+                            otite: {
+                                dose: "10 mg/kg/dia",
+                                doseMaxima: "500 mg/dia",
+                                frequencia: "1 vez ao dia",
+                                duracao: "3 dias"
+                            },
+                            sinusite: {
+                                dose: "10 mg/kg/dia",
+                                doseMaxima: "500 mg/dia",
+                                frequencia: "1 vez ao dia",
+                                duracao: "3 dias"
+                            },
+                            faringite: {
+                                dose: "12 mg/kg/dia",
+                                doseMaxima: "500 mg/dia",
+                                frequencia: "1 vez ao dia",
+                                duracao: "5 dias"
+                            }
+                        }
+                    }
+                }
+            };
+            
+            // Adicionar indicacoes
+            if (typeof window.INDICACOES !== 'undefined') {
+                window.INDICACOES.pneumonia = "Pneumonia";
+                window.INDICACOES.otite = "Otite Média Aguda";
+                window.INDICACOES.sinusite = "Sinusite Aguda";
+                window.INDICACOES.faringite = "Faringite Estreptocócica";
+            }
+            
+            console.log('Azitromicina adicionada com sucesso!');
+            return true;
+        } catch (error) {
+            console.error('Erro ao adicionar azitromicina:', error);
+            return false;
+        }
+    }
+
+    // Função principal para adicionar os medicamentos diretamente
     function adicionarMedicamentosEmergencial() {
         const MEDICAMENTOS = verificarMedicamentos();
+        // Verificar e inicializar outros objetos globais necessários
+        verificarObjetosGlobais();
+        
+        console.log('Iniciando adição emergencial de medicamentos...');
+        let medicamentosAdicionados = 0;
         
         try {
             // === CARBAMAZEPINA ===
@@ -215,69 +367,58 @@
                 }
             };
             
-            console.log('Medicamentos antiepilépticos corrigidos. Verificando...');
-            const medicamentosAdicionados = ['carbamazepina', 'valproato', 'fenitoina', 'fenobarbital', 'lamotrigina'];
+            // Chamar função específica para adicionar azitromicina
+            adicionarAzitromicina();
             
-            const verificacao = medicamentosAdicionados.filter(med => MEDICAMENTOS[med] !== undefined);
-            console.log(`Verificação: ${verificacao.length}/${medicamentosAdicionados.length} medicamentos adicionados corretamente`);
-            
-            return verificacao.length;
+            // Contar quantos medicamentos foram adicionados
+            medicamentosAdicionados = Object.keys(MEDICAMENTOS).length;
+            console.log(`Medicamentos adicionados com sucesso! Total na base: ${medicamentosAdicionados}`);            
+            return medicamentosAdicionados;
         } catch (error) {
-            console.error('Erro ao adicionar medicamentos emergenciais:', error);
+            console.error('Erro ao adicionar medicamentos emergencialmente:', error);
             return 0;
         }
     }
     
-    // Função para atualizar a interface após adição dos medicamentos
-    function atualizarContagem() {
+    // Função para atualizar contadores na interface
+    function atualizarContadoresInterface() {
         try {
             // Calcular contagem total
             const total = Object.keys(verificarMedicamentos()).length;
-            console.log(`Total de medicamentos após correção: ${total}`);
+            console.log(`Total de medicamentos disponíveis: ${total}`);
             
             // Atualizar elementos na interface
             const elementosContagem = document.querySelectorAll('.total-medicamentos, #total-medicamentos, [data-medicamentos-count]');
-            elementosContagem.forEach(elem => {
-                if (elem) {
-                    elem.textContent = total;
-                    console.log('Elemento de contagem atualizado:', elem);
-                }
-            });
-            
-            // Executar análise de medicamentos, se disponível
-            if (typeof window.analisarMedicamentos === 'function') {
-                console.log('Executando análise de medicamentos...');
-                const stats = window.analisarMedicamentos();
-                
-                // Atualizar estatísticas na interface
-                if (typeof window.atualizarEstatisticasInterface === 'function') {
-                    window.atualizarEstatisticasInterface(stats);
-                    console.log('Interface de estatísticas atualizada');
-                }
-                
-                // Avisar sobre a atualização
-                if (typeof window.ALERTA_SISTEMA !== 'undefined') {
-                    window.ALERTA_SISTEMA.sucesso(`Base de medicamentos atualizada! Total de ${total} medicamentos disponíveis.`, {
-                        duracao: 8000,
-                        fechavel: true
-                    });
-                }
+            if (elementosContagem.length > 0) {
+                elementosContagem.forEach(elem => {
+                    if (elem) {
+                        elem.textContent = total;
+                        console.log('Elemento de contagem atualizado:', elem);
+                    }
+                });
+            } else {
+                console.warn('Nenhum elemento de contagem encontrado na interface');
             }
+            
+            return total;
         } catch (error) {
-            console.error('Erro ao atualizar contagem:', error);
+            console.error('Erro ao atualizar contadores na interface:', error);
+            return 0;
         }
     }
     
-    // Executar quando a página estiver completamente carregada
+    // Execute quando a página estiver carregada
     window.addEventListener('load', function() {
-        // Dar um tempo para scripts anteriores terminarem
+        // Esperar um segundo para garantir que outros scripts foram carregados
         setTimeout(function() {
             console.log('Iniciando correção emergencial dos medicamentos...');
+            verificarObjetosGlobais();
             const quantidadeAdicionada = adicionarMedicamentosEmergencial();
             
             if (quantidadeAdicionada > 0) {
                 console.log(`${quantidadeAdicionada} medicamentos adicionados com sucesso!`);
                 atualizarContagem();
+                atualizarContadoresInterface();
             } else {
                 console.warn('Nenhum medicamento foi adicionado. Verificando o MEDICAMENTOS...');
                 console.log('Estado atual do MEDICAMENTOS:', Object.keys(verificarMedicamentos()));
