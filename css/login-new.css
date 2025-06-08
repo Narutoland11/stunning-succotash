@@ -1,32 +1,20 @@
-/* Estilos modernizados para o sistema de login do Moz Doctor Dose */
+/* 
+ * Estilos modernizados para o sistema de login do Moz Doctor Dose 
+ * Nota: Estilos básicos de login foram consolidados no arquivo login.css
+ * Este arquivo contém apenas personalizações específicas para esta versão
+ */
 
-/* Estilo do botão de login no cabeçalho */
-.auth-buttons {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  display: flex;
-  align-items: center;
-}
-
+/* Estilo específico para o botão de login desta versão */
 #login-button {
-  background: var(--primary);
-  color: #fff;
-  border: none;
+  /* Estende o estilo base de .auth-button definido em login.css */
   padding: 0.6rem 1.2rem;
   border-radius: 50px;
-  font-weight: 600;
   font-size: 0.9rem;
-  display: flex;
-  align-items: center;
   gap: 0.5rem;
-  transition: all 0.3s ease;
   box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25);
-  cursor: pointer;
 }
 
 #login-button:hover {
-  background: var(--primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
 }
@@ -97,21 +85,16 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+/* Sistema de abas de login - personalizações específicas */
+/* Nota: Os estilos base de tabs estão em components/ui-elements.css */
 .login-tabs {
-  display: flex;
   margin-bottom: 2rem;
   border-bottom: 1px solid var(--border-color, #ddd);
 }
 
 .login-tab {
   padding: 0.75rem 1.5rem;
-  cursor: pointer;
   color: var(--text-secondary, #777);
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  transition: all 0.3s;
-  font-weight: 600;
   flex: 1;
   text-align: center;
 }
@@ -121,12 +104,8 @@
   border-bottom-color: var(--primary, #2563eb);
 }
 
-.login-form-container {
-  display: none;
-}
-
+/* Contêiner de formulário - animação específica */
 .login-form-container.active {
-  display: block;
   animation: fadeIn 0.4s ease;
 }
 
@@ -135,37 +114,25 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Estilos específicos do formulário de login desta versão */
+/* Nota: Os estilos base de formulários estão em components/forms.css */
 .login-form {
-  display: flex;
-  flex-direction: column;
   gap: 1.2rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
 }
 
 .form-group label {
   margin-bottom: 0.4rem;
   font-size: 0.9rem;
-  color: var(--text-color, #333);
-  font-weight: 500;
 }
 
 .form-group input {
   padding: 0.85rem 1rem;
-  border: 1px solid var(--border-color, #ddd);
   border-radius: 8px;
   background-color: var(--input-bg, #f9f9f9);
-  color: var(--text-color, #333);
   font-size: 1rem;
-  transition: all 0.3s;
 }
 
 .form-group input:focus {
-  border-color: var(--primary, #2563eb);
-  outline: none;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 

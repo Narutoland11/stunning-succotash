@@ -1,0 +1,154 @@
+/**
+ * Moz Doctor Dose - Estilos Responsivos
+ * Estilos para garantir que a interface funcione em todos os dispositivos
+ * Nota: Estilos básicos de responsividade estão em responsive.css e components/navigation.css
+ * Este arquivo contém apenas melhorias específicas para temas e layouts especializados
+ */
+
+/* 
+ * Nota: Os estilos de menu móvel foram consolidados no arquivo components/navigation.css
+ * Estilos de overlay para mobile também estão no arquivo components/navigation.css 
+ */
+
+/* 
+ * Menu dropdown do usuário 
+ * Nota: Os estilos básicos do user-dropdown foram movidos para components/navigation.css
+ * Aqui mantemos apenas as personalizações específicas para o tema responsivo e dark-mode
+ */
+
+/* Temas escuros para o dropdown do usuário */
+.dark-mode .user-dropdown-toggle {
+    color: #ecf0f1;
+}
+
+.dark-mode .user-dropdown-menu {
+    background-color: #34495e;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .user-dropdown-item {
+    color: #ecf0f1;
+}
+
+.dark-mode .user-dropdown-divider {
+    background-color: #2c3e50;
+}
+
+/* Responsividade para seções do perfil e configurações */
+@media screen and (max-width: 768px) {
+    .profile-container {
+        padding: 15px;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-avatar-container {
+        margin: 0 auto 20px;
+    }
+
+    .profile-content {
+        padding: 15px;
+    }
+
+    .settings-layout {
+        flex-direction: column;
+    }
+
+    .settings-sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .settings-content {
+        width: 100%;
+        padding: 0;
+    }
+
+    .settings-section {
+        padding: 10px;
+    }
+
+    .settings-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .settings-nav-item {
+        width: calc(50% - 5px);
+    }
+}
+
+/* 
+ * Estilos para o dashboard do usuário e cards mobile 
+ * Nota: Os estilos básicos de mobile-nav-cards foram movidos para components/navigation.css
+ * Aqui ficam apenas os estilos específicos para o tema escuro
+ */
+
+/* Personalização do tema escuro para cards de navegação mobile */
+@media screen and (max-width: 768px) {
+    .dark-mode .mobile-nav-card {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+    }
+    
+    .mobile-nav-card.active {
+        background-color: #3498db;
+    }
+}
+
+/* Fix para dashboards de estatísticas */
+.stats-dashboard {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Fix para visualização do perfil em dispositivos pequenos */
+.profile-tab-content {
+    display: none;
+}
+
+.profile-tab-content.active {
+    display: block;
+}
+
+.profile-tabs {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.profile-tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.profile-tab.active {
+    border-bottom: 2px solid #3498db;
+    color: #3498db;
+}
+
+.dark-mode .profile-tab.active {
+    border-bottom-color: #3498db;
+}
+
+.dark-mode .profile-tabs {
+    border-bottom-color: #2c3e50;
+}

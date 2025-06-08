@@ -1,24 +1,19 @@
 /* Estilos para a seção de laboratório aprimorada */
 
-/* Tabelas de resultados */
+/* 
+ * Tabelas de resultados 
+ * Nota: Os estilos base para tabelas foram movidos para components/tables.css
+ * Aqui mantemos apenas as personalizações específicas para tabelas de resultados de laboratório
+ */
+
+/* Modificadores específicos para tabelas de resultados de laboratório */
 .resultado-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 15px;
     font-size: 0.9em;
 }
 
 .resultado-table th {
     background-color: #3498db;
     color: white;
-    text-align: left;
-    padding: 8px;
-    font-weight: 600;
-}
-
-.resultado-table td {
-    padding: 6px 8px;
-    border-bottom: 1px solid #e0e0e0;
 }
 
 .resultado-table tr:nth-child(even) {
@@ -162,21 +157,21 @@
     background-color: #c0392b;
 }
 
-/* Estilização geral */
+/* 
+ * Sistema de abas para exames 
+ * Nota: Os estilos base para tabs foram movidos para components/ui-elements.css
+ * Aqui mantemos apenas classes específicas para o domínio de exames laboratoriais
+ */
 .exames-tabs {
-    display: flex;
-    border-bottom: 1px solid #ddd;
+    /* Estende o estilo de .tabs do arquivo ui-elements.css */
     margin-bottom: 15px;
 }
 
 .exame-tab {
-    padding: 8px 15px;
+    /* Estende o estilo de .tab-button do arquivo ui-elements.css com personalizações */
     margin-right: 5px;
     background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-bottom: none;
     border-radius: 5px 5px 0 0;
-    cursor: pointer;
     font-size: 0.9em;
 }
 
@@ -184,10 +179,10 @@
     background-color: #fff;
     border-bottom: 1px solid #fff;
     margin-bottom: -1px;
-    font-weight: 600;
     color: #3498db;
 }
 
+/* Usa as mesmas funcionalidades da classe .tab-content de ui-elements.css */
 .exame-content {
     display: none;
 }

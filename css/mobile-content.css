@@ -9,43 +9,10 @@
 
 /* Melhorias para seção de doses em mobile */
 @media (max-width: 768px) {
-    /* Layout de cards para link de navegação */
-    .mobile-nav-cards {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin: 12px 0;
-    }
-
-    .mobile-nav-card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--white);
-        border-radius: 8px;
-        padding: 12px;
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .mobile-nav-card:hover,
-    .mobile-nav-card:focus {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .mobile-nav-card i {
-        font-size: 24px;
-        margin-bottom: 10px;
-        color: var(--primary);
-    }
-
-    .mobile-nav-card span {
-        font-size: 14px;
-        font-weight: 600;
-    }
+    /* 
+     * Nota: O layout de cards para navegação mobile (.mobile-nav-cards e .mobile-nav-card) 
+     * foi movido para components/navigation.css para evitar duplicação
+     */
 
     /* Formulário de doses otimizado para mobile */
     #doses .calculator-form {

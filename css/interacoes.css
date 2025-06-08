@@ -1,40 +1,8 @@
-/* Estilos para o verificador de interações medicamentosas */
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.tab-button {
-    padding: 10px 16px;
-    background-color: #f1f5f9;
-    color: var(--gray);
-    border: var(--border);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 0.9375rem;
-    transition: var(--transition);
-}
-
-.tab-button:hover {
-    background-color: #e2e8f0;
-}
-
-.tab-button.active {
-    background-color: var(--primary);
-    color: var(--white);
-    border-color: var(--primary);
-}
-
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-    animation: fadeIn 0.3s ease-out;
-}
+/* 
+ * Estilos para o verificador de interações medicamentosas 
+ * Nota: Os seletores .tabs, .tab-button, .tab-content foram movidos para components/ui-elements.css
+ * para evitar duplicação com outros componentes que usam o mesmo padrão de interface
+ */
 
 /* Estilos específicos para interações medicamentosas */
 .interacao-form {
@@ -202,7 +170,7 @@
 }
 
 .detalhe-item strong {
-    color: #334155;
+    color: var(--dark);
     font-weight: 600;
 }
 
@@ -266,11 +234,12 @@
 }
 
 .interacao-aviso {
-    background-color: #fffbeb;
-    border-left: 3px solid #f59e0b;
-    padding: 10px 12px;
+    margin-top: 12px;
+    background-color: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 12px;
     font-size: 0.9rem;
-    color: #78350f;
+    color: #92400e;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 
@@ -305,9 +274,7 @@
     font-style: italic;
 }
 
-.detalhe-item strong {
-    color: var(--dark);
-}
+/* .detalhe-item strong foi unificado acima */
 
 .interacao-nota {
     padding: 12px;
@@ -320,15 +287,7 @@
     gap: 8px;
 }
 
-.interacao-aviso {
-    margin-top: 12px;
-    padding: 12px;
-    background-color: #fef3c7;
-    border-left: 4px solid #f59e0b;
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
-    font-size: 0.9rem;
-    color: #92400e;
-}
+/* .interacao-aviso foi unificado acima */
 
 .erro-interacao {
     padding: 12px;

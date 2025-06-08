@@ -3,9 +3,32 @@
  * Estilos modernos para a navegação do Moz Doctor Dose
  * Inclui melhorias de acessibilidade, design responsivo e animações suaves
  * Otimizado para Netlify e dispositivos móveis de todos os tamanhos
+ *
+ * Nota: Este arquivo complementa o components/navigation.css com melhorias específicas
+ * Os estilos base de navegação estão definidos em components/navigation.css
  */
 
-/* Variáveis CSS para fácil personalização */
+/* Overlay para menu mobile com transição suave - funcionalidade específica deste tema */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 989; /* Para ficar abaixo do menu, mas acima do restante */
+  opacity: 0;
+  transition: opacity var(--transition-speed) ease;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.nav-overlay.visible {
+  display: block;
+}
+
+/* Variáveis específicas para o tema moderno de navegação */
 :root {
   --nav-bg: #ffffff;
   --nav-text: #333333;
@@ -17,11 +40,6 @@
   --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
   --border-radius: 4px;
-}
-
-/* Garantir que todos os navegadores interpretem o box model da mesma forma */
-*, *::before, *::after {
-  box-sizing: border-box;
 }
 
 /* Base do cabeçalho */
@@ -78,30 +96,18 @@
   color: #555;
 }
 
-/* Navegação principal */
+/* Navegação principal - modificações específicas do tema moderno */
+/* Nota: Os estilos base estão definidos em components/navigation.css */
+
 .main-nav {
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-}
-
-.main-nav ul {
-  display: flex;
-  gap: 8px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 .main-nav a {
-  display: flex;
-  align-items: center;
   color: var(--nav-text);
-  text-decoration: none;
   padding: 0.75rem;
   border-radius: var(--border-radius);
   font-size: 0.95rem;
-  font-weight: 500;
   transition: all var(--transition-speed) ease;
 }
 
@@ -134,22 +140,100 @@
   z-index: 1;
 }
 
-/* Botão toggle */
+/* Botão toggle moderno aprimorado - melhorias sobre o padrão em components/navigation.css */
 .nav-toggle {
-  display: none;
-  background: none;
-  border: none;
-  padding: 0.5rem;
+  /* Estilo base definido em components/navigation.css */
   margin-left: 1rem;
-  cursor: pointer;
-  color: var(--nav-text);
-  font-size: 1.5rem;
-  transition: color var(--transition-speed) ease;
   z-index: 1001;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background-color: rgba(0,0,0,0.03);
+  outline: none;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .nav-toggle:hover {
   color: var(--nav-hover);
+  background-color: rgba(52, 152, 219, 0.15);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+.nav-toggle:focus-visible {
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.4);
+  outline: none;
+}
+
+.nav-toggle.active {
+  background-color: rgba(52, 152, 219, 0.25);
+  color: var(--nav-active);
+}
+
+/* Ícone hamburger aprimorado */
+.nav-toggle .hamburger-icon {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: all var(--transition-speed) cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transform-origin: center;
+}
+
+.nav-toggle .hamburger-icon:before,
+.nav-toggle .hamburger-icon:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: all var(--transition-speed) cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transform-origin: center;
+}
+
+.nav-toggle .hamburger-icon:before {
+  top: -7px;
+  width: 18px; /* Linha superior mais curta */
+  right: 0;
+  left: auto;
+}
+
+.nav-toggle .hamburger-icon:after {
+  top: 7px;
+  width: 18px; /* Linha inferior mais curta */
+  left: 0;
+}
+
+/* Animação melhorada para X quando ativo */
+.nav-toggle.active .hamburger-icon {
+  background: transparent;
+  transform: translateX(-3px);
+}
+
+.nav-toggle.active .hamburger-icon:before {
+  top: 0;
+  width: 24px;
+  transform: rotate(45deg) translateX(3px);
+}
+
+.nav-toggle.active .hamburger-icon:after {
+  top: 0;
+  width: 24px;
+  transform: rotate(-45deg) translateX(3px);
+}
+
+/* Efeito hover no ícone */
+.nav-toggle:hover .hamburger-icon:before {
+  width: 24px;
+}
+
+.nav-toggle:hover .hamburger-icon:after {
+  width: 24px;
 }
 
 /* Classe para "pular para o conteúdo" (acessibilidade) */
@@ -326,26 +410,57 @@
 
   .main-nav {
     order: 4;
-    width: 100%;
-    max-height: 0;
-    overflow: hidden;
-    -webkit-transition: max-height var(--transition-speed) ease;
-    -moz-transition: max-height var(--transition-speed) ease;
-    transition: max-height var(--transition-speed) ease;
+    width: 280px; /* Largura fixa para o menu lateral */
+    max-height: none;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     margin: 0;
-    border-top: 1px solid rgba(0,0,0,0.05);
     background-color: var(--nav-bg);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: -290px; /* Escondido inicialmente fora da tela */
+    z-index: 998;
+    opacity: 0;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.15);
+    display: block;
+    padding-top: var(--header-height);
   }
 
   body.dark-theme .main-nav {
     border-top-color: rgba(255,255,255,0.05);
   }
 
-  .main-nav.active {
-    max-height: calc(100vh - var(--header-height));
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    box-shadow: 0 6px 6px -2px rgba(0,0,0,0.1);
+  .main-nav.visible {
+    right: 0;
+    opacity: 0.97;
+  }
+
+  /* Overlay para quando o menu estiver aberto */
+  .nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 997;
+    transition: all 0.3s ease;
+  }
+
+  .nav-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Garantir que o conteúdo principal não seja afetado pelo menu mobile */
+  body.menu-open main {
+    position: relative;
+    z-index: 1; /* Menor que o menu mobile, mas ainda positivo */
   }
 
   body.dark-theme .main-nav.active {
@@ -355,7 +470,7 @@
   .main-nav ul {
     flex-direction: column;
     width: 100%;
-    padding: 0.5rem 0;
+    padding: 1rem 0;
     margin: 0;
   }
 
@@ -364,7 +479,20 @@
     border-radius: 0;
     padding: 1rem 1.5rem;
     font-size: 1rem;
-    border-bottom: 1px solid rgba(0,0,0,0.03);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: all var(--transition-speed) ease-out;
+  }
+  
+  /* Evitar que os itens apareçam antes da animação do menu */
+  .main-nav:not(.visible) a {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  
+  /* Garantir que os itens apareçam corretamente quando o menu estiver visível */
+  .main-nav.visible a {
+    opacity: 1;
+    transform: translateX(0);
   }
 
   body.dark-theme .main-nav a {

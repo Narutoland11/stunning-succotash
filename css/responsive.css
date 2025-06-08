@@ -1,6 +1,17 @@
-/* Moz Doctor Dose - Estilos de Responsividade */
+/* 
+ * Moz Doctor Dose - Estilos de Responsividade 
+ * Arquivo principal de responsividade com breakpoints e ajustes gerais
+ * 
+ * Organização dos estilos responsivos:
+ * - responsive.css: Breakpoints e ajustes gerais
+ * - components/navigation.css: Estilos responsivos de navegação
+ * - components/tables.css: Estilos responsivos de tabelas
+ * - components/forms.css: Estilos responsivos de formulários
+ * - responsive-ui.css: Melhorias específicas de tema para elementos responsivos
+ * - responsive-enhancements.css: Personalizações específicas para dispositivos especiais
+ */
 
-/* Impedir rolagem quando o menu está aberto */
+/* Impedir rolagem quando o menu está aberto - efeito global */
 body.menu-open {
     overflow: hidden;
     position: fixed;

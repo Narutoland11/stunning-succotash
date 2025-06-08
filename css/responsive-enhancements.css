@@ -1,12 +1,23 @@
-/* ========== RESPONSIVIDADE APERFEIÇOADA ========== */
+/* ========== RESPONSIVIDADE APERFEIOADA ========== */
+/* 
+ * Nota: Este arquivo contém melhorias específicas de responsividade que complementam
+ * o arquivo base responsive.css e os componentes responsivos em components/
+ * Evita-se duplicação de código mantendo apenas as personalizações especiais aqui.
+ */
 
 /* Breakpoints para dispositivos móveis pequenos */
 @media (max-width: 480px) {
+  /* 
+   * Nota: os estilos base de mobile-nav-cards estão em components/navigation.css 
+   * Os estilos de tema escuro estão em responsive-ui.css
+   * Aqui, apenas configurações específicas para dispositivos muito pequenos 
+   */
   .mobile-nav-cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Layout específico para telas muito pequenas */
     gap: 8px;
   }
   
+  /* Melhorias específicas para formulários em dispositivos muito pequenos */
   .form-group {
     flex-direction: column;
     align-items: stretch;
@@ -23,10 +34,7 @@
 
 /* Breakpoints para tablets e dispositivos médios */
 @media (min-width: 481px) and (max-width: 768px) {
-  .mobile-nav-cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
+  /* Layout específico para tablets */
   .admin-stats {
     grid-template-columns: repeat(2, 1fr);
   }
